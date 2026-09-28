@@ -13,7 +13,7 @@
 
 每期以美观的 HTML 仪表盘呈现（支持亮色 / 暗色双主题切换），包含事件摘要与**关注理由**。
 
-> 在线浏览：[lph12168x.github.io/Linux_News_Daily](https://lph12168x.github.io/Linux_News_Daily/)
+> 在线浏览：[lph12168x.github.io/linux-news-daily](https://lph12168x.github.io/linux-news-daily/)
 
 ## 浏览日报
 
@@ -104,8 +104,8 @@
 ## 本地阅读
 
 ```bash
-git clone https://github.com/lph12168x/Linux_News_Daily.git
-cd Linux_News_Daily
+git clone https://github.com/lph12168x/linux-news-daily.git
+cd linux-news-daily
 # 用浏览器打开任意 .html 文件即可
 ```
 
