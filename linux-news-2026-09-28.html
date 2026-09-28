@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-09-28</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 9 月 28 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-09-28.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-09-24.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.3-rc5-DRM" target="_blank">Linux 7.3-rc5 的 DRM 修复：Nouveau 换用 R570 固件后修好挂起/恢复与 vRAM pinning，Intel Xe 为 Crescent Island 加入 PWRBRK 功耗制动节流原因</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linux 7.3-rc5 的 <b>DRM（Direct Rendering Manager）子系统</b>修复量偏大。DRM 联合维护者 <b>David Airlie</b> 指出，本次 pull 主要由<b>「受 AI 启发的错误处理路径、内存泄漏与 use-after-free 修复」</b>构成，但其中也有若干值得单独关注的问题。<br>
+        <b>① Nouveau：开源 NVIDIA 驱动是本轮修复量最大的一块</b><br>
+        Nouveau 从使用 <b>NVIDIA R535 驱动固件二进制</b>迁移到 <b>R570 固件</b>之后，<b>挂起/恢复（suspend/resume）出现回归</b>并伴随其他问题。本周合入的修复包括：<br>
+        · 修复使用<b>新版 NVIDIA 固件时的挂起/恢复</b>；<br>
+        · 修复 <b>vRAM pinning</b>（显存锁定）；<br>
+        · 以及若干其他驱动问题——<b>其中一部分是通过 AI/LLM 发现的</b>。<br>
+        <b>② Intel Xe：为 Crescent Island AI 加速器新增「功耗制动」节流原因</b><br>
+        Intel Xe 驱动本就具备<b>上报显卡节流原因</b>的能力（例如内存或 VR 温度、SoC 平均温度等）。本次为即将到来的 <b>Crescent Island AI 加速器</b>增加了一个新的节流原因：<b>power brake（功耗制动）</b>——Crescent Island 有一个 <b>PWRBRK 硬件位</b>，Xe 驱动现在可以把该原因转发上报给用户态。<br>
+        完整的 DRM 修复清单见 DRI-devel 邮件列表的 pull request。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 最值得留意的是「固件二进制换代引发挂起/恢复回归」这件事本身——它揭示了开源驱动最脆弱的一环。</b>像 Nouveau 这样的开源 NVIDIA 驱动，<b>图形命令的生成逻辑是社区自己写的，但固件（PMU、显示、电源相关微码）必须使用厂商提供的二进制</b>。当厂商把固件从 R535 换到 R570 时，<b>接口语义可能出现未公开的变化</b>——开源侧没有文档可查，只能靠行为观测反推。于是「挂起/恢复」这类<b>深度依赖固件状态机协作的路径最先坏掉</b>，因为它在正常运行时几乎不被触发，测试覆盖天然薄弱。<b>这给出一个很实际的提醒：任何依赖外部二进制组件（固件、闭源库、厂商 SDK）的软件栈，升级该组件时必须把「低频但关键的电源/复位路径」列为重点回归对象</b>，不能只看日常功能的冒烟测试。<br>
+        <b>② vRAM pinning 的修复值得单独理解，因为它是「显存语义」问题而不是普通 bug。</b>pinning 的作用是<b>把某块显存钉在物理位置上、禁止驱动在内存压力下把它迁移或换出</b>。一旦这个机制失效，被钉住的对象（往往正是 GPU 正在读写的对象，比如命令缓冲区或扫描输出缓冲）可能<b>在不该移动的时候被搬走</b>，结果通常不是立刻崩溃，而是<b>渲染花屏、随机挂死或数据损坏</b>——表现为极难复现的间歇性故障。更麻烦的是它往往在<b>内存压力大时才暴露</b>，实验室里的轻载测试很难命中。这类问题的排查思路值得记录：<b>先怀疑「不该动的东西被动了」，再去追驱动逻辑</b>，比从头读代码高效得多。<br>
+        <b>③ 把「功耗制动」做成一个可上报的节流原因，是驱动设计上一个很成熟的做法。</b>Crescent Island 是面向 AI 负载的加速器，<b>这类设备最典型的性能谜题就是「跑着跑着频率掉了」</b>。如果驱动只报「频率下降」而不报原因，用户只能靠猜：是热限制？是内存带宽打满？还是外部功耗制动信号拉低？<b>PWRBRK 作为一个独立原因被暴露出来后，问题定位从「猜测」变成了「读取」</b>。这与我们在加速器上做可观测性时的原则一致：<b>不要只上报现象（频率、利用率），要把「为什么」也结构化地暴露出来</b>，因为这些信息只有驱动/硬件层才知道，用户态无论如何都推不出来。<br>
+        <b>④ David Airlie 关于「AI 启发的错误处理路径修复」的表述，透露了一个正在发生的分工变化。</b>错误处理路径、资源泄漏、use-after-free 这三类问题有个共同特征：<b>它们数量极多、单点逻辑简单、但需要穷举所有分支——恰好是 LLM 擅长的模式</b>，同时又长期是人工评审中最容易被跳过的部分。这不是「AI 取代开发者」，而是<b>把人力从机械性核查迁移到更难的形式化推理上</b>。对团队的实际含义是：<b>错误路径的审计可以被工具化并纳入日常流程，而人应该被用去审视那些「工具判定不了」的设计问题</b>。这也是为什么 Linus 在近期多个 RC 里反复强调文件系统与错误路径的整体质量——机械性漏洞正在被清掉，剩下的越来越是设计层面的问题。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMDGPU-HDMI-2.1-Reliability" target="_blank">AMD 再送 HDMI 2.1 可靠性补丁：链路断开时跳过 FRL 状态轮询、LT 超时对齐规范，并推进 DCN 4.2 / DCN 6.0（DCN6 预计随 RDNA5）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Linux 7.4 将成为<b>「AMD 图形驱动默认开放 HDMI 2.1」</b>的关键版本，随之带来 <b>HDMI FreeSync、VRR 与 ALLM</b> 等功能。在这个里程碑之前，AMD 持续做最后的打磨——本周四送出了新一批 <b>AMDGPU Display Core（DC）补丁</b>。<br>
+        <b>本批针对 HDMI 2.1 可靠性的三项修复</b>：<br>
+        · <b>链路断开时跳过 HDMI FRL 状态轮询</b>——例如热插拔动作前后，避免因轮询到无效状态而导致<b>显示器点不亮</b>；<br>
+        · <b>修正 HDMI 2.1 LT（Link Training）超时</b>，使其更好地<b>贴合 HDMI 规范</b>，从而带来更一致的体验；<br>
+        · <b>把 HDMI FRL 状态轮询与链路检测（link detect）串行化</b>，消除两者并发造成的状态竞争。<br>
+        Phoronix 评价这些都是「相当小的改动」，但赶在 10 月 Linux 7.4 大合并窗口之前持续夯实时序链路，方向是明确的。<br>
+        <b>同一批 DC 补丁的另一半工作是 DCN 显示块</b>：<b>新增 DCN 4.2 与 DCN 6.0 支持</b>并做多项调整。从补丁时间点等信息判断，<b>DCN 6 预计将随下一代 RDNA5 GPU 到来</b>。<br>
+        此外，周四还有一份新的 <b>AMDGPU 与 AMDKFD pull request</b> 进入 DRM-Next 备货 Linux 7.4，内容<b>以修复为主，大量工作围绕 AMD GFX12.1 IP 与 DCN 6 显示块</b>。补丁清单见 amd-gfx 邮件列表。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「链路断开时跳过轮询」这个修复，暴露了显示驱动里一个典型的竞争窗口。</b>HDMI FRL（Fixed Rate Link）是 HDMI 2.1 实现高带宽的链路层协议，它<b>需要驱动与显示器之间协商速率与通道数，并持续监控链路状态</b>。热插拔时链路会短暂处于不可用状态，如果此时驱动仍在按固定节奏轮询 FRL 状态，就可能<b>把一个正常的瞬时断开读成「链路训练失败」</b>，进而走到降速甚至拒绝点亮的路径。<b>「显示器点不亮」这类症状之所以在用户侧极难反馈，是因为它既不是硬件坏，也不是软件崩——系统看起来一切正常，只是没有画面</b>。修复方式不是加超时重试，而是<b>在语义上明确「此时不该问这个问题」</b>，这是更干净的解法：<b>与其让每个调用点都去防御性地处理无效状态，不如在源头界定该状态下的合法操作集合。</b><br>
+        <b>② 把「轮询」与「链路检测」串行化，是并发正确性问题的标准处理方式，值得记住这个模式。</b>两个异步事件源（周期性轮询、中断驱动的链路检测）同时操作同一份链路状态时，<b>如果两者之间没有互斥，就会出现「各自看到的都是中间态」的问题</b>——典型后果是状态机被推入一个不存在于设计中的组合。这里的处理是把两者串行化，<b>牺牲一点点响应实时性，换取状态机的确定性</b>。在显示、电源、复位这类「状态机复杂且硬件行为不可控」的子系统里，<b>这种取舍几乎总是正确的：可预测性比峰值响应速度重要</b>。相反，在多核调度、内存分配这类允许最终一致性的路径上，才值得为并行度付出复杂度代价。<br>
+        <b>③ HDMI 2.1「默认开」这件事的难度常被低估——它难在兼容性，不在功能。</b>把一项能力从「可手动开启的实验特性」变成「默认生效」，意味着<b>所有用户、所有线材、所有显示器、所有组合都要走这条路径</b>。HDMI 2.1 的 FRL、ALLM、VRR、eARC 依赖一串<b>厂商实现差异极大的时序参数</b>，任何一处不符合规范假设都可能变成「某用户的电视黑屏」。因此这类默认开启之前，工程上真正在做的事情是<b>穷举并修补可靠性缺口</b>——这也是为什么 AMD 在正式放开之前会连续送出多轮「可靠性」补丁。对做平台默认值决策的团队，这条经验可以直接搬用：<b>当一个特性要从可选变默认，评估重点应从「功能是否正确」切换到「最差组合下是否可接受」。</b><br>
+        <b>④ DCN 6.0 的出现在时间线上值得标记：显示块的命名推进，通常是下一代 GPU 落地的前置信号。</b>与同一时期 AMDGPU 侧的 GFX12.1 修复、GDDR7 显存标识、IH 8.0 / NBIF 7.10 总线接口更新放在一起看，可以拼出一条清晰的路径：<b>AMD 正在按部就班地把 RDNA5 所需的各个 IP 块补丁化并送进主线</b>。这里的规律对任何做芯片软件栈的人都有参考价值——<b>IP 块的驱动支持总是先于芯片发布数月进入上游</b>，所以「看主线补丁」往往比「看路线图」更早、更准确地反映下一代硬件的时间点。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Better-RPI-GPU-Reset" target="_blank">树莓派 GPU 复位将在 Linux 7.4 改进：Igalia 让 vc4 用上 BCM2835 PM 的 V3D 复位线，告别「把 PM 引用计数强制归零再断电」的旧做法</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">在 DRM-Misc-Next 的 pull request 中（同批还引入了面向 DRM 驱动的新 HDMI 2.0 helpers），包含了<b>一项针对 Broadcom V3D GPU、在 vc4 内核驱动中改进 GPU 复位支持</b>的工作。<br>
+        该工作由咨询公司 <b>Igalia 的 Maíra Canal</b> 完成，做法是<b>让 vc4 正确使用 V3D 硬件块自带的复位控制器（reset controller）</b>。她在补丁说明中解释：<br>
+        <b>旧做法的原理与代价</b>：<br>
+        · <code>vc4_reset()</code> 通过<b>把 runtime PM 的使用计数（usage count）降到零</b>，使 V3D 电源域下电，然后再重新取一次计数——以此恢复挂死的 GPU；<br>
+        · <b>强制把计数归零只有在驱动确切知道自己持有了多少引用时才安全</b>，这就是为什么 vc4「不寻常地」把每一次 <code>pm_runtime_get_sync()</code> 调用<b>用私有的 refcount 与 mutex 包起来</b>，使代码相当笨重。<br>
+        <b>新做法的依据</b>：<br>
+        · <b>BCM2835 PM 块自 commit 670c672608a1（"soc: bcm: bcm2835-pm: Add support for power domains under a new binding."）起就为 V3D 块暴露了一条复位线</b>，而这条复位线当时加入的目的<b>正是为了这个用途</b>，但 <b>vc4 一直没有采用它</b>；<br>
+        · 本系列把 vc4 切换到这条复位线，并<b>删掉私有 refcount</b>，使 <code>vc4_v3d_pm_get/put()</code> 退化为<b>普通的 runtime PM 包装</b>。<br>
+        <b>兼容性处理</b>：复位线是<b>可选的</b>，因此<b>设备树中没有描述复位线的设备仍可正常工作</b>——它们走驱动侧的 <code>vc4_irq_reset()</code> 做恢复，硬件保持不动。在两个树内平台中：<b>① BCM2835 在 PATCH 4 中补上该属性；② Cygnus 本来就没有 V3D 电源域，其电源循环从头到尾只是在开关时钟。</b><br>
+        该代码属于已提交的 pull request，将<b>随 10 月的 Linux 7.4 合并窗口落地</b>；Linux 7.4 稳定版有望在年底前发布。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「把引用计数强制归零来实现复位」这个旧做法，是一个非常经典的、用错误层次的机制去解决上层问题的例子。</b>正确的复位方式是<b>操作电源/复位硬件本身</b>，但旧代码走了一条迂回路径：<b>通过操纵 runtime PM 的引用计数，间接让电源域下电，再上电，以此达成复位</b>。问题在于引用计数<b>本是用来做资源生命周期管理的状态变量，用它的副产物去触发硬件动作，就把「计数正确」变成了「复位正确」的前提条件</b>。于是驱动被迫用私有 refcount + mutex 把每一次 get/put 都包起来，以确保计数绝不会算错——<b>本质上是让整套代码为一个不该承受这个责任的机制买单</b>。<b>这个模式在任何系统里都值得警惕：当某段代码需要大量额外簿记才能保证另一个机制正确工作时，通常说明机制的选择错了层次。</b><br>
+        <b>② 复位线「早在多年前就为这个用途加进来了，但驱动一直没用」——这是硬件能力与软件使用脱节的一个耐人寻味的样本。</b>硬件把能力准备好了（电源域绑定里暴露复位线），<b>但软件侧没有接上，于是长期绕道实现同一功能</b>。这种脱节的代价是持续存在的：多一份私有簿记、多一份维护负担、多一点出错概率。<b>它提醒我们定期审计「硬件/平台已提供的能力是否被软件真正使用」</b>——尤其是那些「当初为了某个用途特意加进来」的接口，它们最容易在后续重构中被遗忘。做平台侧评审时，<b>把「我们绕道实现的每件事，是否已经有原生支持」列成清单定期过一遍</b>，收益往往比优化热点代码更高。<br>
+        <b>③ 复位线设计为「可选」，让这次改动变成了零风险的渐进替换，这是接口演进的正确姿势。</b>如果复位线是必需属性，那么<b>所有现存设备树都要同步修改，任何一个未更新的 dtb（大量存在于已发布的固件中）都会直接无法启动</b>。把它做成可选，意味着：<b>没有该属性的设备自动退回原有软恢复路径，有该属性的走新路径</b>。这样补丁可以安全合入主线，硬件与设备树的补齐可以由各平台按自己的节奏推进。<b>凡是涉及「平台描述文件（设备树、ACPI 表、配置）」的新能力，都应该遵循这个「新属性可选、旧平台有兜底」的模式</b>——它把一次可能影响面极广的改动，降级成一次纯增益的增量。<br>
+        <b>④ 收尾一句值得记住的结论：GPU 挂死恢复的可靠性，是衡量图形栈成熟度的硬指标之一。</b>复位路径与日常渲染路径的性质完全不同——<b>它只在异常时执行，因此测试覆盖天然稀少、验证条件苛刻，而且一旦失效，用户面临的往往是「必须重启整机」</b>。这也解释了为什么这类改动虽小且「用户平时感受不到」，却常被上游重视。<b>在评估一个图形/加速器软件栈时，除了看正常路径的功能与性能，去检查它的错误恢复路径（复位、超时、掉卡重建）是否有正式实现、是否被测试覆盖，能更准确地判断它的工程成熟度。</b>对自研硬件平台来说，<b>在早期就把复位与恢复路径设计清楚，比后期补要便宜得多</b>——因为后者要求同时改动硬件、固件、驱动与设备树四层。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMDXDNA-NPU3-Enhancements" target="_blank">AMDXDNA 驱动为 NPU3（AIE4）大幅增强：内核态命令提交（KMQ）成为默认路径，补齐遥测、系统/运行时电源管理与 SR-IOV 联动（21 补丁）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-npu">NPU</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">开源内核加速器驱动 <b>AMDXDNA</b> 正在为更好地支持当前一代 <b>NPU3</b>（神经网络处理单元）做大量工作。<b>AMD NPU3</b> 即当前 <b>Ryzen AI 300 / Ryzen AI 300 PRO 系列 SoC</b> 中集成的 NPU。<br>
+        AMD 工程师 <b>David Zhang（yidong.zhang）</b>在最新一版补丁中说明，该系列用于让 amdxdna 驱动支持 <b>AMD AIE4（NPU3）平台</b>，内容包括：<br>
+        · <b>内核态命令提交（KMQ，Kernel-Mode Queue / kernel-mode command submission）</b>；<br>
+        · <b>设备遥测查询（device telemetry queries）</b>；<br>
+        · <b>完整的系统与运行时电源管理</b>；<br>
+        · <b>NPU3 classic 设备支持</b>。<br>
+        <b>关键变化——从用户态门铃到内核态提交</b>：<br>
+        此前 <b>AIE4 设备依赖用户态的 doorbell 映射来派发命令</b>。本系列<b>把内核态提交确立为默认执行路径</b>，并随之提供：<b>健壮的 fence（同步点）管理、BO（buffer object）reservation 加锁、以及队列生命周期管理</b>。<br>
+        <b>电源管理覆盖范围</b>：实现<b>跨 Physical Functions（PF）、Virtual Functions（VF）与 Classic 设备的完整系统挂起/恢复与运行时电源管理</b>，并包含 <b>SR-IOV 的 PM 依赖联动（PM dependency linking）</b>与<b>用户态运行时兼容桩（runtime compatibility stubs）</b>。<br>
+        <b>规模</b>：当前这套补丁共 <b>21 个</b>，除上述内容外还启用了<b>新的时钟 / 频率 / 信息查询</b>。补丁见 LKML。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「命令提交从用户态门铃改为内核态默认路径」是这条里最重要的架构变化，它改变的不只是性能，而是整个可信任边界。</b>用户态直接映射门铃（doorbell）意味着<b>应用可以绕过内核自己敲门通知设备</b>——省掉一次系统调用，延迟最低，但也意味着<b>设备队列的状态完全由用户态负责管理</b>。一旦应用崩溃、被杀死或行为异常，<b>内核无法可靠地回收队列、也说不清硬件此刻处于什么状态</b>，只能做最粗暴的整体复位。改由内核态提交之后：<b>命令的排队与生命周期被放进内核管理，fence 与 BO 加锁有了统一的施加点，异常时内核有能力精确回收</b>。这是典型的<b>「把状态机所有权收到内核」换取稳定性与可管理性</b>的取舍，也是多租户、虚拟化场景（SR-IOV）下的必要条件——因为用户态彼此不可信任。<b>任何加速器在从「单用户高性能」走向「多用户/可虚拟化」时，几乎必然要走这一步。</b><br>
+        <b>② 遥测（telemetry）被列为独立工作项，说明「可观测性」正在成为加速器驱动的功能要求而非附加品。</b>NPU 这类设备的工作负载是<b>长期运行的持续推理</b>，用户最关心的问题往往是「它现在跑在什么频率、受什么限制、利用率是否真实」。这些信息<b>只有驱动/固件能看到</b>，用户态无从推断。把时钟、频率、信息查询做成正式接口，等于<b>给整个软件栈装上了仪表盘</b>。结合同期 Intel Xe 驱动把「功耗制动」作为节流原因单独上报，可以看到一个共同趋势：<b>加速器驱动正在从「提供功能」转向「提供功能 + 提供可诊断性」</b>。对自研平台而言，<b>把可观测性接口和功能接口同期设计，成本远低于事后补</b>——因为后补往往要修改固件协议。<br>
+        <b>③ 电源管理横跨 PF / VF / Classic 三类设备并做 SR-IOV 依赖联动，暴露了虚拟化加速器的一个真实复杂度来源。</b>SR-IOV 下，<b>一个物理功能的电源状态变化会连带影响所有虚拟功能</b>：宿主要挂起，guest 侧必须协同；一个 VF 复位，也要避免拉垮同卡上的其他 VF。<b>这类「多方共享同一物理资源、状态必须联动」的建模，是虚拟化支持中最容易出错的部分</b>，远比功能实现本身麻烦。这里的经验是通用的：<b>只要引入了资源共享（SR-IOV、多进程共享设备、时间片切换），就必须显式建模「状态传播方向」与「依赖关系」，而不能依赖各方各自维护状态再事后同步。</b><br>
+        <b>④ 从「21 个补丁」的量级可以看出，NPU 开源支持的成熟是一条以「季度」为单位的长路，而不是一次性使能。</b>回顾这一代 NPU 的路径：初始使能 → 基础命令通路 → 电源管理 → 遥测 → 虚拟化联动，每一步都是独立的一批补丁。<b>这解释了为什么「NPU 能用」和「NPU 好用/可被生产环境托管」之间往往相隔很久</b>。对使用者来说，评估 NPU 平台是否真正可交付，不应只看「是否有开源驱动」，而应看<b>电源管理、虚拟化、错误恢复这三个维度是否已有正式实现</b>——这三项才是从「demo 能跑」到「可以上生产」之间的分水岭。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Qualcomm-Mahua-GPU-Support" target="_blank">高通为 Snapdragon X2「Mahua」提交 GPU 使能补丁：低阶 10/12 核 X2 的 Adreno X2-85 获支持，相比 X2 Elite「Glymur」切片更少、内部内存更小</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">高通的开源 Linux 支持动作在近期密集展开：<b>Adreno 850 GPU 补丁</b>在宣布次日即提交，<b>Snapdragon X2 Linux 支持计划</b>也正式公布。本周最新一批补丁则是为 <b>Mahua SoC</b> 提供图形使能——Mahua 面向<b>较低端的 Snapdragon X2 SoC</b>。<br>
+        <b>产品与代号的关系</b>：<br>
+        · <b>Mahua</b> 是 Snapdragon X2 在<b>较低 10 核与 12 核配置</b>下的 SoC 代号，定位为<b>低 X2 Elite（代号 Glymur）一档</b>；<br>
+        · 去年高通已将 <b>Snapdragon X2 Elite 的初始 GPU 支持上游</b>，本次是在此基础上向更低一档 X2 硬件扩展。<br>
+        <b>本批补丁内容</b>：启用 <b>Mahua 的 Adreno X2-85 GPU</b>，并指出其<b>与 Glymur 相比切片（slices）更少、内部内存更小</b>。<br>
+        <b>工作量</b>：最终<b>只需几十行新的内核图形驱动代码</b>即可完成 Mahua 的 GPU 使能。<br>
+        补丁已发往 Linux 内核邮件列表，目前处于<b>代码评审阶段</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「同一代低配型号只需几十行代码」这件事，是架构设计得当的直接体现，也是评估平台硬件设计质量的观察点。</b>Mahua 与 Glymur 的差异只有<b>切片数量与内部内存大小</b>——属于典型的「同 IP、不同档位」缩放。正因为两者在寄存器布局、固件接口、命令流层面高度同构，驱动侧才可能<b>复用同一条代码路径，仅通过参数化的容量描述来区分</b>。反过来看，<b>如果每增加一档配置就需要一整套新的驱动逻辑，那就是硬件设计在抽象层面走了分叉</b>，代价会以乘法形式累积到软件维护上（数量 × 档位 × 每档的测试矩阵）。<b>这是硅前阶段就该确认的评审点：同一代不同档位，是否在驱动可见的接口层面保持一致。</b><br>
+        <b>② 「切片更少、内存更小」的差异对图形驱动而言，主要影响的是资源划分而非控制流，这一点值得说清。</b>切片数决定了可并行的工作单元规模，内部内存（往往是 GPU 私有的 SRAM/缓存）决定了 tile 大小与中间数据能否留在片内。驱动需要据此调整<b>资源分配策略、tile 尺寸、以及并行度假设</b>，但<b>不需要改变命令提交与状态管理的骨架</b>。也就是说，<b>这类硬件缩放会渗透到「性能相关的调参面」，而不是「功能正确性的接口面」</b>。理解这一层的区分很有用：<b>它决定了新增档位的验证重点应该放在性能回归与资源边界上，而不是功能冒烟测试上</b>。<br>
+        <b>③ 结合高通近期的节奏，「官宣即提交补丁」正在成为其桌面/笔记本平台的固定做法，而这背后的驱动力是下游整机厂商的交期。</b>对 HP、ASUS 这类计划在 2027 年第一季度提供 Linux 支持的合作伙伴来说，<b>如果 GPU 使能补丁晚一个季度进入上游，那么发行版带上它又要再等一到两个发布周期</b>，最终结果是<b>硬件上市时 Linux 用户拿到的是一台「能开机但图形受限」的机器</b>。把补丁提前数月送进主线评审，本质上是<b>把「上游评审与集成的时间」从产品交期中挤出去</b>。这是任何与第三方发行版协作的平台厂商都该采用的顺序：<b>先让上游融合，再谈产品可用性</b>，而不是产品发布后再推动。<br>
+        <b>④ 一个值得保持关注的判断：ARM 笔记本平台 Linux 支持的真实进度，要看「低端型号是否也被覆盖」。</b>厂商通常在旗舰型号上优先投入，因为其曝光度与战略价值最高；<b>而低配型号往往承担出货量的大头，却最容易在软件支持上被长期搁置</b>。Mahua 这类低阶 SoC 的 GPU 使能被主动提交，说明高通的 Linux 支持策略<b>不是只做「能上新闻的旗舰演示」，而是覆盖到了产品矩阵的下沿</b>。评估任何 ARM 平台的 Linux 承诺时，<b>把「低配型号是否有对等支持」作为一项检验标准，比看官方路线图更可靠</b>——因为它直接反映了厂商是否把 Linux 当作真实出货配置来对待。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/GCC-Patches-AVX10V1AUX" target="_blank">AMD 提交 GCC 的 AVX10V1AUX 支持补丁：ACE 计划的「轻量档」扩展，带入 VNNIINT8/VNNIINT16 与 AVX10.2 的 CONVERT 内建，开关为 -mavx10v1aux</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">继 AMD 为 GCC 与 LLVM 准备 <b>AVX10_V2_AUX</b> 支持（作为 <b>AI Compute Extensions「ACE」</b> 在 <b>GCC 17</b> 中的 brought-up 工作）之后，AMD 编译器工程师本周又提交了 <b>AVX10V1AUX ISA 支持的初始补丁</b>。<br>
+        <b>AVX10V1AUX 的定位</b>：它是 <b>AVX10.1 的辅助更新（auxiliary updates）</b>，同样属于 ACE 计划。<b>它不像 AVX10_V2_AUX 那样深入</b>——后者带来了压缩的 AI 数据类型；<b>AVX10V1AUX 携带的是一些过渡性指令，其语义映射到 AVX10.2 的结构上</b>。<br>
+        <b>补丁实际内容</b>：<br>
+        · 加入<b>基础设施</b>；<br>
+        · 从 <b>AVX10.2 共享部分 built-in 与 pattern</b>；<br>
+        · 为 AVX10V1AUX 用途引入 <b>VNNINT8 与 VNNIINT16</b>；<br>
+        · 把 AVX10.2 的 <b>CONVERT 内建</b>一并沿用过来。<br>
+        <b>启用方式</b>：通过 <b><code>-mavx10v1aux</code></b> 编译开关启用，面向<b>尚未发布的 Intel 与 AMD 处理器</b>。<br>
+        补丁已在 gcc-patches 邮件列表上公开评审。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 这条最有价值的信息不是某个补丁，而是「AUX 分两档」这件事所反映的指令集设计策略。x86 厂商正在有意识地把 AI 相关扩展拆成「轻量档」和「完整档」，让不同的芯片能各取所需地实现。</b>回顾一下同一生态里的几件事：AVX10_V2_AUX 带来标准类型到 FP4/FP6 的压缩转换与 OCP 微缩放；AVX10V1AUX 则只携带映射到 AVX10.2 结构的过渡指令与整数 VNNI 变体。<b>其战略含义是：未来一颗 CPU 可以在不支持最激进的低精度格式的前提下，仍然通过轻量档获得可观的推理加速能力。</b>这种<b>按能力分层的扩展体系</b>，使软件可以写成「基线 + 可选档位」的渐进式代码，而不必面对「全有或全无」的二元选择。设计任何能力扩展时，<b>把「必需的核心」与「进阶的可选项」在 ISA/接口层面就分开，比事后用特性位去描述一个整体能力要有效得多</b>——因为前者让编译器和运行时可以做细粒度决策。<br>
+        <b>② 「过渡性指令、语义映射到 AVX10.2 结构」这个描述值得单独留意：它是一种刻意设计的、以牺牲一点优雅来换取部署可行性的折中。</b>理论上更干净的方案是新开一套自成体系的指令；但那样做，<b>软件需要为两套结构各写一份代码</b>。让 V1 档的指令在语义上映射到 V2 的结构，意味着<b>编译器的中间表示与优化通道可以只维护一条主要路径，V1 硬件只是这条路径的一个能力子集</b>。<b>这种做法在跨代扩展中非常常见（也是 SSE 到 AVX 平滑过渡的经验），其价值在于把「硬件代际差异」压缩成「编译器里的一个能力掩码」，而不是「两套独立实现」。</b>对做中间层/编译器的人，这是可以直接借鉴的模式。<br>
+        <b>③ VNNI（矢量神经网络指令）在 AVX10V1AUX 中的出现，实际上是在「低精度 AI 加速」这条线上给出一档无需 FP4/FP6 支持的落点。</b>VNNI 做的是<b>把低精度整数的点积融合进一条指令</b>——它是纯粹的整数/定点路线，不涉及浮点格式转换。这形成了完整的能力梯度：<b>最保守的硬件走 VNNI（整数点积）→ 中间的硬件走 V1 档（含 CONVERT）→ 最强的硬件走 V2 档（含 FP4/FP6 与微缩放）</b>。对软件栈的直接影响是：<b>量化推理的实现可以选择落在任一层，且代码结构可以统一</b>，这对希望「一份代码覆盖多代硬件」的推理引擎是实质利好。<b>这也意味着在做硬件选型与性能预估时，不能只问「支持不支持 AI 指令」，而要问「支持到哪一档」。</b><br>
+        <b>④ 把 CPU 指令集扩展的完整节奏再梳理一次，有助于避免被单条新闻误导。</b>一条 ISA 扩展从出现到真正产生价值，要经过：<b>ISA 规范定稿 → 编译器支持（GCC/LLVM 上游）→ 编译器稳定版本发布 → 发行版收录该编译器 → 硬件实际上市 → 软件被编译出使用该指令的二进制</b>。这条链上<b>任何一环都能拖住整件事数月至半年以上</b>，而且<b>编译器支持与硬件可用必须同时就位才有意义</b>。当前我们看到的是链条最前端的工作（GCC 补丁进入评审、LLVM 已合并），而终端用户能真正受益的时间点要按这条链上最慢的一环估算。<b>在评估任何「新指令带来的性能提升」时，先确认它落在链条的哪一环，比直接相信跑分要靠谱得多。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/ubuntu-2610-panther-lake" target="_blank">Ubuntu 26.10 在 Intel Panther Lake / Framework Laptop 13 Pro 上带来明显提升：130+ 项基准几何平均约 +4%，Arc B390 图形（Vulkan）增益最大，平均功耗还更低（21.8W vs 22.3W）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Phoronix 实验室对即将到来的 <b>Ubuntu 26.10</b> 的系列测试继续给出新结果。此前 <b>AMD Strix Halo Framework Desktop</b> 已在该版本上获得不错的提升（得益于更新的内核，现已升至 <b>Linux 7.3</b> 及其他软件升级），本次测的是 <b>Intel Panther Lake</b>。<br>
+        <b>测试机型（Framework Laptop 13 Pro）</b>：<br>
+        · 处理器：<b>Intel Core Ultra X9 388H</b>；<br>
+        · 内存：<b>64GB LPDDR5-7467</b>；<br>
+        · 存储：<b>2TB WD_BLACK SN7100 NVMe SSD</b>；<br>
+        · 图形：<b>集成 Intel Arc B390</b>。<br>
+        <b>对照设置</b>：<b>Ubuntu 26.04 LTS</b>（开箱即用 + 全部稳定版更新）对比 <b>Ubuntu 26.10</b>（截至 9 月 22 日的 daily 状态）。<br>
+        <b>结果</b>：<br>
+        · 在 <b>130 多项基准</b>中，整体性能<b>提升约 4%</b>；<br>
+        · <b>Arc B390 的图形基准是最令人兴奋的部分</b>，<b>更新的 Mesa 对 Vulkan 工作负载帮助尤其明显</b>；<br>
+        · 其他领域也有增量收益，得益于 <b>Linux 7.3</b> 与其他软件升级；<br>
+        · <b>功耗反而略低</b>：Core Ultra X9 388H 上 Ubuntu 26.10 <b>平均 21.8W</b>，而 Ubuntu 26.04 LTS 为 <b>22.3W</b>。<br>
+        结论是 Panther Lake 在 Linux 上的表现持续向好，且在新版本上进一步改善。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「图形增益最明显、且集中在 Vulkan」这个分布特征，比整体 +4% 这个数字更有信息量——它指向的是驱动层的成熟而非硬件的性能。</b>如果是 CPU 主频或架构带来的提升，<b>结果应该在各子项上均匀分摊</b>；而实际观察到的形态是<b>图形（尤其是 Vulkan）子项显著、其他子项温和</b>——这正是<b>Mesa 与内核 DRM 驱动在持续补齐优化路径</b>的典型指纹。对使用者而言，这个信号的含义很实用：<b>新硬件在 Linux 上的性能不是「发布即定型」，而是在发布后的若干发行版周期内被逐步解锁</b>。判断一台新机在 Linux 上「值不值」时，<b>看当前跑分只能得到下限，还要看上游驱动是否仍在活跃优化</b>——后者决定了半年后它的表现。<br>
+        <b>② 功耗从 22.3W 降到 21.8W（约 2% 降幅）这一项，在整机体验上的价值可能超过那 4% 的性能提升，值得单独强调。</b>对笔记本而言，<b>功耗直接决定续航、噪音与表面温度</b>，而这些是用户每天真实感知的部分；而 4% 的性能差异在日常使用中几乎不可察觉。<b>同时做到「性能小涨 + 功耗小降」尤其值得注意：这不是靠放宽功耗预算换性能，而是靠软件路径效率改善得来的</b>（更少的无效轮询、更合适的电源状态停留、更少的唤醒）。这也说明内核与驱动的电源管理优化，在移动平台上的实际用户价值往往被低估。<b>在给移动平台做优化排序时，「降低平均功耗」与「提升峰值性能」应该是两个独立且同等重要的目标，而不是一个目标的两个侧面。</b><br>
+        <b>③ 「对照的是 Ubuntu 26.04 LTS（全部稳定更新）而非旧版本」这个测试设计，让结论更具现实意义。</b>把对照组设为<b>打满稳定更新的 LTS</b>，意味着被排除掉了「LTS 刚发布时驱动落后」的干扰，<b>得出的 4% 是实打实来自新版本内核与 Mesa 的能力提升</b>，而不是「从糟糕到正常」的改善。评估任何版本升级收益时，<b>对照组的选择决定了结论是「修复了缺陷」还是「带来了新能力」</b>，这两者的决策含义完全不同：前者是「早晚都要升」，后者是「升了才有」。<b>在给团队做升级论证时，把对照组选在「当前实际在用的最优状态」，得到的数字才经得起质疑。</b><br>
+        <b>④ 把这条与同期的 Strix Halo 结果并置，可以看出一个跨平台的结构性规律：新发行版对新一代硬件的增益，普遍大于对老硬件的增益。</b>原因是新硬件的驱动路径<b>正处于「快速补齐」阶段，每一个版本都可能打通某个此前走软件兜底的路径</b>；而老硬件的路径基本定型，改进空间只剩细枝末节。这个规律有一个非常实际的推论：<b>如果团队使用的是最新一代硬件，那么「跟随发行版节奏升级」的收益是显著的，值得把它排入常规运维；反之，如果用的是成熟硬件，升级的动力就主要体现在安全与兼容性上，而非性能。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/FUTEX-Robust-List2-Syscalls" target="_blank">为 Valve 的 ARM64 游戏野心重启动工：Igalia 发出 v7 版 FUTEX get_robust_list2 / set_robust_list2 补丁，力争服务 FEX-Emu 等模拟层</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">这场工作可以追溯到去年：咨询公司 <b>Igalia</b> 一直在增强 Linux 内核，以帮助 <b>Steam Play 在 ARM64 上运行游戏</b>，确保 <b>FEX 模拟器</b>在 Steam Frame 这类设备上运行 x86/x86_64 游戏时保持高效。在经历了数月的其他内核工作后，<b>新一版 FUTEX get_robust_list2 与 set_robust_list2 系统调用补丁终于发布</b>。<br>
+        <b>要解决的问题</b>：Igalia 一直在处理<b>现有的 get_robust_list / set_robust_list 的不足</b>，目标是<b>更好地契合 FEX-Emu 及其他模拟层的需求</b>。<br>
+        <b>本版（v7）改动</b>：<br>
+        · 由 Igalia 的 <b>André Almeida</b> 发布，是<b>自去年 11 月底以来的首次更新</b>；<br>
+        · <b>重新 rebase 到最新的主线内核</b>；<br>
+        · <b>适配 VDSO 的变更</b>；<br>
+        · 以及其他代码改进。<br>
+        <b>延迟原因</b>：这次更新<b>此前被一个竞态条件（race condition）卡住</b>，解决后才得以发出。<br>
+        补丁系列见 LKML：「20260925-tonyk-robust_futex-v7」。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 理解这条的关键在「robust futex」解决什么问题：它是「进程/线程突然死亡后，别人拿着的锁怎么办」的机制。</b>当一个线程在<b>持有互斥锁的状态下异常退出</b>（被 kill、崩溃），如果没有 robust 机制，这把锁就会<b>永远保持锁定</b>，其他等待者会永久阻塞。内核的 robust list 就是让线程提前登记「我持有哪些锁」，以便在它异常退出时由内核代为通知等待者。<b>这件事在原生场景下已经有解，但在模拟器里会成倍放大难度</b>——因为模拟层要在宿主内核上<b>重建被模拟程序的线程与锁语义</b>，而 x86 与 ARM64 在内存模型、原子操作、futex 行为上并不一致。<b>现有的接口不足以让模拟器准确表达「这个锁属于哪个被模拟线程」这类信息，于是需要新接口。</b><br>
+        <b>② 「因一个竞态条件而被卡住数月」值得解释一下——这类卡点为什么难解，以及为什么不能随便放过。</b>robust list 的语义是<b>与「线程正在死亡」这一时刻强耦合的</b>：内核需要在进程消亡的过程中读取它登记的锁列表并做清理，而<b>同一时刻其他线程可能正在修改这个列表</b>（加锁、解锁、登记）。<b>这类「一个对象在销毁过程中仍被并发访问」的窗口，恰恰是内核里最难处理的竞态</b>，因为很难构造出稳定的复现用例，也很难证明修复的完备性。<b>内核社区对此类补丁的审查标准极高，宁可拖几个月也不合并一个有隐患的版本</b>，这正是上游流程价值的体现。<b>对做内核或并发基础设施的人，这是一条明确的经验：涉及「资源销毁与并发访问交错」的改动，不要把「测试跑过」当作完成标准。</b><br>
+        <b>③ 「rebase 到最新主线 + 适配 VDSO 变更」这两项说明了长期存活补丁的隐性成本，值得团队在规划时计入。</b>一个补丁在邮件列表上迭代近一年，意味着<b>它必须反复跟随主线演化</b>：VDSO 接口调整、futex 内部重构、锁语义变化，都会让旧版本失效。<b>这些返工不产生任何新功能，却是维持「还有机会合并」这一状态的必要开销。</b>推论是很实际的：<b>如果一个改动无法在几个月内进入上游，就要主动评估「是否值得继续跟随」，或者调整策略（拆小、先合可独立的部分）</b>。拖着不决的补丁，成本会以 rebase 工作量的形式持续累积。<br>
+        <b>④ 这条新闻的最终观察点在于：它揭示了「游戏平台的可移植性」实际上是由内核的系统调用语义支撑的。Steam Frame 要在 ARM64 上跑 x86 游戏，瓶颈并不在图形——而在 threading、原子操作、异常处理这些最底层的语义对齐上。</b>对任何做二进制翻译/兼容层的人来说，这是一个值得刻进判断里的优先级：<b>先把系统调用与线程语义的对齐做扎实，再谈指令翻译效率</b>，因为前者导致的失败是功能性的（游戏根本跑不起来或随机挂死），后者只是性能问题。也正因如此，Valve 选择资助 Igalia 去做内核补丁，而不是只在用户态模拟器里想办法——<b>当某个问题的最优解落在内核层，就应该去改内核，而不是在用户态堆补丁</b>。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Refill-Sheaves-Barn" target="_blank">Linux 7.4 的内存分配器改动：sheaf 允许从 barn 预填充，81 行新代码让 will-it-scale mmap1 提升 24%，barn_get 一项指标暴涨 +22904539.81%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">本周排队进入 <b>slab/for-next Git 分支</b>（面向下月 <b>Linux 7.4</b> 合并窗口）的一项内存管理改动，针对的是<b>「从 barn 预填充（prefilled）sheaf」</b>这一路径。在某些情况下，它对特定合成基准带来了极其夸张的提升。<br>
+        <b>概念背景</b>：<b>sheaf</b> 是 Linux 内核内存分配器的<b>「每 CPU、基于数组的缓存层」</b>；<b>barn</b> 则是 sheaves 的集中存放处。Sheaves 自去年引入内核以来一直在持续优化，Linux 7.4 还有更多优化在路上。<br>
+        <b>作者 Hao Li 对问题的描述</b>：<br>
+        · 当前当 <b>prefill API 去填充一个未满的 sheaf</b> 时，它<b>只从 partial slab 取对象，从不从 barn 里已满的 sheaf 取</b>；<br>
+        · 结果是一旦 <b>barn 的 full list 饱和，就会一直保持饱和</b>；<br>
+        · 对于<b>通过 kfree_rcu() 释放的对象</b>，由于 barn 的 full list 没有空间，<b>每个 RCU sheaf 都被迫 flush 回 slab</b>。<br>
+        <b>解法</b>：<b>让 sheaf 优先从 barn 补充</b>，并在 barn 中<b>引入一个 partial sheaf 存放剩余对象</b>。<br>
+        <b>设计上的关键区分（作者说明）</b>：<br>
+        · <b>只有 prefill 路径需要 partial sheaf</b>；<br>
+        · 通用分配路径（<code>__pcs_replace_empty_main()</code>）是<b>用一个空 sheaf 去换 barn 里的一个满 sheaf，因此不会有剩余</b>；<br>
+        · <b>prefill 路径填充的 sheaf 不一定为空</b>，从 barn 取对象通常会留下剩余，partial sheaf 就是存放这些剩余的地方；<br>
+        · <code>refill_sheaf()</code> <b>只从 partial slab 取对象，绝不涉及 partial sheaf</b>。<br>
+        <b>填充流程</b>：<b>先从 partial sheaf 复制对象</b>，<b>若仍未满则再从 barn 取一个满 sheaf</b>；被复制过对象的 sheaf <b>若仍持有对象就留在 barn 作为 partial sheaf，若已空则进 empty list</b>；<b>正在被填充的那个 sheaf 永远不会被替换</b>。<br>
+        <b>收益来源（作者归纳为两点）</b>：<b>① 每取出一个满 sheaf，就为未来的 RCU sheaf 在 barn 的 full list 上腾出了空间；② 在 list_lock 保护下，从 barn 补充比从 partial slab 补充更便宜。</b><br>
+        <b>基准结果</b>：<br>
+        · <b>will-it-scale mmap1 测试整体提升 24%</b>；<br>
+        · <b>barn_get 性能 +22904539.81%</b>；<br>
+        · <b>barn_put 性能 +21422544.07%</b>；<br>
+        · <b>其他指标普遍为两位数百分比提升</b>。<br>
+        <b>代码量</b>：这一切来自 <b>81 行新代码</b>。补丁已进入 <b>slab/for-next</b>，面向 10 月下旬的 <b>Linux 7.4</b> 合并窗口。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先把那个「+22904539.81%」解释清楚——这类数字不是性能提升，而是「从几乎不可能变成可能」的信号，读它必须读原始上下文。</b>百分比高达两千万，背后必然是<b>基准值接近零</b>：barn_get/barn_put 这两个微基准在旧代码路径下<b>几乎不会以「从 barn 取/放」的方式被触发</b>，因此耗时或计数量接近于 0；新代码让这条路径真正被走到，比例于是被放大到天文数字。<b>它的正确解读是「这条路径从不可达变为可达」，而不是「速度提升了两千万倍」。</b>更值得看的是<b>真正有意义的那项：will-it-scale mmap1 整体 24%</b>——这是一个综合性的实际工作负载型基准，24% 是可信的、可迁移的量级。<b>在汇报任何性能数据时，这一条原则极其重要：脱离基数谈百分比没有意义，而新闻标题往往只截取最惊人的那个数字。</b>学会主动寻找「有意义的那个指标」，是读性能数据的基本功。<br>
+        <b>② 「barn 的 full list 一旦饱和就永远饱和」这句话，精确描述了一类很隐蔽的系统退化模式：状态被永久钉在最差的一端。</b>它的机制是<b>反馈式阻塞</b>：因为 full list 满了，所以只能从 partial slab 取；因为从不从 full list 取，所以 full list 永远不空。结果是<b>系统表面上仍在正常工作（分配照样成功），只是持续走一条更昂贵、且会连带触发额外开销（RCU sheaf 被迫 flush 回 slab）的路径</b>。这类问题的危害在于<b>它不会报错、不会崩溃、性能也不会突降——它只是让系统稳定运行在一个「本可以更好」的基线上</b>，因此极难通过监控发现，只能靠对代码路径的理解或专门的基准来暴露。<b>给系统的启示：凡是存在「缓存—后备」两级结构的地方，都要检查「补充路径能否从全部层级取用」，否则缓存会被单向抽干。</b><br>
+        <b>③ 作者把通用分配路径与 prefill 路径分开论证，是这段说明里最见功力的部分——它体现的是「改动必须先证明不影响既有路径」这个内核纪律。</b>新增的 partial sheaf 只服务于 prefill，原因是<b>通用路径的语义天然不会产生剩余</b>（空 sheaf 换满 sheaf，一一对应）。<b>把新增机制的作用域严格限制在「确实会产生剩余」的那条路径上，是让改动可被审查、可被信任的关键</b>。这与「哪里需要就往哪里加判断」的写法形成鲜明对比：后者会让每个调用点都增加分支与状态，正确性论证成本指数上升。<b>设计任何新的缓存/缓冲/状态容器时，都应该先问一句：这个新增结构与哪些既有路径有关，哪些路径可以证明与它无关。</b><br>
+        <b>④ 「81 行代码换来 24%」这件事本身，是性能优化领域中一条重要的经验：最高回报的优化往往在「状态转移的合法性约束」上，而不在「循环体内的算术」上。</b>这 81 行的实质是<b>解除了一个自我强加的限制（补充时不允许从某个层级取）</b>，而不是把某段代码写得更快。它带来的收益之所以大，是因为<b>移除约束改变了整个系统长期运行所处的状态</b>，而微观优化只改变单次操作的成本。<b>所以在做性能工作时的正确顺序应当是：先画出系统的状态空间与状态转移图，找出「被卡住的转移」并设法解锁；只有在状态层面已经没有可优化的余地时，再转向微观层面。</b>反过来做（先抠热点函数）往往投入巨大而收效有限，因为瓶颈可能根本不在那里。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">10</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Faster-RAM-Hotplug" target="_blank">Intel 的内存热插拔大优化进入 Linux 7.4：优化 zone 连续性检查、不再逐 page block 扫描整个 zone，虚拟机上内存热插耗时最多降 81%、热拔除降 75%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">又一项预计将随 <b>Linux 7.4</b> 落地的特性，是<b>内存热插拔（memory hotplugging，即在线增加 RAM）性能的重大优化</b>。该场景主要适用于<b>为虚拟机扩容内存</b>，以及在今天 <b>CXL</b> 的背景下为系统<b>在线增加额外内存</b>。<br>
+        <b>谁在主导</b>：Intel 的 <b>Yuan Liu</b> 主导了这项工作，思路是<b>优化 zone 的连续性检查（zone contiguous checks）</b>，<b>避免逐 page block 地扫描整个 zone</b>。<br>
+        <b>落地路径</b>：相关补丁已<b>排队进入 mm/core.git 的 "for-next" 分支</b>，因此预计将提交给 <b>10 月的 Linux 7.4 合并窗口</b>。补丁说明（cover letter）中给出了该优化的技术细节与数据。<br>
+        <b>关键结果</b>：<br>
+        · 虚拟机场景下的<b>内存热插耗时最多减少 81%</b>；<br>
+        · <b>内存热拔除（unplug）耗时最多减少 75%</b>；<br>
+        · <b>Samsung 的测试</b>还发现，通过 <b>CXL 热插拔内存</b>同样获得可观改善。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「避免逐 page block 扫描整个 zone」这个优化思路，是内核性能工作中最经典也最高效的模式：把「线性扫描」换成「利用可达信息」。而它的代价分析，正是判断这类优化是否值得做的关键。</b>zone 的连续性检查本意是确认<b>整段内存是否连续、能否作为一个整体使用</b>，最直白的实现就是从头到尾把每个 page block 走一遍。问题是<b>工作量与 zone 的大小成正比，而 zone 在今天的服务器上可以非常大</b>；更关键的是，<b>热插拔操作本身是低频的，但它的单次延迟会直接阻塞调用者</b>——对虚拟机来说，就是 guest 在扩容期间要等；对 CXL 而言，是运维操作要等。81% 的降幅说明<b>原来的实现里存在大量可以避免的重复或无效遍历</b>。<b>推论：任何「低频但延迟敏感」的操作，都值得单独审视是否存在与规模成正比的朴素扫描——因为这类操作不会出现在性能剖析的热点榜上（调用次数太少），却会在关键时刻掉链子。</b><br>
+        <b>② 内存热插拔的性能为什么在当下突然变得重要？答案是虚拟化与 CXL 把它从「罕见运维操作」推向了「常规运行时行为」。</b>传统物理机上，热插拔内存是<b>数月一次甚至数年一次</b>的操作，慢几秒无所谓。但在两个趋势下它变成了热路径：<b>① 虚拟机弹性伸缩会频繁调整内存配额，热插拔可能按分钟级发生；② CXL 内存池让「按需向系统添加内存」成为运行时常态</b>。这解释了为什么 Intel 会在此时专门投入优化，也再次印证了一个规律：<b>同一个操作的重要性会随使用场景变化而跃迁，而内核代码里往往还残留着「当年它不常被调用」的假设。</b>定期回看那些「低频路径」在当下调用频率下的表现，是一件回报很高的工作。<br>
+        <b>③ 「热插降 81%、热拔降 75%」这组对称的数字还提示了一个工程细节：增加与移除这两条路径通常共享大量验证逻辑。</b>两者下降幅度接近，说明<b>瓶颈在它们共同依赖的某个公共检查环节</b>，而不是各自特有的处理。这个观察对排查同类问题很有用：<b>当两个对称操作出现量级相近的瓶颈时，优先去找它们的公共前置步骤，而不是分别优化各自的主体逻辑。</b>这能把排查范围一次性缩小一半以上。<br>
+        <b>④ 把这条与同一批 Linux 7.4 的改动放在一起看，可以清晰看到 7.4 的一个主题：这个版本在内存管理上做了成体系的优化，而不是零散的修复。</b>同期的其他 MM 工作包括：<b>sheaf 从 barn 预填充</b>（解除饱和状态，81 行代码换来实际负载 24% 提升）、以及此前报道过的 <b>只读打开文件 do_open() 快约 39%</b>。共同特征是<b>改动量都不大，但都指向「状态机/数据结构层面的限制」而非「算法常数的调整」</b>。<b>对使用者而言，这也提示了内核升级收益的分布：那些看起来与业务无关的内存管理改动，往往在容器密度、多租户隔离、弹性伸缩等场景下带来最实在的收益，值得在升级评估时纳入考虑，而不是只盯着与自己硬件直接相关的驱动变更。</b>
+      </div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-09-28.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-09-24.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-09-28</p>
+    <p>覆盖范围：2026-09-24 ~ 09-27（EDT，周末合并版）· Linux 7.3-rc5 的 DRM 修复（Nouveau 换用 R570 固件后修好挂起/恢复与 vRAM pinning；Intel Xe 为 Crescent Island 增加 PWRBRK 功耗制动节流原因；本周 pull 多为 AI 辅助的错误路径/泄漏/UAF 修复）· AMD 再送 HDMI 2.1 可靠性补丁（链路断开时跳过 FRL 轮询、LT 超时对齐规范、FRL 轮询与链路检测串行化；同批推进 DCN 4.2 与 DCN 6.0，DCN6 预计随 RDNA5）· 树莓派 GPU 复位改进（Igalia 的 Maíra Canal 让 vc4 用上 BCM2835 PM 的 V3D 复位线，取代「PM 引用计数强制归零」旧做法并删除私有 refcount，复位线可选、无该属性设备走软恢复）· AMDXDNA 驱动为 NPU3（AIE4）送出 21 补丁（内核态命令提交 KMQ 成为默认路径、设备遥测、跨 PF/VF/Classic 的系统与运行时电源管理、SR-IOV PM 联动，即 Ryzen AI 300 系列）· 高通为 Snapdragon X2「Mahua」提交 GPU 使能补丁（低阶 10/12 核 X2，启用 Adreno X2-85；相比 Glymur 切片更少、内部内存更小，仅需几十行代码）· AMD 提交 GCC 的 AVX10V1AUX 支持（ACE 轻量档，带入 VNNINT8/VNNIINT16 与 AVX10.2 的 CONVERT 内建，开关 -mavx10v1aux）· Ubuntu 26.10 在 Intel Panther Lake / Framework Laptop 13 Pro 上 130+ 项基准几何平均约 +4%（Arc B390 图形与 Vulkan 增益最大），平均功耗反降为 21.8W（26.04 LTS 为 22.3W）· Igalia 发出 v7 版 FUTEX get_robust_list2 / set_robust_list2 补丁（rebase 主线 + 适配 VDSO，此前被竞态条件卡住，服务 FEX-Emu 与 Steam Frame 的 ARM64 游戏）· Linux 7.4 内存分配器改动（sheaf 允许从 barn 预填充，81 行新代码，will-it-scale mmap1 整体 +24%）· Intel 内存热插拔优化进入 Linux 7.4（优化 zone 连续性检查、不再逐 page block 扫描整个 zone，VM 热插耗时最多降 81%、热拔除降 75%）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
