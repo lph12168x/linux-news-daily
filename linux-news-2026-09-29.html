@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-09-29</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 9 月 29 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-09-29.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-09-28.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-Shiva-For-Vulkan" target="_blank">Mesa 开始开发「Shiva」：为 Vulkan 驱动提供 Gallium3D 式的框架，Faith Ekstrand 在 XDC 2026 提出，先适配 Nouveau 与 Arm Mali Panfrost</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body"><b>Collabora 的 Faith Ekstrand</b> 在本届 <b>XDC 2026（多伦多）</b>的演讲中提出了一个<b>「给 Vulkan 驱动用的 Gallium3D」</b>设想，并<a href="https://indico.freedesktop.org/event/12/contributions/523/attachments/355/513/2026-09-28%20-%20XDC%202026%20-%20Shiva.pdf" target="_blank">公开了幻灯片</a>。该框架的代号为 <b>Shiva</b>，目前已进入开发阶段。<br>
+        <b>动机——Vulkan API 变大了，现状不再适用</b><br>
+        Ekstrand 坦言：随着 Vulkan API 不断膨胀，<b>现状已经不太好用了</b>。他列举的症状包括：<br>
+        · <b>Mesa 各家 Vulkan 驱动之间日益碎片化</b>；<br>
+        · 大量<b>转换层 / helper</b> 堆积；<br>
+        · 编写一个 Vulkan 硬件驱动的<b>复杂度持续上升</b>。<br>
+        他在演讲中的原话被引用为：<b>「2016 年实现 Vulkan 又好玩又简单……2026 年的 Vulkan 充满了向后兼容的包袱（cruft）。」</b>更麻烦的是，他预判<b>随着 Vulkan 继续演进，实现难度只会更糟</b>。<br>
+        <b>Shiva 的定位</b><br>
+        · 它是 Mesa 内部一个<b>面向 Vulkan 驱动</b>的框架 / 基础设施，作用<b>类比 Gallium3D 之于 OpenGL 驱动</b>；<br>
+        · Mesa 的 Vulkan 驱动将<b>面向 Shiva API 而不是直接面向 Vulkan API</b>，由 Shiva 承担各类抽象；<br>
+        · 设计上<b>前瞻 Rust 驱动</b>等方向。<br>
+        <b>路线与时间表</b><br>
+        · 计划<b>在不久的将来开始动手</b>，<b>初期先适配 Nouveau 与 Arm Mali 的 Panfrost 驱动</b>；<br>
+        · 预估<b>大约需要两年</b>，才可能真正对用户产出成果。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「给 Vulkan 做一层 Gallium3D」这件事的分量，要看 Gallium3D 当年解决了什么。</b>Gallium3D 的核心价值不是性能，而是<b>把「驱动共有的部分」从「硬件相关的部分」里切出来</b>：状态管理的簿记、资源对象的生命周期、格式转换、命令缓冲的装配等，所有 GPU 都大同小异；真正需要为每块硬件重写的只有编译与提交那一段。一旦切开，<b>N 个驱动共享一套上游维护的公共层，新增硬件的成本从「写一个驱动」降到「写一个后端」</b>。Vulkan 今天正在经历 OpenGL 当年经历过的同一过程：API 越写越大，<b>每个驱动作者都得把同一套规范语义各自实现一遍，任何规范变更都要乘以驱动数量</b>。Shiva 想做的正是再一次的公共层切分——<b>这是从「为 N 个驱动各写一遍」走向「为 N 个驱动写一次抽象」的必然一步。</b><br>
+        <b>② 值得注意的是抽象层被放在了「API 与硬件之间」，而不是「应用与 API 之间」。</b>业界处理 API 复杂度的常见手段是转译层（把新 API 映射到旧 API，如 D3D12→Vulkan、Vulkan→OpenGL），但那类做法<b>要承担完整的语义差异转换，代价高且在语义不对齐处必然出问题</b>。Shiva 是另一种思路：<b>驱动直接面向 Shiva 语义编写，Vulkan 语义的适配在上游只写一遍。</b>这样做的关键前提是<b>Shiva 不是「Vulkan 的子集」而是「Vulkan 能力的规范化表达」</b>——否则驱动会被迫绕过抽象回到原生 API，抽象层立刻退化为可选项。这也是 Ekstrand 必须在社区里先说服各家驱动维护者的原因：<b>这类框架的成败不取决于设计是否优雅，而取决于是否覆盖了所有驱动都真正需要的语义。</b><br>
+        <b>③ 为什么先选 Nouveau 和 Panfrost？这个选择透露了真实的驱动力。</b>两家都是<b>社区为主导、没有厂商工程师成建制投入</b>的开源驱动（NVIDIA 与 Arm 的官方投入都集中在各自的闭源或新方案上）。这类驱动<b>人手最少、却要追赶最多的硬件代际</b>，因此对「减少重复代码」的收益最敏感、也最有动力迁移到新框架。<b>这也意味着 Shiva 的落地是「从资源最匮乏处开始」——先在最需要的地方验证抽象是否够用。</b>如果它能在 Nouveau/Panfrost 这种「把每一行代码都当成本」的环境里活下来，迁移到资源充裕的驱动只是时间问题；反之若在这里就被迫频繁绕过抽象，设计一定有缺口。<b>对做平台抽象的人，这是一条很实用的验证顺序：不要先找最配合的伙伴，要找最挑剔、最经不起浪费的那个。</b><br>
+        <b>④ 「两年才可能对用户有成果」这个时间表，其实是个相当诚实的工程判断，值得认真对待。</b>框架类工作的特点是<b>前期投入完全不可见</b>：要先定义接口、要先让一个真实驱动跑通、要等上游接受了这套约定，然后才好谈性能。<b>这段时间里旧路径必须继续维护，等于一段时间的「双轨运行」</b>。对使用者与平台的启示是双向的：<b>一方面，看到这个信号后不要指望短期内自己的 Mesa Vulkan 驱动会因此变快或变稳；另一方面，从「两年」这个量级可以反推上游对 Mesa Vulkan 生态碎片化程度的严重性判断——只有共识认为现状真的不可持续，才值得付出两年的双轨成本。</b>任何需要跨多个独立团队协同的架构级重构，都适用这个判断方式：<b>时间表长短本身就是问题严重程度的度量。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/NVIDIA-Display-Config-Server" target="_blank">NVIDIA 开发 Display Config Server 改善 Linux/Wayland 复杂显示墙：走 Vulkan 直驱显示（VK_KHR_display），「拥有」显示器再租借给客户端，代码将开源</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">NVIDIA 工程师 <b>Austin Shafer</b> 在 <b>XDC 2026（多伦多）</b>的演讲中介绍了 <b>Linux 在下一代显示墙（display wall）上的方案</b>，并公布了 NVIDIA 正在开发的 <b>Display Config Server</b>。Phoronix 特别指出，这是 NVIDIA 在<b>「AI 之外」改善 Linux 生态</b>的一项努力。<br>
+        <b>问题场景</b><br>
+        · 显示墙指<b>电视制作、影院等场景中的复杂多屏显示系统</b>；<br>
+        · 目前这类系统<b>大多跑在 Microsoft Windows 上</b>，NVIDIA 希望改善 Linux 在这些视频 / 媒体墙上的使用体验；<br>
+        · 今天跑 Linux 的显示墙<b>仍然基本是 X.Org Server + NVIDIA Mosaic 显示特性</b>；<br>
+        · 单靠 <b>Wayland</b> 来做显示墙比较吃力，原因是<b>各家合成器不一、复杂度叠加</b>。<br>
+        <b>技术出路——Vulkan Direct-to-Display</b><br>
+        演讲给出的方向是 <b>Vulkan Direct 2 Display（D2D）</b>：配合 <b>VK_KHR_display 扩展</b>，让 <b>Vulkan 交换链（swapchain）直接驱动物理显示器，完全不需要窗口系统</b>。<br>
+        <b>Display Config Server 的核心设计——「拥有 + 租借」</b><br>
+        · 它由 NVIDIA 自主设计，用来改进 <b>Vulkan 直驱显示模型</b>；<br>
+        · 做法是让它<b>「拥有」这些显示器，然后租借（lease）给 Vulkan 客户端</b>；<br>
+        · 这样<b>每个应用就不必各自实现显示器校准与配置逻辑</b>；<br>
+        · 换来三个好处：<b>集中式配置、客户端之间的无缝交接（handoff）、应用侧更容易实现</b>。<br>
+        <b>正在进行的工作</b><br>
+        · NVIDIA 正在让 <b>Display Config Server 能够与 Wayland 合成器嵌套（nested）运行</b>；<br>
+        · 同时在改进 <b>Vulkan 直驱显示 API 在显示墙上的呈现能力</b>。<br>
+        代码计划**开源**，托管于 <code>github.com/NVIDIA/display-config-server</code>，但截至发稿尚未公开可见。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「拥有显示器再租借」这个模型，解决的是多屏系统里一个被长期低估的问题：配置的组合爆炸。</b>显示墙动辄几十块屏幕，每块都要设定分辨率、刷新率、位置、色彩校准与几何校正。如果<b>每个应用各自去配置，就要面对幂等性、并发、以及「前一个应用改过的状态」这三重麻烦</b>——更糟的是当应用崩溃时，谁负责把显示状态恢复？把「拥有」这一点收归到一个常驻服务后：<b>显示拓扑与校准只被声明一次，应用只表达「我需要一块怎样的显示区域」，交接与回收有了明确的责任方</b>。这与 Wayland 合成器之所以存在是同一个道理（集中管理输出与输入），只是这里的场景<b>连窗口系统都不需要</b>。<b>当系统里有共享的稀缺资源（这里是物理显示器）需要被多个独立客户端交替使用时，「由一个服务居中持有并出租」几乎总是比「各自抢占」更可靠。</b><br>
+        <b>② 为什么敢跳过窗口系统直接用 VK_KHR_display？这是对场景的准确判断，而不是技术炫技。</b>VK_KHR_display 允许 Vulkan 交换链<b>绕过合成器直接编程显示控制器</b>，代价是失去窗口系统的诸多保障（多应用共存、合成、输入路由）。对普通桌面这是倒退，但对显示墙恰恰是正确取舍：<b>显示墙上通常只有「一个全屏内容源」在需求上，没有多窗口共存的需要，而延迟、同步精度与逐屏控制的需求却极高。</b>逐屏独立控制尤其重要——<b>多块屏幕拼接时对帧同步（genlock/framelock）和逐屏时序的要求，与「把画面合成到一块虚拟桌面再切分」是根本冲突的</b>。这条经验可以泛化：<b>当一个场景放弃了某个通用机制提供的自由度时，往往是因为它需要更严格的确定性，而不是因为它做不到通用机制能做的事。</b><br>
+        <b>③ 「能与 Wayland 合成器嵌套运行」这一点，比看起来更重要，它决定了这套方案是「替代」还是「共存」。</b>如果 D2D 只能独占显示输出，那么使用它的机器就<b>无法同时跑普通桌面</b>——这在制作现场是不可接受的，工程师需要在同一台机器上做配置、监控、日志与资产管理。让 Display Config Server 能嵌套在合成器内部运行，意味着它<b>可以作为合成器的一个客户端存在：由合成器统一持有硬件，再把它要用的那块显示区域租给它</b>，同时保留桌面其他功能。这与 Wayland 生态里一系列「容器化、嵌套化」的做法一脉相承（XWayland、gamescope、各类嵌套合成器）。<b>凡是试图在生产环境替代既有栈的新方案，都必须先回答「如何与既有栈共存」——只做替代、不做共存的设计，几乎不会在真实场景中被采用。</b><br>
+        <b>④ 这条消息还给出一个观察 Linux 显示栈走向的信号：Vulkan 直驱正在成为 X11 与 Wayland 之外的「第三条路径」。</b>X11 的问题是架构陈旧（多客户端共享服务端状态、扩展繁多），Wayland 的问题是在特定场景（kiosk、显示墙、VR、机顶盒）里仍然过重。<b>VK_KHR_display 提供了一条极薄的路径：应用直接与显示硬件对话，中间不留常驻服务。</b>对做显示/多媒体平台的团队，值得把这条路径纳入技术选型视野——<b>它不必然是「更好的 Wayland」，而可能是「某些场景下更合适的一类工具」</b>。同时也要清楚它的代价：没有窗口系统，就意味着输入的获取、多进程协调、异常恢复都要自己做或交给上层服务（这正是 Display Config Server 存在的理由）。<b>选型的判断标准应是「这个场景是否真的需要窗口系统提供的抽象」，而不是哪条路径更新。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-PerfOpt-Linux-7.4" target="_blank">AMD PerfOpt 随 Linux 7.4 为核显默认开启：GPU 直访系统内存时旁路 IOMMU 地址转换（仅保留权限位校验），减少开销、提升 iGPU 性能，可用 amdgpu.iommu_perfopt 关闭</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">使用<b> AMD 核显（iGPU）</b>的 Linux 用户——特别是性能较强的 <b>Ryzen AI Max+（Strix Halo）与 Gorgon Halo</b> 平台——将随着 <b>Linux 7.4</b> 获得一项新的性能优化。<br>
+        <b>PerfOpt 是什么</b><br>
+        PerfOpt 是 <b>AMD IOMMU Performance Optimization</b> 的缩写，<b>属于 AMD I/O 虚拟化技术（IOMMU）规范</b>的一部分。补丁中的描述为：<br>
+        · <b>允许受特权的集成 I/O 设备（即 GPU）在直接访问系统内存时旁路 IOMMU</b>；<br>
+        · 此时 <b>IOMMU 只强制校验 IR / IW（读 / 写）权限位，不再做 GPA → SPA 地址转换</b>；<br>
+        · <b>由驱动显式 opt-in</b>：amdgpu 会在检测到<b>集成 GPU 已处于 identity mode（恒等映射）</b>时开启该特性；<br>
+        · 若用户希望<b>始终关闭</b>（即便处于 identity mode），可通过<b>模块参数强制关掉</b>。<br>
+        <b>落地方式与范围</b><br>
+        · <b>Linux 7.4 将为 AMD iGPU 默认启用 PerfOpt</b>，预期<b>降低 IOMMU 相关开销、带来可观的性能提升</b>；<br>
+        · 该特性<b>并非 Ryzen AI Max 专属</b>，对所有 AMD iGPU 普遍有效；但从绝对收益看，<b>Ryzen AI Max 这类平台「可提升的潜力更大」，在今天的 AI / LLM 场景下尤其明显</b>；<br>
+        · <b>仅适用于集成 I/O 设备</b>，<b>不适用于独立显卡或其他外部硬件</b>；<br>
+        · 模块参数为 <code>amdgpu.iommu_perfopt</code>；可在内核 dmesg 中搜索 <b>「PerfOpt」</b>确认是否启用。<br>
+        <b>来源</b>：AMD 的 <b>Mario Limonciello</b> 提交，补丁经 <b>IOMMU 树</b>并入 Linux 7.4。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先理解 IOMMU 在这里做什么，才能判断「旁路」是否安全。</b>IOMMU（I/O 内存管理单元）对设备的作用类似 MMU 对 CPU 的作用：<b>设备发出的地址要经过一次重映射才能落到物理内存</b>，从而让设备只能访问被显式授权的区域。这意味着<b>每一次 GPU 访存都要额外走一次地址转换</b>。而「identity mode（恒等映射）」的含义是<b>这张映射表被配置成一一对应——转换的结果与输入相同</b>。既然结果相同，那这次转换<b>在功能上是纯开销</b>，这正是 PerfOpt 得以成立的前提：<b>只在映射已知为恒等的情况下才跳过转换。</b><br>
+        <b>② 关键细节是「权限位仍强制校验」——这不是把安全边界拆掉，而是把边界里最贵的那一半优化掉。</b>IOMMU 提供两类保护：<b>地址隔离（防止设备访问不该访问的内存）与权限控制（读写位）</b>。PerfOpt 取消的是<b>地址翻译</b>，保留的是<b>IR/IW 权限检查</b>——也就是说，设备仍无法借旁路去写一块只读区域。<b>这个取舍值得记住：在安全机制的性能优化中，「取消哪一部分」比「取消多少」更重要。保留住那些成本低、但承担了主要风险约束的检查，只在确定无信息量的环节（恒等映射）上省开销，就能拿到大部分性能而不实质降低保护强度。</b>这也是为什么 AMD 要求它<b>由驱动显式 opt-in、且绑定在 identity mode 这一前置条件上</b>，而不是无条件开启。<br>
+        <b>③ 为什么这项优化对 iGPU 的意义远大于独显？答案是「路径占比」。</b>独立显卡有自己的显存，<b>GPU 绝大部分访存发生在片内显存里，不必穿过 IOMMU</b>；只有跨设备或主机可见的缓冲才走系统内存。而核显<b>根本没有独立显存，与 CPU 共享同一片系统内存，几乎每一次纹理、顶点、帧缓冲访问都要穿越 IOMMU</b>。<b>同一个优化，在独显上是少数路径的加速，在核显上是主路径的加速</b>——这解释了为什么 PerfOpt 明确「仅适用于集成 I/O 设备」，也解释了补丁里要求「集成 GPU 已处于 identity mode」这一条件：核显的固定映射关系使得恒等映射在架构上就是常态。<b>推而广之：评估任何优化时，先算清楚它落在哪条路径上、这条路径在该硬件形态下占总开销的比例，比看优化本身的倍数更有意义。</b><br>
+        <b>④ 把这条放在当前 AI / LLM 的背景下看，收益还会被放大。</b>像 Strix Halo 这类统一内存 APU 上跑本地推理时，<b>瓶颈几乎完全落在内存带宽与访存延迟上</b>——模型权重、KV cache 都在系统内存里，GPU（iGPU）与 CPU 反复读写同一块物理内存。<b>在这种「访存即一切」的负载里，任何叠在访存路径上的固定开销都会被直接计入端到端延迟</b>，取消一次地址转换的价值远高于在计算密集型负载中。这条经验对做加速器/统一内存架构的团队尤其适用：<b>当硬件架构走向「CPU 与加速器共享内存」时，连接两者的那条总线与地址转换路径，会从「偶尔穿过」变成「始终穿过」——它的每一纳秒都开始进入关键路径，值得被优先审视。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Firefox-157-Released" target="_blank">Firefox 157 发布：Nova UI 号称「多年来最大的一次视觉刷新」，并首次为 WebRTC 视频通话支持硬件 AV1 解码，同时修复 HDR 视频与变速播放的音画同步</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Mozilla 按<b>双周发布节奏</b>推出了 <b>Firefox 157</b>。<br>
+        <b>① Nova UI——「多年来最大的一次视觉刷新」</b><br>
+        最受关注的变化是新的 <b>Nova 界面</b>，官方称之为<b>「多年来最大的一次视觉刷新」</b>。Nova 的目标是<b>让浏览器外框（browser chrome）、侧边栏与菜单整体现代化</b>。<br>
+        <b>② WebRTC 首次支持硬件 AV1 解码</b><br>
+        · Firefox 157 <b>在支持的设备上为 WebRTC 视频通话启用了硬件 AV1 解码</b>；<br>
+        · 在此之前，<b>Firefox 对 WebRTC 中的 AV1 视频一直依赖软件解码</b>。<br>
+        <b>③ 其他改动</b><br>
+        · <b>HDR 视频修复</b>；<br>
+        · <b>改变视频播放速度时，改善音频与视频的同步</b>；<br>
+        · <b>移除内置的 Amazon 搜索引擎</b>。<br>
+        Firefox 157 的二进制可从 <code>ftp.mozilla.org</code> 下载；Phoronix 也放出了在 Linux 上运行的截图。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① WebRTC 从软解切到硬解，改善的不只是性能，而是「持续负载下的功耗与发热」——这对视频通话这种长时段场景才是关键。</b>一次点播视频你可能只看几分钟，但一通会议往往持续半小时以上。<b>软件解码意味着 CPU 全程高占用地执行解码循环，代价直接体现在风扇转速、机身温度与笔记本续航上</b>。硬解把这段工作交给专用解码器，CPU 占用几乎归零。这也解释了为什么<b>浏览器对「通话中硬解」的重视程度一直在提升</b>——它是最容易被用户感知为「笔记本变烫、电量掉得快」的那类负载。<b>评估一项解码能力改进时，除了看它把 CPU 占用降了多少，更要看它作用的负载持续时间有多长——省电类的优化在长时段负载上的价值远高于短时任务。</b><br>
+        <b>② 值得想一想的是：为什么 WebRTC 的硬解比点播的硬解难得多，以至于 Firefox 要晚这么久才做到？</b>并非「AV1 硬解很难」，而是<b>两个场景的编码形态根本不同</b>。点播视频通常采用<b>较长的 GOP、较大的参考帧结构、可变码率</b>，允许解码器预读与缓冲；实时通话则要求<b>极低延迟，往往使用专门的低延迟编码配置（如 SVC 分层编码、禁用某些依赖未来帧的参考模式），帧尺寸与结构在会话中还可能动态变化</b>。<b>硬件解码器通常是为「按标准符合性解码一条码流」设计的，而 RTC 场景需要它配合「随时可能切换分辨率、随时可能丢包重同步」的节奏工作</b>，需要额外的驱动与硬件能力支持。<b>这条经验有普遍性：同样一个功能，在「离线/批处理」与「实时/在线」两种场景下的实现难度可能差一个量级——因为实时场景对状态切换与异常路径的要求严苛得多。看到「某能力刚被支持」时，先分辨它之前缺的是算法还是实时性支持，能更准确地判断剩余风险。</b><br>
+        <b>③ Nova UI 这类「浏览器外框刷新」，在 Linux 上其实很依赖底层显示栈的成熟度。</b>界面现代化往往意味着更多圆角、半透明、阴影、平滑动画与更细的分数缩放——<b>这些都要求合成器与图形栈提供稳定的帧调度、正确的缩放语义与高效的离屏合成</b>。这也解释了为什么近年来 Firefox 与 Chromium 在 Linux 上的大量工作都压在 Wayland、分数缩放、硬件加速合成这些底层议题上：<b>上层 UI 的表现力，最终受限于下层是否能稳定地按帧交付。</b>对做桌面应用与显示栈的团队，这条链路值得牢记——<b>当界面出现撕裂、模糊、卡顿或缩放不一致时，问题常常不在 UI 代码，而在帧调度与缩放语义的约定上。</b><br>
+        <b>④ 最后从生态角度看：开源浏览器在编解码支持上走的是一条「先点播、后实时；先开发版、后稳定版」的渐进路径。</b>回顾火狐近年在视频方面的进展节奏，可以清晰看到这个顺序：<b>先把解码能力接入点播播放，再推进到 RTC；先在 nightly 里验证（比如此前的 Vulkan Video 解码），成熟后再转正到稳定版</b>。这种节奏不是保守，而是因为<b>浏览器是长尾兼容性最苛刻的软件之一：一个解码路径的问题会在千万台真实设备、各种驱动版本上暴露出来</b>，而在开发通道里跑不出这些问题。对采用开源组件的产品团队，这条规律可以直接借鉴：<b>把一个新能力推给全部用户之前，先在可控通道里让它面对最杂乱的环境——真实环境的问题密度，永远高于测试矩阵的想象。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/SIMDjson-5.0" target="_blank">SIMDjson 5.0 发布：静态反射（static reflection）转为正式支持、大整数处理更完善，AVX-512 路线继续把 JSON 解析推向极限</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body"><b>SIMDjson</b> 是开源的高性能 JSON 解析器，<b>多年前率先利用 AVX-512 取得了大幅性能提升</b>，此后持续打磨。如今 <b>SIMDjson 5.0</b> 正式发布。<br>
+        <b>5.0 的主要变化</b><br>
+        · <b>静态反射（static reflection）支持从实验特性升级为正式特性</b>；<br>
+        · <b>大整数（big integer）数字的处理更完善</b>；<br>
+        · 以及<b>大量较小的特性与性能优化</b>。<br>
+        <b>性能数据</b><br>
+        · GitHub 上的 <a href="https://github.com/simdjson/simdjson/releases/tag/v5.0.0" target="_blank">v5.0.0 发布公告</a>给出了改动说明，以及与 <b>SIMDjson 4.0</b> 的对比基准；<br>
+        · Phoronix 方面也自行测试了 <b>5.0 对比上一版 4.6.4</b>，在多个吞吐测试（Kostya、FindTweet、LargeRandom、json2msgpack、PartialTweets、DistinctUserID）中 <b>5.0 均为最快</b>，确认在既有优化之上又取得了不错的增益。<br>
+        更多 CPU 层面的数据可在 OpenBenchmarking.org 的 SIMDjson 测试页查看。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① SIMD 解析器之所以能比传统解析快一个量级，关键不在「同时算更多」，而在「先把分支消掉」。</b>传统 JSON 解析器的瓶颈是<b>逐字节判断的分支风暴</b>：每个字符都要问「这是引号吗？是反斜杠吗？是冒号吗？」——分支预测失败会持续打烂流水线。SIMD 路线的做法是<b>先用位运算把整块数据「一次性分类」（例如并行找出所有引号、反斜杠、结构字符的位置），再在这些位置上做逻辑运算定位结构边界</b>，把「逐个字符判断」变成「按掩码批量处理」。<b>这条思路可以套用到任何文本/字节流处理场景（日志过滤、协议解析、正则预筛）：先用 SIMD 把候选位置压出来，再让慢路径只处理少量候选——收益往往来自「慢路径被调用次数减少」，而不是「慢路径本身变快」。</b><br>
+        <b>② 静态反射从实验转正，解决的是「解析完了还要手写一堆映射」这个长期痛点。</b>高性能解析器通常只给你「事件流」或「DOM 树」，要用到自己的结构体上，开发者还得写一遍字段名到成员的映射代码——<b>这类代码是纯粹的样板，且随 schema 变化极易不同步</b>。静态反射的含义是<b>在编译期就把结构体的字段信息取出来，由库自动完成「JSON 字段 → 结构体成员」的绑定</b>，运行期几乎零额外开销（因为映射在编译期就固化了）。<b>这与 Rust 生态里 serde 的思路一致：把「粘合代码」从运行期搬到编译期，既消除了手写样板，也消除了运行期查表成本。</b>对做数据密集型服务的团队，这是一个可以直接采用的工程原则——<b>凡是「字段名到成员」这类结构化映射，都优先寻求编译期完成。</b><br>
+        <b>③ 大整数处理的完善，暴露了 JSON 作为数据格式一个长期被忽视的边界。</b>JSON 规范里数字只有一种类型，<b>但很多语言的标准 JSON 实现会把它映射到双精度浮点</b>——这意味着超过 2^53 的整数<b>会在解析时静默失真</b>。而现实中的 ID（数据库主键、雪花 ID、区块链哈希片段、大额金额以最小单位表示）大量处于这个区间。<b>这类问题的危险之处在于「不报错」：解析成功、类型正确、只是值悄悄变了</b>，可能到几周后数据对不上才被发现。因此高性能解析器<b>明确支持大整数是正确性的要求，而不是功能锦上添花。</b>这提醒所有做数据交换与接口设计的团队：<b>凡是跨越语言/系统边界传递数值，都要显式确认「超出 2^53 的整数处理策略」，并在接口契约里写清楚——把它留给默认行为，等于把正确性交给实现细节。</b><br>
+        <b>④ 从 AVX-512 的持续投入可以看出一个现实：客户端 CPU 裁撤 AVX-512、服务器 CPU 保留，正在把「同一份代码的最优策略」切成两条路。</b>SIMDjson 这类库通常采用<b>运行期指令集分派</b>——在启动时探测 CPU 能力，选择 AVX2 或 AVX-512 的实现路径。这带来一个工程后果：<b>库必须同时维护多套高度优化的内核，且每条路径都要被测试覆盖</b>（否则会出现「功能正确但只在某类 CPU 上慢」的问题）。<b>对使用这类库的产品，有两点实际含义：其一，同一份部署产物在不同代 CPU 上性能可能显著不同，容量规划不能按「最快那台」算；其二，选购或选用硬件时，指令集支持矩阵应被视为真实的性能参数，而不是规格表上的脚注。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Land-Steal-Governor" target="_blank">Linux 7.4 将引入 Steal Governor：按 vCPU「被偷走的时间」动态收窄首选 CPU 掩码，主动避让超售宿主机上的争抢核心（Kernbench 最高 +14%、Hackbench 最快 +44%）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">已排入<b>今年 10 月的 Linux 7.4 合并窗口</b>的，是一项面向虚拟化世界的<b> steal governor（被抢占时间调控器）</b>——包含<b>「首选 CPU」驱动与基于 steal 的 vCPU 退避（backoff）</b>机制。<br>
+        <b>来源与定位</b><br>
+        这项工作由 <b>IBM 工程师 Shrikanth Hegde</b> 主导，最初<b>聚焦于提升 POWER 虚拟机性能</b>，后来<b>扩大为通用的 steal governor 驱动与配套基础设施，x86_64 同样受益</b>。它要解决的是<b>今天高核数服务器上「虚拟机超售（over-committed）」时的 CPU 争抢问题</b>。<br>
+        <b>机制</b><br>
+        · <b>steal time（被偷走的时间）</b>指 <b>vCPU 因为宿主机去服务其他虚拟机而等待物理 CPU 资源的那部分时间</b>；<br>
+        · steal governor 追踪这个值，并<b>据此动态调整「首选 CPU 掩码（preferred CPU mask）」</b>；<br>
+        · 调度器据此<b>尽量避免把任务放到已超售、或争抢严重的核心上</b>。<br>
+        <b>设计意图——作者的原话（v14 补丁系列，2026-09-28）</b><br>
+        Hegde 写道，该系列是<b>「多轮迭代、重新设计与社区反馈的结果」</b>，<b>「最初是一个架构相关的 RFC，最终演变为『调度器机制 + 虚拟化驱动』的组合」</b>。他明确指出了目标场景：<br>
+        · 适用于<b>「vCPU 被抢占的代价超过丢失的 CPU 时间本身」</b>的负载，例如<b>锁持有者被抢占（lock-holder preemption）、临界区、以及 TLB / 缓存缺失</b>；<br>
+        · <b>数据库负载</b>是典型例子——它混合 OLTP / OLAP 活动，<b>特别容易受这类代价影响</b>，减少 vCPU 抢占有助于提升整体吞吐；<br>
+        · 但对<b>纯粹的 CPU 时间型负载，可能略有回退</b>。<br>
+        <b>状态与数据</b><br>
+        · 补丁已进入 <b>tip/tip.git 的 sched/core 分支</b>，预计<b>几周后随 Linux 7.4 合并窗口提交</b>；<br>
+        · 开发者给出的 PowerPC 服务器数据：<b>Kernbench 最高提升 14%</b>、<b>Hackbench 调度基准最快提升 44%</b>、<b>Daytrader 最高达基线的 1.53 倍</b>，而 <b>Phoronix 的 Memcached 基准达到 1.2 倍</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 这条最重要的洞见是一句话：vCPU 被抢占的代价，不等于它被抢走的那点时间。</b>如果一个 vCPU 只是被推迟了几微秒再继续跑，损失就是几微秒；但如果它<b>此刻正持有自旋锁</b>，那么被推迟期间<b>同一锁上的其他 vCPU（可能在其他物理核上）会全部原地空转等待</b>——一次几微秒的抢占，被放大成多个核乘以等待时间的浪费。若它正在临界区中，或者刚因为预热而建立起缓存/TLB 局部性，被挪走还会带来额外的重建成本。<b>这正是「把 vCPU 当作可互换的时间片来调度」这一模型的失效之处：vCPU 之间并非独立，它们通过锁与共享数据结构耦合，抢占一个会连带伤害其他人。</b>理解这一点，就能理解为什么这个问题值得一批专门的补丁来解决——<b>它属于「调度决策的连锁效应」，而不是单机调度里那类「损失一份时间」的问题。</b><br>
+        <b>② steal time 被选作反馈信号，是因为它有一个别的指标不具备的性质：它是 guest 唯一能看到的「宿主机层面的真相」。</b>虚拟机内部的任何指标——CPU 使用率、负载、运行队列长度——都只能反映 guest 自己的视角。<b>vCPU 明明「可运行」却没有拿到物理 CPU，这在 guest 内部看起来就是一段凭空消失的时间</b>。steal time 记录的正是这段差距，因此它<b>把宿主机层面的争抢状况暴露给了 guest 侧</b>。不过要注意它的信息性质：<b>这是「症状」而不是「原因」——它告诉你「我在被抢」，但不告诉你「被谁抢、抢得是否有必要」</b>。把它用在「避让」上是合理的（避开已经被证明争抢严重的核心），但用它去推断宿主机负载构成则不可靠。<b>在可观测性设计上这是个通用原则：区分「能反映问题的指标」与「能解释问题的指标」，前者用于触发决策，后者才用于归因。</b><br>
+        <b>③ 实现方式选择「收窄首选掩码」而不是「主动迁移」，这个取舍很值得琢磨。</b>面对争抢，一个直觉做法是<b>把被抢的 vCPU 迁到看起来空闲的物理核上</b>。但这会带来两个问题：<b>迁移自身有成本（缓存与 TLB 局部性丢失），而且频繁迁移会让「局部性」永远建立不起来</b>。改为<b>动态调整首选 CPU 掩码、让调度器尽量不从那些核心上挑人</b>，本质上是<b>一种「软亲和」：不去强行动作，而是修改调度的偏好，让不被争抢的核心自然被优先选中</b>。它放弃了「立刻纠正」的激进性，换来<b>更少的迁移与更可预测的行为</b>。<b>这个模式在系统设计里反复出现——当面对争抢与抖动时，与其事后做大幅度纠正，不如事先调整「选择偏好」；前者的收益快但代价持续，后者的收益慢但没有额外成本。</b>当然，软亲和的代价是<b>响应不如强制迁移来得及时</b>，这需要在具体负载下权衡。<br>
+        <b>④ 「对纯 CPU 时间型负载可能略有回退」这句自我披露，比数据本身更值得重视。</b>它说明这个机制不是无条件的优化，而是<b>一次明确的交换：用「避让带来的额外约束」换取「减少抢占的连锁损失」</b>。对于耦合度低、纯计算型的负载，避让反而可能让任务更难被排到最合适的核心上，造成小幅回退。<b>任何类似的启发式调控都必然带有这种「顾此失彼」的性质，因此工程的正确做法不是想办法让它对所有人都更快，而是：① 保持可关闭（能 opt-out）；② 明确写出适用与不适用的负载特征；③ 让使用者能按负载选择，而不是由内核替所有人决定。</b>对做平台默认值决策的团队，这是可以直接照搬的清单——<b>凡是带有负载偏好的优化，出厂策略就应当包含「如何为不适用场景关掉它」。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/nvidia-vera-smt" target="_blank">NVIDIA Vera SMT 实测：双路 176 个 Olympus 核开启 Spatial Multithreading 后达 352 线程，SMT 相关负载约 +20%，CPU 平均功耗仅增 5%（699W → 739W）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Phoronix 获得了对一台 <b>NVIDIA Vera 服务器</b>的远程访问权限（含 CPU 功耗与频率监控），并发布了 <b>NVIDIA Vera Spatial Multithreading（SMT）</b>的实测结果。<br>
+        <b>硬件与平台</b><br>
+        · 双路 <b>NVIDIA Vera CPU</b> 超芯片配置：<b>176 个 Olympus 核</b>；<br>
+        · 开启 NVIDIA 的 <b>Spatial Multithreading</b> 后共 <b>352 个线程</b>；<br>
+        · 测试环境为 NVIDIA 定制的 <b>Ubuntu 24.04</b> 栈 + <b>Linux 6.17（64K 页）</b>内核 + <b>GCC 15.3</b>；<br>
+        · SMT 可<b>运行时开关</b>，方式与其他 CPU 相同：<code>/sys/devices/system/cpu/smt/control</code>。<br>
+        <b>Spatial Multithreading 与 AMD / Intel 的 SMT 有何不同</b><br>
+        · Vera 的 SMT <b>依赖对核心硬件资源的物理分区（physical partitioning）</b>；<br>
+        · 而 AMD / Intel 的 <b>Simultaneous Multi Threading 走的是对共享执行单元的「动态时间片」</b>；<br>
+        · 两者都是<b>每核两个线程</b>；<br>
+        · NVIDIA 认为其 SMT 实现<b>带来更好的资源利用率与更可预测的行为，尤其在 agentic AI 负载上</b>。NVIDIA 官方技术博客将 <a href="https://developer.nvidia.com/blog/inside-nvidia-vera-cpu-olympus-cores-built-for-maximum-single-threaded-performance-in-agentic-ai/" target="_blank">Olympus 核定位为「为 agentic AI 中的最大单线程性能」而设计</a>。<br>
+        <b>结论与数据</b><br>
+        · 测试选取了大量<b>「能扩展到高核 / 高线程数、且通常在 Intel / AMD 上受益于 SMT」</b>的基准；<br>
+        · <b>Pogocache</b> 与 <b>Memcached</b> 这类快速缓存软件从 Vera SMT 中受益明显（同时也受益于 Vera 的 LPDDR5X 内存）；<br>
+        · NVIDIA 此前笼统地描述 Spatial Multithreading <b>约带来 20% 提升</b>——本次独立、覆盖面广的基准<b>印证了这一说法是准确的</b>（前提是负载本身「SMT 有益且能扩展到高核数」）；<br>
+        · <b>频率</b>：无论 SMT 开关，Vera 在全部基准期间<b>最高约 3.2 ~ 3.3GHz</b>，未见明显变化；<br>
+        · <b>功耗</b>：双路 Vera <b>关闭 SMT 平均 699W，开启 SMT（默认）平均 739W</b>，<b>增幅 5%</b>；峰值 <b>1057 ~ 1079W</b>，通常<b>每颗 CPU 在 450W 以内</b>，与 NVIDIA 此前公布的功耗数字一致。<br>
+        Phoronix 表示后续还会有一系列针对 NVIDIA Vera 不同方向的对比测试。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「物理分区」与「时间片共享」这两种 SMT 实现的差别，决定了它们在什么场景下值得开——这不是实现细节，而是取舍的核心。</b>传统 SMT 让两个线程<b>共享同一套执行单元，由硬件在每个周期决定取哪条流的指令</b>：如果一个线程正卡在缓存缺失上，另一个正好补位，利用率就上去了；<b>但代价是两条流的执行彼此干扰，单线程的延迟变得不可预测</b>。物理分区则相反：<b>把核心内的资源（如两个 processing element）静态划给两个线程，各自独占，干扰被限制在共享的缓存/内存层级上</b>。<b>结论是清楚的：分区式 SMT 的「单线程延迟」更容易被预测，但资源复用的灵活性更低、对「线程间行为差异大」的负载收益更小；时间片式 SMT 的峰值吞吐潜力更高，但延迟抖动更大。</b>NVIDIA 明确说这套设计面向 agentic AI，正与「分区式」的取舍相匹配——<b>AI 智能体这类负载常常是「长链路、有严格尾延迟要求、线程行为相近」，可预测性比峰值吞吐更值钱。</b><br>
+        <b>② 「+20% 性能换 +5% 功耗」是一个划算到不寻常的交换，这背后是一个可以直接用来做容量规划的事实。</b>单纯从能效看，<b>这相当于同样的功耗预算下多出约 15% 的有效算力</b>——在电费与散热构成实质成本的数据中心，这个量级的改善通常要靠一代制程才能换来，而这里只需要打开一个默认开关。<b>更值得注意的是它与频率的关系：SMT 开启前后频率没有任何变化（都在 3.2~3.3GHz）。</b>这一点很重要：<b>它说明收益完全来自「资源的额外利用」而非「把频率推得更高」。</b>如果收益来自提频，那么功耗必然同比例上升、散热设计必须重做、单核延迟也会变差；而<b>收益来自利用率的提升时，硬件的工作点几乎没有改变，因此对热设计与时序裕量的冲击很小。</b>这也解释了功耗只增 5% 的原因——多出的功耗主要来自第二线程带来的额外活动，而非更激进的电压/频率曲线。<b>评估类似「打开某个开关」的优化时，一定要把「性能增益是来自频率还是来自利用率」分清楚，它直接决定了这个增益是否可持续、是否有隐藏代价。</b><br>
+        <b>③ 从 176 核开 SMT 到 352 线程，另一个值得记下的判断是「SMT 能否受益，取决于负载能否真正填满两个线程」。</b>Phoronix 明确说明基准的选取标准是<b>「能扩展到高核 / 高线程数、且通常在 Intel / AMD 上受益于 SMT」</b>——这个前提不能省略。历史上 SMT 的收益在两个极端都会消失：<b>线程数不足时（没有第二个线程可调度）、以及内存带宽或缓存已成为瓶颈时（执行单元再空闲也喂不饱）</b>。这次 Pogocache、Memcached 这类缓存软件受益明显，恰好落在 SMT 的甜点区——<b>它们的工作集大量命中缓存、计算与访存交替，执行单元常有空闲周期可以借给第二个线程</b>。因此对实际部署的启示是：<b>SMT 的收益必须按「你自己的负载」实测，不能按「厂商给的平均值」估算；同时要留意那 +5% 的平均功耗是在基准负载下测得的，真实业务负载的功耗曲线可能不同。</b><br>
+        <b>④ 最后，这类「第三方独立基准」本身构成了一个值得关注的信号。</b>Phoronix 特别提到能<b>同时监控 CPU 功耗与频率</b>，并说明其数据「与 NVIDIA 此前公布的功耗数字一致」。<b>对硬件厂商而言，功耗与频率的公开数据是最容易被质疑也最难自证的部分——它们高度依赖负载与散热条件，厂商自己的测试环境往往偏向理想。</b>当独立测试能复现同一量级的数字时，这本身提高了后续所有性能宣称的可信度；反之若差异很大，则通常说明测试条件存在未被披露的关键差异。<b>对评估硬件的团队，一个实用的经验是：优先相信那些「同时给出频率、功耗、以及测试条件」的数据，并对只给相对倍率、不给绝对工作点的宣称保持保留态度——因为性能数字脱离了工作点就失去了可迁移性，无法用于你自己的容量规划。</b>
+      </div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-09-29.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-09-28.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-09-29</p>
+    <p>覆盖范围：2026-09-28（EDT）· Mesa 开始开发「Shiva」（为 Vulkan 驱动提供 Gallium3D 式框架，Faith Ekstrand 在 XDC 2026 提出，先适配 Nouveau 与 Arm Mali Panfrost，预计约两年）· NVIDIA 开发 Display Config Server 改善 Linux/Wayland 复杂显示墙（走 Vulkan 直驱显示 VK_KHR_display，由服务「拥有」显示器再租借给客户端，支持与 Wayland 合成器嵌套，代码将开源）· AMD PerfOpt 随 Linux 7.4 为核显默认开启（受信任集成 I/O 设备直访系统内存时旁路 IOMMU 地址转换、仅保留 IR/IW 权限位校验，可用 amdgpu.iommu_perfopt 关闭，仅适用 iGPU）· Firefox 157 发布（Nova UI 号称「多年来最大视觉刷新」+ WebRTC 首次支持硬件 AV1 解码，另修 HDR 视频与变速播放音画同步、移除内置 Amazon 搜索引擎）· SIMDjson 5.0 发布（静态反射转正、大整数处理更完善，AVX-512 路线继续拉开 JSON 解析速度）· Linux 7.4 将引入 Steal Governor（IBM 的 Shrikanth Hegde 主导，按 vCPU steal time 动态收窄首选 CPU 掩码、主动避让争抢核心；Kernbench 最高 +14%、Hackbench 最快 +44%、Daytrader 1.53x）· NVIDIA Vera SMT 实测（双路 176 个 Olympus 核开 Spatial Multithreading 达 352 线程，SMT 相关负载约 +20%、平均功耗 699W→739W 仅增 5%，频率稳定在 3.2~3.3GHz）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
