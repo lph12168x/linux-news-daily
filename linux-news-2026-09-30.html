@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-09-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 9 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-09-30.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-09-29.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-26.3-Intel-Jay-Compiler" target="_blank">Mesa 26.3 默认启用 Intel 新着色器编译器 Jay：对 Xe2/Xe3 平台默认生效，通用性能较旧 BRW 约 +10%，Fossil 编译时间比 BRW 快 55%、比 Windows 驱动快 66%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body"><b>Intel 的新开源着色器编译器 Jay</b> 在开发一年多之后，于 <b>Mesa 26.3</b> 正式<b>对现代 Intel 显卡默认启用</b>。<br>
+        <b>谁在做</b><br>
+        该项目由 <b>Alyssa Rosenzweig</b> 主导——她于 <b>2025 年加入 Intel</b>，此前是 <b>Asahi Linux / Panfrost</b> 项目的核心开发者之一。<br>
+        <b>启用范围（合并请求 !44694，上个周末合入）</b><br>
+        · Jay 现已成为 <b>Xe2 与 Xe3 图形平台</b>的默认编译器；<br>
+        · 直接受益者包括 <b>Intel Battlemage 独立显卡</b>，以及 <b>Lunar Lake、Panther Lake 核显</b>；<br>
+        · 官方<a href="https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/44694" target="_blank">合并请求</a>显示，未来有把 Jay <b>回溯支持到 Skylake 时代 Gen9 核显</b>的打算，但目前重心仍放在 <b>Xe2 及更新硬件</b>。<br>
+        <b>性能数据</b><br>
+        · <b>通用性能</b>：Jay 相比既有的 <b>BRW 编译器</b>约快 <b>10%</b>；<br>
+        · <b>Fossil 编译时间</b>：比 <b>BRW 快 55%</b>，比 <b>Windows 驱动快 66%</b>。<br>
+        相关数字来自 Rosenzweig 在本周 <b>XDC 2026（多伦多）</b>上关于 Intel Jay 着色器编译器的演讲，<a href="https://indico.freedesktop.org/event/12/contributions/527/attachments/357/516/slides.pdf" target="_blank">演讲稿 PDF 已公开</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 着色器编译时间为什么值得单列成「性能」指标？因为它决定的是「首次进入场景时的卡顿」。</b>着色器必须针对具体硬件编译，而游戏里的着色器组合（材质、光照、后处理的各种排列）数量巨大，<b>往往要到玩家真正走到某个场景时才需要编译</b>。此时如果编译器慢，玩家看到的就是帧率骤降甚至卡住——这就是社区里长期讨论的着色器编译卡顿。<b>它的特殊之处在于：这类卡顿不会出现在「跑三遍取平均」的基准里，却几乎必然出现在真实用户的第一次游玩中。</b>因此用缓存（预编译着色器库）和用更快的编译器，是缓解同一问题的两条互补路径：<b>缓存治「常见的那些」，编译器速度治「没被缓存命中的那些」</b>。这也解释了为什么 55% 这类数字值得被单独报道——它改善的是最难被缓存覆盖的长尾。<br>
+        <b>② 一个全新的编译器凭什么比老编译器快 10%？这里的关键不是「优化得更狠」，而是「可以不为历史包袱付代价」。</b>BRW 这个名字本身来自更早的 Broadwell 时代，<b>它在演进的二十余年间累积了大量为历代硬件保留的兼容路径、特例分支与遗留 IR 结构</b>。新编译器可以按现代硬件的实际情况<b>重新组织中间表示与 pass 顺序</b>，把「先烘焙进去、后来发现不需要」的保守设计剥掉。<b>这带来一条对做长期演进的系统很有用的判断：一个模块在运行 10 年后变慢，往往不是因为某次改动引入回归，而是因为「为兼容而生的分支」累积到了影响主路径的程度。此时增量的优化收益会越来越小，而重写反而能一次性拿回可观的收益。</b>同时也要清楚重写的代价——它必须重新覆盖老硬件的正确性，这正是 Jay 目前仍只面向 Xe2+ 的原因。<br>
+        <b>③ 「比 Windows 驱动快 66%」这个跨平台比较，其信息量比前一个数字更大。</b>同一块 Intel 硬件，开源 Linux 栈的编译器效率显著高于厂商自家闭源 Windows 驱动，<b>这说明差距并非来自硬件知识或人力投入，而更可能来自架构选择</b>——闭源驱动往往承载了更长的历史与更宽的兼容范围。这一现象在开源图形栈上并非孤例：近年在部分 Vulkan 路径、驱动任务调度与显存管理上，开源驱动多次在特定维度反超闭源实现。<b>对使用者的启示是：不要默认「厂商闭源驱动在自家硬件上必然更快」；实际差距高度依赖具体负载与版本，应当以实测为准，而不是以「谁更官方」为准。</b>当然也要注意口径——这里是单一编译时间基准，不能外推为渲染性能的全面领先（通用性能的 +10% 是另一回事）。<br>
+        <b>④ 从「先 Xe2/Xe3、暂不回溯 Gen9」，可以读出一套新编译器上线的标准步骤。</b>把一条全新代码路径设为默认，风险在于<b>它将在无数未被测试覆盖的组合上被实际使用</b>。老硬件代际多、机型杂、用户侧的固件与内核版本差异大，属于风险最高的一类环境。先在<b>结构相近、且仍有活跃测试资源的最新几代硬件</b>上启用，是控制风险面的常规做法；等新路径在真实环境中积累足够信心，再把覆盖范围向老硬件推开。<b>这套「默认值从最新硬件向前扩展」的顺序，适用于任何要替换既有默认实现的改动——不是因为它更优雅，而是因为它把回滚成本限制在最小范围内。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/amd-perfopt" target="_blank">AMD PerfOpt 实测：Linux 7.4 为 Radeon 核显带来最高 18~23% 的 AI/LLM 提升，低端笔记本因默认显存切分更小而收益更大，Krackan Point 吞吐与首 token 延迟同时改善</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body"><b>上一期我们报道了 AMD PerfOpt 被排队进 Linux 7.4 的 IOMMU 子系统代码树</b>；本期 Phoronix 用自建内核对该特性的**实测影响**做了完整评测。<br>
+        <b>PerfOpt 是什么</b><br>
+        PerfOpt 是 <b>AMD IOMMU Performance Optimization</b>，属于 <b>AMD I/O 虚拟化技术（IOMMU）规范</b>的一部分：<b>在直接访问系统内存时旁路 IOMMU</b>，以避免地址转换带来的开销。AMDGPU 驱动会<b>在使用集成显卡时默认启用</b>，用户可用 <code>amdgpu.iommu_perfopt=0</code> 强制关闭以做对比。<br>
+        <b>测试方法（关键）</b><br>
+        · Phoronix <b>从 IOMMU Git 树中构建了将进 Linux 7.4 的测试内核</b>；<br>
+        · 在<b>同一个内核</b>上对比 <b>PerfOpt 开启（默认）与关闭</b>两种状态——即只切换一个开关的控制变量对比；<br>
+        · <b>测试硬件</b>：一台 <b>AMD Strix Halo 桌面机</b>（作者手上暂无 Strix Halo 笔记本）、以及 <b>Strix Point 与 Krackan Point 笔记本</b>；<br>
+        · <b>测试软件</b>：本地 AI 服务器 <a href="https://lemonade-server.ai/" target="_blank">Lemonade</a> + <b>llama.cpp 后端</b>，做本地 AI / LLM 推理。<br>
+        <b>结果要点</b><br>
+        · <b>标题数据为本轮测试中最高 18~23% 的 AI/LLM 性能提升</b>，具体收益<b>随硬件型号、以及所跑大语言模型的规模 / 内存占用而变化</b>；<br>
+        · <b>最低端的 Krackan Point</b> 机器（<b>AMD Ryzen AI 5 340</b>，去年曾见于 500 美元以下价位段）本次获得了「非常可观」的增益，<b>吞吐与「首 token 时间（time to first token）」延迟同时改善</b>；<br>
+        · 作者解释低端机型受益更大的原因：<b>这类机器默认的 vRAM 切分（carve-out）更小</b>，因此更多访问落在系统内存上；<br>
+        · 作者评价：PerfOpt 不只对顶级的 Strix / Gorgon Halo 有效，<b>较低档位笔记本开箱即可拿到大幅提升</b>。<br>
+        <b>时间表</b>：Linux 7.4 的合并窗口在 <b>10 月下旬</b>开启，<b>稳定版预计 2026 年底</b>发布，<b>并有较大概率成为今年的 LTS 版本</b>。Phoronix 表示后续还会在 Linux 7.4 整体内核性能评测中给出更多 PerfOpt 数据。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 要理解 18~23% 这个数字的分量，得先算清楚「这项优化落在哪条路径上」。</b>核显没有独立显存，<b>与 CPU 共享同一片系统内存，纹理、顶点、帧缓冲、模型权重的绝大部分访问都要穿越 IOMMU</b>。而 IOMMU 在身份映射（identity mode）下的地址转换是「结果与输入相同」的纯开销。<b>这意味着 PerfOpt 取消的不是某条稀有路径，而是 iGPU 访存的主干道上一次固定成本。</b>在大语言模型推理这类「访存即一切」的负载里，每一层权重读取、每一次 KV cache 访问都经过这条路径，<b>固定开销会被按访问次数线性累加，因此百分比收益相当可观</b>。反过来推：这也是为什么同样的优化对独立显卡意义有限——独显有本地显存，绝大多数访存根本不经过 IOMMU。<b>评估任何优化，第一步永远是问「它命中了我主路径的多少比例」，而不是看它的理论倍数。</b><br>
+        <b>② 最值得注意的结论是「低端机器收益更大」——它与直觉相反，却指向一个对平台设计很有价值的判断规则。</b>直觉上人们会认为贵的高端机「优化空间更大」。实际恰恰相反：<b>低端机默认的 vRAM 切分更小，意味着更多数据被放在共享的系统内存里，从而有更高比例的访问会穿过那条被优化的路径。</b>换言之，<b>收益正比于「被优化路径在总访问中的占比」，而占比取决于配置，而非取决于机器的档次。</b>这条规则可以推广到很多平台优化上——同一条优化在不同 SKU 上的收益差别，通常主要由「默认配置导致的流量分布差异」决定。<b>对做产品与容量规划的团队，这意味着优化收益必须按 SKU 分别评估，不能用一个平均值覆盖整条产品线；同时也提示了一个低成本思路：在产品线内部，往往是最低配那档的设备（或最受限的运行环境）最容易通过此类系统级优化获得显著改善。</b><br>
+        <b>③ 「吞吐与首 token 延迟同时改善」，是这类优化属于关键路径开销的有力旁证。</b>如果瓶颈是带宽，那么提升吞吐通常要以增加延迟为代价（更多并行、更深的缓冲）；如果瓶颈是算力，延迟与吞吐也会呈现此消彼长。<b>两者同时变好，说明被消除的是「每一跳都要付、且与数据量无关的固定成本」——去掉它，既减少了每次访问的时间，也提高了单位时间内能完成的访问数。</b>对交互式 AI 应用，这个组合尤其重要：<b>首 token 延迟决定用户觉得「系统有没有反应」，吞吐决定「说话是否连贯」，二者同时改善才是体验层面的真实提升。</b>做加速器与系统栈的人可以把「延迟与吞吐同向变化」当成一个诊断信号——它几乎总是指向「路径上有可消除的固定开销」，而不是「资源不够」。<br>
+        <b>④ 最后值得单独记下的是这次测试的方法学与它的现实含义。</b>Phoronix 的做法是 <b>从上游 Git 树自建内核，然后在同一个内核上只切换一个开关做 A/B 对比</b>。这比「跨内核版本对比」严格得多——后者会把同期成百上千个改动的影响混在一起，无法把任何增益归因到具体特性。<b>当你需要评估一个尚在合并途中的特性时，「自建上游内核 + 单变量切换」几乎是唯一能得到可信结论的路径。</b>它的现实含义也清楚：<b>该特性要到 7.4 稳定版（预计 2026 年底）才会进入普通发行版</b>，而考虑到 7.4 有较大概率成为 LTS，企业侧的部署窗口实际上是随下一个 LTS 周期到来的——<b>对于以 LTS 为部署基线的团队，「跟踪 LTS 计划」比「追捧单个新特性」更能决定什么时间点能真正拿到收益。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/NOCL-OpenCL-CUDA" target="_blank">NOCL 进展：把 Mesa 的 Gallium/OpenCL 架在 NVIDIA CUDA 之上，为官方驱动提供开源 OpenCL 选项，并顺带打通 PTX→NIR（对 NVK 上的 DLSS 很关键），合并请求仍在评审</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">已经开发了一年左右的<b>「在 NVIDIA CUDA 驱动 API 之上实现 Mesa Gallium3D」</b>的项目有了新进展。该项目<b>最初名为 CLUDA，现在改称 NOCL</b>，配合 <b>Rusticl</b> 后，可以在 <b>NVIDIA 专有驱动</b>上运行 OpenCL，成为一种新的计算选项。<br>
+        <b>项目定位</b><br>
+        <b>Karol Herbst</b> 在本周仍在进行的 <b>XDC 2026（多伦多）</b>上介绍了 NOCL 的最新进展。要点如下：<br>
+        · NOCL 的合并请求<b>仍处于待评审（pending）状态</b>；<br>
+        · 它提供一个<b>仅供计算的 Gallium 驱动</b>，供 <b>NVIDIA 专有驱动</b>搭配使用；<br>
+        · 该驱动<b>面向 Rusticl</b>，使用 <b>NVIDIA CUDA 驱动 API</b>，并<b>利用 NVIDIA 的 PTX 表示</b>。<br>
+        <b>它带来什么</b><br>
+        · 为<b>官方 NVIDIA Linux 驱动</b>提供了一条<b>开源的 OpenCL 路径</b>；<br>
+        · 它<b>支持的 OpenCL 扩展比 NVIDIA 自家的专有 OpenCL 驱动还多</b>；<br>
+        · 除了性能对比用途外，它也被视为一项围绕 <b>NVIDIA PTX 中间表示</b>的开发练习。<br>
+        <b>一项被特别指出的附带价值</b><br>
+        文章明确指出：<b>PTX 到 NIR 的转换支持，对 NVK（Mesa 的开源 NVIDIA Vulkan 驱动）上实现 DLSS 之类功能将会很重要。</b><br>
+        合并请求（MR !37831）仍开放，位于 <code>gitlab.freedesktop.org/mesa/mesa</code>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先看清这个项目的分层结构，才能理解它为什么可行：它没有试图取代 NVIDIA 驱动，而是「用开源前端接上闭源后端」。</b>链路是 <b>Rusticl（Mesa 的 Rust 版 OpenCL 前端）→ Gallium（Mesa 的驱动抽象层）→ NOCL（新增的 Gallium 驱动）→ CUDA 驱动 API → NVIDIA 专有驱动</b>。<b>它能成立的根基是 PTX——CUDA 面向虚拟指令集（而非某个具体芯片）的中间表示。</b>因为 PTX 是与硬件代际解耦的稳定接口，上层可以只负责「生成正确的 PTX」，而把「PTX 到具体硬件机器码」的工作留给厂商驱动。<b>这是软件分层里一个反复奏效的思路：在架构中找到一个足够稳定、足够窄的接口（这里是 PTX），就可以在它之上叠一层完全独立的开源实现，而不必触碰其下的闭源世界。</b>判断某个生态能否被「从旁切入」，通常就是找这个接口存不存在。<br>
+        <b>② 「开源前端的 OpenCL 扩展比厂商专有驱动还多」，这句话揭示了分层的真实价值：扩展可以在上层自己补出来。</b>厂商驱动长期受到的一类批评是<b>对较新或较少人用的扩展响应慢</b>——因为它要面向全部客户、要保证质量、要排优先级，任何新增都要等版本节奏。<b>而开源前端可以自行在 PTX 之上组合实现上层语义：只要底层能力足够，就不必等厂商实现那个具体扩展。</b>换来的代价是要自己承担正确性与性能验证。<b>这条经验对所有依赖外部组件的团队都适用：如果一个能力的缺失源自「供应商的优先级」，那么在上层自建往往比等待更现实；但若缺失源自「底层根本给不了的能力」，自建就是徒劳。</b>判断的关键是分清「没做」与「做不了」。<br>
+        <b>③ 但真正可能比 OpenCL 本身更有价值的，是那条被顺带指出的 PTX→NIR 路径。</b>DLSS 这类功能的核心库是由 NVIDIA 分发的闭源二进制（以 CUDA/PTX 形态交付），<b>开源驱动默认「看不懂」它，因此在 NVK 上就无法使用</b>。<b>一旦 PTX 能被翻译成 Mesa 的中间表示 NIR，开源驱动就获得了「消费闭源生态产物」的能力</b>——它不需要知道库内部的实现意图，只需要能执行它。<b>这带来的判断是：一个项目的副产品有时比主目标影响更大。NOCL 的主目标是 OpenCL，但它顺手打开的这条通路——「让 Mesa 能接纳 PTX」——可能会在图形侧产生更广泛的连带影响。</b>这也提醒我们在评估开源项目时不要只看它的自我定位，而要看它无意间建立了哪条可复用的通道。<br>
+        <b>④ 最后，处于「仍待评审」状态说明这类项目面对的现实约束是信任与维护承诺，而非技术可行性。</b>把一个依赖厂商专有驱动、且处在 Mesa 关键抽象层的新驱动合入上游，<b>维护者要回答的问题包括：谁来长期维护？厂商驱动接口变化怎么办？出现问题时责任如何划分？</b>技术上的可行性并不能替代这些答案。<b>对使用者的直接含义是：不要把它当成「即将可用的功能」，而应当把它看作一个需要以年为单位观察的候选方向。</b>一条实用原则是——<b>凡是位于关键基础设施层、且绑定外部专有接口的项目，其合入节奏通常由「维护契约是否清晰」决定，而不是由代码是否写完决定；跟踪它的可靠信号是「讨论焦点在哪」，而非「提交了多少行」。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-BPF-Panel-Drivers" target="_blank">Linux 探索 BPF 化显示面板驱动：Maxime Ripard 提交基于 BPF 的 MIPI DSI 面板驱动，让初始化序列与内核解耦、可独立发布，已在树莓派 5/7 英寸 Touch Display 2 上跑通</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">此前<b>基于 BPF 的 HID 驱动</b>已经证明，把类型修复（quirks）从传统内核发布周期中解耦出来可以显著加快迭代。如今，<b>显示面板驱动</b>成为尝试这一思路的新领域。<br>
+        <b>提案内容</b><br>
+        <b>Maxime Ripard</b> 在周一提交了补丁系列，提出<b>基于 BPF 的 MIPI DSI 面板驱动</b>。<br>
+        <b>问题：OEM 与发行版之间存在时间尺度的错配（作者原话）</b><br>
+        · <b>「面板本身、尤其是 MIPI-DSI 面板相当难以支持，几乎每块面板都需要一个专门的驱动」</b>；<br>
+        · <b>「它们大多相当简单，需要的是一条不透明的初始化序列，而这通常缺乏文档」</b>；<br>
+        · 矛盾在于：<b>OEM 在生产中遇到供货问题时会临时换用新面板，因此需要「拿到新面板 → 系统可用」之间的快速周转</b>；<br>
+        · 而<b>发行版可能要花数年时间，才会发布一个包含该新面板驱动的内核</b>。<br>
+        <b>解决思路</b><br>
+        · Ripard <b>参照 HID-BPF 的做法，编写了一个「依赖 BPF 程序来完成面板初始化」的面板驱动</b>；<br>
+        · 这样<b>BPF 程序可以与内核分开发布、拥有不同的生命周期</b>；<br>
+        · 若该驱动被接受，计划是<b>由一个由 udev 启动的用户态组件，识别设备上的面板并加载对应的 BPF 程序</b>。<br>
+        <b>当前状态与限制</b><br>
+        · 作者表示<b>该驱动已完全可用</b>，在树莓派的 <b>5 英寸与 7 英寸 Touch Display 2 面板</b>上均能正常工作；<br>
+        · 但补丁也带来一个明确挑战：<b>BPF 程序需要由用户态加载，因此无法用于早期启动阶段</b>（early boot）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 面板驱动是一个教科书式地「应该被推到内核之外」的案例，理解这一点就能理解为什么选它做试点。</b>驱动代码通常可以按两个维度分类：<b>「有多少逻辑」与「有多少易变的数据」</b>。面板初始化恰好属于<b>逻辑极少（基本就是把厂商给的寄存器序列按顺序写下去）、而数据极度易变（每块面板一套序列，厂商还在生产中途换料）</b>的那一类。<b>这类「低逻辑 + 高易变」的代码放在内核里是最不划算的：它让内核的发布节奏被硬件采购的节奏绑架，却几乎不贡献任何需要内核态保护的能力。</b>反过来，具有并发、状态机、资源生命周期管理的代码才真正需要留在内核。这条判断标准可以直接用于任何「某类驱动要不要移出内核」的讨论——<b>看它主要承载的是策略（易变）还是机制（稳定）。</b><br>
+        <b>② 「OEM 按周迭代、发行版按年发布」这个错配不是面板独有的问题，而是硬件生态的结构性矛盾。</b>OEM 面临的是供应链现实：某款面板断供时，必须在生产线上迅速替换，机器的功能不能因此打折。<b>而发行版面临的是质量与稳定性承诺：内核一旦发布，就要支持多年，任何新增驱动都可能带来回归风险。</b>两者的时间尺度天然相差一到两个数量级，<b>没有任何一方「不配合」就能解决——只能通过把两者解耦来化解。</b>这也解释了为什么历史上 Linux 生态反复长出同类的「带外机制」：固件、microcode、DKMS 模块、HID-BPF，直到今天的面板-BPF。<b>一个可复用的判断规则是：凡是存在「硬件侧变化快、内核侧发布慢」这一矛盾的子系统，最终都会演化出某种带外更新通道；与其每次重新发明，不如让内核提供一套统一的、受沙箱约束的带外机制。</b><br>
+        <b>③ 选择 BPF 而不是「直接加载内核模块」，是一次在「灵活性」与「安全边界」之间的明确取舍。</b>最简单的解耦方式其实是<span>允许 OEM 分发一个 .ko 内核模块</span>，但那意味着<b>允许任意第三方代码运行在内核态、无沙箱、无验证器，对上游而言是不可接受的安全模型</b>（现实中 DKMS 正是因此长期处于「能用但不受欢迎」的位置）。<b>BPF 提供的是「可验证 + 沙箱化」的折中：程序在加载时被验证器检查，运行时受限于允许的辅助函数与内存范围，因此即使来自 OEM 也不具备随意改写内核的能力。</b>代价是<b>表达能力受限——只能做验证器允许的事</b>。对面板初始化这种「读表写寄存器」的简单序列而言，这个约束恰好不成问题，这也是它适合作为试点的另一原因。<b>在任何需要引入外部代码的系统中，这个取舍都值得照抄：先问「我要允许的行为到底需要多少表达能力」，再据此选择沙箱强度，而不是先选技术再削需求。</b><br>
+        <b>④ 必须正视那个已经写明的限制：需要用户态加载，因此早期启动阶段用不上，而且这背后还牵出一整套信任模型问题。</b>早期启动阶段（开机 logo、全盘加密的解锁界面、恢复模式、initramfs 之前）恰恰是<b>用户最依赖显示可用性的时刻</b>——屏幕不亮时几乎无法诊断问题。<b>把面板驱动做成依赖用户态的形态，等于放弃了这条路径上的可用性。</b>这不是可以忽略的小瑕疵，而需要明确回答「早期启动时靠什么点亮屏幕」（可用的替代方案包括：保留一个通用兜底驱动、或者由引导加载程序先行配置）。<b>与此同时还有第二个未被提案回答的问题：这些 BPF 程序由谁签名、可信度如何建立？</b>HID-BPF 也面临同样的课题。因此结论应当保持审慎：<b>这个方向的价值在于验证「内核只提供机制、策略由用户态供给」这一模式的边界，而在它被接受之前，需要先解决早期启动覆盖与信任链这两件事——这两点决定了它是「一个聪明的原型」还是「一个可部署的方案」。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/D7VK-2.3-Released" target="_blank">D7VK 2.3 发布并进入维护模式：在 Vulkan 之上实现 Direct3D 7/6/5/3，一次显存放置优化让 Imperial Age 从 80 FPS 提升到 137 FPS（D7VK 2.0 时为 62 FPS）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body"><b>D7VK</b> 是面向 <b>Linux / Wine（Steam Play）</b>的、<b>基于 Vulkan 实现微软 Direct3D 7 / 6 / 5 / 3 API</b> 的转译层。它发布了 <b>2.3 版</b>，开发者认为这标志着项目已经<b>相当成熟</b>。<br>
+        <b>2.3 的变化</b><br>
+        · 带来了<b>「一次（也许就是最后一次）性能优化」</b>，内容围绕 <b>shadow surface（阴影表面）的内存放置</b>；<br>
+        · 效果显著：在 <b>Imperial Age</b> 中，性能从 <b>80 FPS 提升到 137 FPS</b>；作为对照，这比 <b>D7VK 2.0 时的 62 FPS</b> 高出一倍以上；<br>
+        · 该版本还<b>基于 DXVK 3.1.1 重新变基（re-base）</b>，<b>改进了 Vulkan 侧的各项检查</b>，并包含一批修复与代码改进。<br>
+        <b>项目状态</b><br>
+        随着 2.3 发布，<b>D7VK 进入维护模式（maintenance mode）</b>：代码库已足够成熟，<b>不再预期有重大新功能</b>。下载与详情见开发者 <b>WinterSnowfall</b> 在 GitHub 上的 <a href="https://github.com/WinterSnowfall/d7vk/releases/tag/v2.3" target="_blank">v2.3 发布页</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「显存放置」这一项就能让帧率近乎翻倍，说明老 API 转译的性能瓶颈往往不在翻译本身，而在数据该放在哪里。</b>Direct3D 7 时代的 API 语义与今天的 GPU 架构差异很大：<b>那个年代的硬件与编程模型大量依赖「渲染到系统内存可见的表面、再由 CPU 回读」这类工作流，而现代 GPU 是围绕显存（device-local memory）设计的。</b>转译层必须把老 API 的表达映射到新硬件的内存层级上，<b>映射得不好，就会出现数据被放在 CPU 可见内存里、GPU 每次都要跨越较慢的总线去取的情况。</b>所谓「shadow surface 的内存放置」，本质上就是这个映射策略的优化——<b>把数据放到正确的内存域，比在错误的内存域上做任何局部优化都更有效。</b>这条经验对所有做跨代适配、模拟层、虚拟化的团队都成立：<b>先把数据流与内存层级对齐，再去谈指令级或算法级的优化——顺序反了，后面的努力会被前面的结构性错配全部吃掉。</b><br>
+        <b>② 把 62 FPS（2.0）→ 80 FPS（2.3 之前）→ 137 FPS（2.3）连起来看，更能说明「转译层的性能是逐步挤出来的」。</b>从 62 到 80 是大量的常规修复与检查改进累积而成，从 80 到 137 则来自一次针对性的结构优化。<b>这个形状很有代表性：转译/兼容层项目早期的性能来自「消除错误」，中期来自「消除低效路径」，后期才来自「重新设计数据布局」——而后者往往是收益最大的一步，却只有在前面两阶段完成后才有可能看清。</b>这也解释了为什么开发者敢说这「也许是最后一次」优化：<b>当收益来源已经推进到结构层面，说明剩下的低垂果实基本摘完了，项目自然该转入维护。</b><br>
+        <b>③ 一个单人维护的转译层最终决定了大量老游戏的可用性——这背后是「按 API 边界切分项目」这一生态结构的功劳。</b>Linux 上的 D3D 兼容不是由一个庞大的统一层承担的，而是被切成了若干独立项目：<b>DXVK 负责 D3D 9/10/11，VKD3D-Proton 负责 D3D 12，D7VK 补齐更早的 D3D 7/6/5/3。</b>按 API 年代切分带来的好处是<b>每个项目的复杂度可控、可以独立演进、也可以由个人长期维护</b>。<b>对比之下，试图用一个组件覆盖所有 API 版本的做法，往往会因为兼容矩阵过大而难以推进。这是大型兼容性工程一条很务实的组织原则：按「变化的原因」切分模块，而不是按「用户的视角」切成一个整体。</b>对做平台兼容的团队，这个结构直接可借鉴。<br>
+        <b>④ 「进入维护模式」是一个值得被认真对待的成熟度信号，它对下游是好事而非停滞。</b>对依赖方（如 Proton 这类发行版集成者）而言，<b>一个功能停止扩张、只有修复的组件意味着行为可预测：不会因为上游突然加功能而引入新的回归风险，也可以放心把它固定在一个版本上。</b>开源生态里常有「项目不活跃 = 项目已死」的误读，但<b>对兼容层、转译层这类目标收敛的项目，达到目标后的低活跃恰恰是成功的标志——它意味着「该支持的 API 都支持了，语义已经对齐」。</b>判断一个项目该不该被替换，应当看<b>它是否还在漏掉必要的功能，而不是看提交频率</b>；<b>把「活跃度」当作唯一健康指标，会让人误判那些已经完工的基础设施。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/hw-monitor-0.6" target="_blank">hw-monitor 0.6 发布：新增按进程的 GPU 使用率与显存占用统计，支持 AMDGPU、Intel i915/Xe 与 Nouveau，并加入 XDG 自启动项查看页</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">面向 Linux 桌面的硬件与系统监控工具 <b>hw-monitor</b> 持续演进，已成为这类工具中较现代的选择之一。周一发布的 <b>0.6 版</b>带来一项此前难以获得的能力：<b>按进程的 GPU 指标</b>。<br>
+        <b>0.6 的主要新增</b><br>
+        · <b>按进程的 GPU 统计</b>：在使用<b>具备相应能力的 DRM 驱动</b>时，新增 <b>GPU 使用率</b>与 <b>GPU 显存占用</b>两列；<br>
+        · 官方点名的支持驱动为 <b>AMDGPU、Intel i915 与 Xe、以及 Nouveau</b>；<br>
+        · 新增一个标签页，用于展示<b>基于 XDG autostart 条目的启动项</b>；<br>
+        · 此外还有<b>传感器 UI 的改进、主题增强以及一批 bug 修复</b>。<br>
+        <b>后续</b>：0.6.0 之后紧接着又发布了 <a href="https://github.com/husseinhareb/hw-monitor/releases/tag/v0.6.1" target="_blank">hw-monitor 0.6.1</a>，纳入若干补充修复；完整改动列表见 <a href="https://github.com/husseinhareb/hw-monitor/releases/tag/v0.6.0" target="_blank">v0.6.0 发布说明</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 按进程统计 GPU 之所以能实现，靠的是 DRM 层一个低调但关键的接口：fdinfo。</b>内核通过 <code>/proc/&lt;pid&gt;/fdinfo/</code> 暴露每个打开的文件描述符的详细信息，<b>对 DRM 设备而言，这就是「这个进程用了多少 GPU 引擎时间、占了多少显存」的唯一权威来源。</b>这意味着整个能力的分层是清晰的：<b>内核负责计量与暴露原始数字，用户态工具负责聚合与呈现</b>——它不需要任何特权，也不需要 hook 进驱动，只是读取标准接口再拼装成视图。<b>这个「内核提供基础计量、用户态自由组合」的分层，正是 Linux 可观测性生态能持续长出各种工具的原因；反过来也说明，一个子系统能否被良好监控，取决于它是否愿意把内部状态以稳定的接口暴露出来，而不是取决于工具写得多好。</b><br>
+        <b>② 「支持驱动为 AMDGPU / i915 / Xe / Nouveau」这一行名单，恰好指出了可观测性在驱动层面的落地规律。</b>fdinfo 的 GPU 计量<b>不是通用的：每个 DRM 驱动需要自己实现引擎时间与内存占用的上报</b>，因此覆盖范围完全取决于驱动维护者是否投入。<b>名单上的四家正是当前最活跃的开源 DRM 驱动——这不是巧合，而是「活跃度」决定了「可观测性」。</b>由此可以推出一条对技术选型有实际意义的判断：<b>当你依赖某个开源驱动跑生产负载时，可以顺手检查它在 fdinfo、debugfs 等接口上的完善程度；一个愿意暴露自身状态的驱动，通常也在其他地方更可诊断、更容易被社区支撑。可观测性上的投入，往往是一个组件整体成熟度的可信代理指标。</b><br>
+        <b>③ 对开发者与平台团队，这条功能的实用价值在于它把性能归因的粒度从「设备级」推进到了「进程级」。</b>过去遇到「显存被吃满」时，所能看到的通常只是整卡级的计数器，<b>知道 GPU 忙，却不知道是谁让它忙</b>。在多用户、容器化、或同时跑多个推理/训练任务的环境里，这一层粒度恰恰是刚需。<b>能定位到进程之后，一系列此前做不到的动作才成为可能：找到问题进程、在改动前后做回归对比、为单个进程设置阈值并告警。</b>这也解释了为什么这类工具虽小却值得记录——<b>监控粒度的每一次下探，都会解锁一批此前无法进行的工程实践。</b>把它当作优化工作的前置条件而非附属功能，是一种更准确的定位。<br>
+        <b>④ 顺带加入的 XDG autostart 查看页，则反映了桌面工具正在从「看传感器」走向「看系统行为」。</b>温度、频率这类指标回答的是「硬件现在怎么样」，而<b>启动项回答的是「系统为什么会变成这样」——开机后常驻的后台进程、托盘程序、更新的图形栈组件，都是性能与功耗问题的常见来源，却通常分散在多个目录与配置中，难以一览。</b>把这一类「配置与行为事实」纳入监控面板，实质上是<b>把「观测」与「归因」收拢到同一个界面里</b>。<b>对做系统工具与平台运维的经验是：只给出数值指标的监控往往不够用，使用者真正需要的是「指标 + 造成该指标的配置事实」放在一起看——前者告诉他出了问题，后者帮他提出可执行的修改。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Ubuntu-26.10-Snapdragon-Concept" target="_blank">Ubuntu 26.10 Snapdragon Concept 镜像发布：借 Linux 7.3 内核改进 X1 笔记本支持，并首次支持 Snapdragon X2 机型（Zenbook A14/A16、Yoga Slim 7、EliteBook X G2q）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">距 Canonical 上一次宣布面向 <b>高通 Snapdragon X 系列笔记本</b>的 Ubuntu 镜像已有一段时间。在<b>本周 Ubuntu 26.10 beta 发布之前</b>，Canonical 推出了新的 <b>Ubuntu 26.10 Snapdragon Concept 镜像</b>：<b>既改进现有 X1 笔记本的支持，也带来了最初的 Snapdragon X2 笔记本支持。</b><br>
+        <b>X1 侧的改进</b><br>
+        · 得益于<b>迁移到最新的 Linux 7.3 内核</b>，现有 X1 笔记本的体验得到改善；<br>
+        · 同时新增了几款受支持的 X1 机型：<b>Lenovo IdeaPad Slim 3、Lenovo Ideacentre Mini 01q8x10、HONOR MagicBook Art 14</b>。<br>
+        <b>X2 侧：首次获得支持的机型</b><br>
+        本次最受关注的部分是<b>首次有 Snapdragon X2 笔记本被 Ubuntu Linux 支持</b>，初始名单包括：<br>
+        · <b>ASUS Zenbook A14 / A16</b>；<br>
+        · <b>Lenovo Yoga Slim 7</b>；<br>
+        · <b>HP EliteBook X G2q</b>。<br>
+        <b>后续计划</b>：Canonical 正与高通合作，<b>计划在 2027 年提供官方认证、完整优化的 Snapdragon X2 Ubuntu 镜像</b>。上周在夏威夷举行的 <b>Snapdragon Summit</b> 上，<a href="https://www.phoronix.com/news/Qualcomm-Talks-Up-X2-Linux" target="_blank">高通也展望了 Snapdragon X2 笔记本的前景</a>。镜像详情见 <b>Ubuntu Discourse</b> 的相关<a href="https://discourse.ubuntu.com/t/ubuntu-concept-26-10-snapdragon-edition/88518" target="_blank">公告帖</a>；Phoronix 作者表示将很快在自己的 Acer Swift AI（X1）笔记本上试用该构建。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 内核版本是这次 X1 改进的直接来源，这一点点明了 ARM PC 支持的传递链条：SoC 支持先进入上游内核，发行版随后「收货」。</b>ARM 平台没有 x86 那种成熟且覆盖面广的自动枚举与标准固件描述，<b>每一代 SoC 的时钟、电源域、显示控制器、USB、音频等都需要在内核里逐步补齐</b>。当这些代码进入上游之后，发行版要做的只是升级内核版本并验证。<b>因此判断一台 ARM 笔记本何时能被主流发行版良好支持，可靠的信号不是发行版的工作排期，而是「该 SoC 的哪些部分已进入上游内核、处于哪个版本」。</b>对做硬件适配的团队，这意味着工作重心应当放在上游化而不是自建补丁集上——<b>自建补丁只能在自家镜像里生效，上游化才能让所有发行版同时受益，且长期维护成本低一个量级。</b><br>
+        <b>② 「能出现在受支持机型名单里」这件事的分量，比通常理解的更重——因为它证明的是「逐机型验证」，而不是「芯片可用」。</b>同一颗 SoC 在不同笔记本上的差异往往相当大：<b>屏幕面板与背光控制、触控板、键盘、摄像头走的总线、麦克风阵列、风扇与温度传感器、甚至是 ACPI 表的写法都可能不同。</b>因此 ARM 笔记本的支持天然是「一台一台过」的，<b>这与 x86 上「同一芯片组家族的机器往往能一起动起来」的经验差别很大。</b>这条差异对平台团队的意义很实际：<b>做 ARM PC 的适配与规划时，不能按芯片代际估算覆盖范围，必须按机型清单来排工作量——每一台可能都是一个独立的小工程。</b><br>
+        <b>③ 「Concept 镜像」这一形式本身就是一种值得关注的工程策略：用真实用户作为早期验证资源。</b>厂商与发行版通常无法提前拿到全部在售机型做完整验证，<b>而概念镜像作为不承诺质量的预发布通道，可以吸引愿意承担不稳定风险的用户来试用并回报问题。</b>它把「验证」从一个内部阶段变成了一条持续的外部反馈流。<b>这种做法有其明确前提：通道要打上清晰的「实验性」标签、不与正式版混淆，且用户必须能自行判断风险。</b>对在资源受限条件下推进兼容性工作的团队，这是一种现实且可复用的路径——<b>承认自己无法穷尽验证，转而设计一个能持续收集真实环境问题的机制。</b><br>
+        <b>④ 2027 年这个时间点，则清晰地度量了 ARM PC 生态的交付节奏与其中的空档期。</b>硬件在 2026 年已经出货，而<b>「官方认证、完整优化」的 Linux 镜像要等到 2027 年</b>——中间这一年左右完全依赖社区与概念镜像填补。<b>这不是个别厂商的迟缓，而是 ARM PC 的整体结构：SoC 与固件支持、内核上游化、发行版验证、厂商认证形成一个串行的长链条，任何一环都无法跳过。</b>对采购与选型的启示是直接的：<b>在 ARM 笔记本上，应当按「机型 × 当时可用的镜像与内核版本」来评估可用性，并预留出功能（休眠、外接显示、摄像头、指纹等）逐个补齐的时间；把「能用」与「完全可用」混为一谈，是最容易在部署后才发现问题的判断方式。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-Zen-6-More-Client-Tuning" target="_blank">AMD 继续为 Linux 调优 Zen 6 客户端的 EPP 取值：性能核 power 档 EPP 由 64 提至 115，新增低功耗核的 balance-performance 由 51 调至 64，Linux 7.4 被视为下代 Ryzen 的初始适配版本</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">AMD 工程师持续推进<b>即将到来的 Zen 6 架构 Ryzen 客户端处理器</b>在 Linux 上的准备工作。此前已有一批补丁针对 Zen 6 调整 <b>AMD P-State 驱动</b>，以优化性能与功耗；如今又有一份新补丁出现，<b>进一步精修这些新一代 Ryzen 处理器的功耗 / 性能特性</b>。<br>
+        <b>本次调整内容</b><br>
+        补丁调整的是 <b>Energy Performance Preference（EPP）</b>的取值，涉及<b>性能核</b>与<b>新增的低功耗核</b>两种核心类型。<b>效率核 / 密集核无需调整</b>，沿用上月提交的取值。<br>
+        具体变化（来自 <a href="https://lore.kernel.org/lkml/20260928203523.1290623-1-Vishal.Badole@amd.com/" target="_blank">lkml 补丁</a>）：<br>
+        · <b>性能核</b>：power 档的 EPP 值<b>从 64 提升到 115</b>；<br>
+        · <b>低功耗核</b>：balance-performance 档的 EPP 值<b>从 51 调整为 64</b>，而 power 档的值<b>从 115 下调到 64</b>。<br>
+        理解这些数字需要一个前提：<b>EPP 值越低越偏向性能，越高（上限 255）越偏向省电。</b><br>
+        <b>如何解读</b><br>
+        Phoronix 的评价是「本身不算多么激动人心，但很高兴看到发布会前的 Zen 6 客户端调优在持续进行」。基于当前趋势的外部观察，<b>Linux 7.4 很可能是支持下一代 Ryzen 处理器的初始适配版本</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先把 EPP 这个概念本身说清楚，后面所有数字才有意义：它是「偏好」，不是「限制」。</b>EPP（Energy Performance Preference）<b>不是给 CPU 设一个频率上限</b>，而是告诉硬件的频率选择逻辑「在性能与省电之间，我更倾向哪一边」——<b>它是一个软性提示，最终频率仍由硬件根据当前负载、温度与功耗预算共同决定。</b>这解释了为什么同一个负载下，调整 EPP 带来的变化往往是渐进的功耗/性能移动，而不是阶跃式的。<b>理解层次也很重要：governor 决定「目标频率在什么原则下选取」，EPP 则影响「在该原则下向哪一侧偏移」。</b>对做能效调优的人，这条区分很实用——<b>需要「不确定但更好的默认行为」时调 EPP，需要「明确的边界」时才去动频率或功耗上限。</b><br>
+        <b>② 「针对性能核与低功耗核分别设定 EPP」反映的是异构 CPU 时代调频策略的必然演进，它与 Intel 的 P/E 核、ARM 的 big.LITTLE 是同一类问题。</b>当一颗 CPU 内部存在「性格」差异明显的核心时，<b>一套统一的 EPP 无法同时满足两类核心的目标</b>：性能核的价值在于短时间爆发，低功耗核的价值在于长期低功耗驻留。<b>因此调频与调度子系统的关键能力，变成了「知道每个核属于哪一类、并为其设置不同的偏好」。</b>这也解释了这个补丁为什么改的是特定档位下的特定核类型——<b>它不是一次全局调整，而是在为每类核心、每个电源档位分别填写一格矩阵。这种「分类 × 档位」的配置矩阵，是异构平台调优工作的实际形态，也意味着这类工作天然是长周期的、靠反复试跑收敛的。</b><br>
+        <b>③ 补丁里那个看起来矛盾的取值变化，其实藏着一个值得琢磨的判断规则：低功耗核在 power 档下的 EPP 反而「更偏性能」了。</b>整理一下这次的变化方向：<b>性能核在 power 档变得更省电（64→115）；低功耗核在 balance-performance 档变得更省电（51→64），但在 power 档却变得更偏性能（115→64）。</b>低功耗核在两个档位上的调整方向相反，说明其定位被重新审视了——<b>在极端省电的 power 档下把低功耗核压得过狠，可能导致性能损失超出收益，因此需要回撤一点。</b>这体现的是<b>一个非单调的权衡：并非所有参数都朝同一个方向调优，每个参数都可能在某个取值区间内存在最优的折中点。</b>对做参数调优的经验是——<b>不要假设「更极端就是更好」；寻找折中点的过程本身就是调优的主要工作，任何单调外推的直觉都需要用实测数据校验。</b><br>
+        <b>④ 「Linux 7.4 可能是下代 Ryzen 的初始适配版本」这个结论，对用户来说是一条可以直接使用的行动指引。</b>内核与新硬件的适配存在一个明确的「对齐时点」：<b>在此时点之前的内核版本上，新 CPU 往往能启动，但功耗、性能与稳定性表现可能不是最终形态</b>；越过此时点，补丁集才趋于完整。<b>因此首发购买新架构 CPU 并自建系统的用户，选择内核版本时应当向前看一档，而不是跟随当时发行版的默认内核。</b>更一般地看，这个「首发硬件 + 内核版本对齐表」是 DIY 与工作站用户很值得建立的个人知识——<b>它决定的是「新硬件多久之后才值得买」，而不只是「装什么系统」。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Branch-Target-Reuse-BTR" target="_blank">针对 JIT 编译器的 Spectre-V2 新攻击 BTR 公布：VUSec 提出「分支目标复用」，影响 Linux 内核 BPF、Oracle GraalVM 与 Firefox 的 SpiderMonkey，内核侧缓解已于 7 月上游化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">已经有一段时间没有新的 Spectre 类漏洞公布，如今这一局面被打破：<b>BTR（Branch Target Reuse，分支目标复用）</b>的保密期已解除，它是一种<b>针对即时编译（JIT）引擎的 Spectre-V2 攻击</b>。<br>
+        <b>谁发现了、影响哪些目标</b><br>
+        <b>VUSec</b> 的研究者公布了 BTR，称其为<b>JIT 引擎中的一种 Spectre-V2 攻击</b>，影响范围包括：<br>
+        · <b>带 BPF 的 Linux 内核</b>；<br>
+        · <b>Oracle 的 GraalVM</b>；<br>
+        · <b>Mozilla 面向 Firefox 的 SpiderMonkey JavaScript 引擎</b>。<br>
+        <b>技术本质</b><br>
+        · BTR 是一种<b>推测执行层面的「释放后使用（speculative execute-after-free）」原语</b>，<b>成因是 JIT 编译器没有失效陈旧的间接分支预测条目</b>；<br>
+        · VUSec 开发的其中一个端到端利用，<b>可在现代 Intel CPU 上绕过所有已启用的缓解措施、泄漏任意内存</b>；<br>
+        · <b>VUSec 评估过的所有处理器都受 BTR 影响，涵盖 Intel、AMD 与 Arm 硬件。</b><br>
+        <b>缓解现状</b><br>
+        · 硬件厂商的建议是<b>继续沿用既有的缓解机制</b>；<br>
+        · 本次<b>没有新的 Linux 内核缓解补丁</b>——因为在 <b>7 月私下披露时</b>，内核就已合入相关改动：<b>在 BPF JIT 分配时启用 IBPB（Indirect Branch Predictor Barrier）刷新</b>，并为 <b>BPF 内核代码加入针对 JIT spraying 的加固</b>；这些改动<b>自 7 月起已在主线，并已回移到稳定内核版本</b>；<br>
+        · <b>Oracle GraalVM</b> 采取的做法是<b>随机化 JIT code-cache 的位置</b>以阻碍 BTR；<br>
+        · <b>Mozilla</b> 表示已评估过面向 SpiderMonkey 的、基于 IBPB 的缓解方案，但<b>转而优先推进站点隔离（site isolation）能力</b>。<br>
+        详细内容见 <b>VUSec</b> 的项目页 <code>vusec.net/projects/btr</code>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 要理解为什么「JIT + 推测执行」是一个结构性弱点，关键在一个事实：JIT 会反复生成、丢弃并复用可执行内存。</b>传统 AOT 编译的产物生命周期稳定、代码地址固定，攻击者难以利用「旧目标」做什么。而 JIT 引擎为了性能会<b>不断把不再需要的机器码区域回收、再分给新生成的代码</b>——<b>如果丢弃时没有同步失效对应的间接分支预测条目，预测器里仍保留着指向旧代码目标的条目，而那块内存可能已被新的内容占据。</b>于是攻击者在<b>推测路径上</b>访问到的是一个「已经被释放、并被复用了」的目标，这正是 BTR 被称为「推测执行层面的释放后使用」的原因。<b>要特别注意它的性质：真实执行路径是安全的，问题只存在于推测窗口内——这既是它难以被传统手段发现的原因，也是「无法靠常规内存检查修复、只能靠预测器状态管理来缓解」的原因。</b><br>
+        <b>② 「所有被评估的处理器都受影响，涵盖 Intel、AMD 与 Arm」，这句话的信息量在于它把问题定性为架构级而非某家实现的缺陷。</b>间接分支预测是几乎所有现代高性能处理器都具备的能力，<b>而预测器条目与代码地址的绑定关系是微架构层面的实现细节，并不由 ISA 规定。</b>因此<b>只要软件（JIT 引擎）与硬件（预测器）在「代码被回收时如何处理预测状态」上缺乏约定，这类漏洞就是共性问题</b>——加一条指令或改一个寄存器都无法从根本解决，只能由软件侧主动执行「刷新」或「随机化」。<b>这给出一条对做底层软件的团队很有用的判断：当一类安全问题跨越所有厂商同时出现时，说明缺的是软件与硬件之间的契约，而不是某一方的实现质量；此时的正确应对是在软件侧建立防御性约定（而非等待硬件修订）。</b><br>
+        <b>③ BPF 在这次事件中的位置特别值得关注：它让用户空间可以触发内核生成代码，因而把这个攻击面直接搬进了内核态。</b>这正是 BPF 的加固（IBPB 刷新、抗 JIT spraying）被<b>优先处理、且在 7 月的内核 7.2 周期就已上游化并回移稳定版</b>的原因。<b>也正因为最敏感的路径提前修好了，今天才会出现「公布漏洞却没有新内核补丁」这种看似反常的局面——它其实是「响应及时」的证据。</b>由此可提炼一条对平台团队的原则：<b>内核态 JIT 应当与普通内核代码接受同等严格的安全评审，不能因为它是「由用户策略驱动的机制」而降低标准。</b>任何允许非特权输入影响内核生成代码的设计（BPF 只是其中最广泛的一个），都应默认它会被用来做推测执行类的攻击。<br>
+        <b>④ Mozilla 的取舍最能体现两种根本不同的防御思路，值得单独思考：它评估了 IBPB 缓解，却选择优先做站点隔离。</b>IBPB 属于<b>「消除漏洞原语」</b>——直接让预测器状态失效，代价是<b>每次刷新都相当昂贵，会给执行带来持续开销</b>；站点隔离属于<b>「限制影响半径」</b>——不阻止攻击者获得那个原语，但让它无法读到跨站点的数据。<b>两者的根本差别在于：前者针对已知的这一个漏洞，后者针对「这一类漏洞将来还可能再出现」。而推测执行类漏洞在过去数年里的复现频率，恰恰是选择后者的重要理由。</b>这条经验可以推广为一条通用的安全投入判断：<b>当某类漏洞反复出现、且针对性缓解的代价持续偏高时，把资源投向「架构级隔离」往往比逐个打补丁回报更高——因为隔离一次性覆盖了同类中尚未被发现的那些变体。</b>同时也要清楚它的边界：隔离降低的是影响面，而非漏洞本身，因此仍需与针对性缓解并行使用。
+      </div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-09-30.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-09-29.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-09-30</p>
+    <p>覆盖范围：2026-09-29（EDT）· Mesa 26.3 默认启用 Intel 新着色器编译器 Jay（对 Xe2/Xe3 平台默认生效，通用性能较旧 BRW 约 +10%，Fossil 编译时间比 BRW 快 55%、比 Windows 驱动快 66%，Alyssa Rosenzweig 主导）· AMD PerfOpt 实测（Linux 7.4 为 Radeon 核显带来最高 18~23% 的 AI/LLM 提升，低端笔记本因默认 vRAM 切分更小而收益更大，Krackan Point 吞吐与首 token 延迟同时改善）· NOCL 进展（把 Mesa Gallium/OpenCL 架在 NVIDIA CUDA 之上，为官方驱动提供开源 OpenCL 选项，扩展支持多于专有驱动，PTX→NIR 对 NVK 上的 DLSS 很关键，MR 仍在评审）· Linux 探索 BPF 化显示面板驱动（Maxime Ripard 提交基于 BPF 的 MIPI DSI 面板驱动，让初始化序列与内核解耦、可独立发布，已在树莓派 5/7 英寸 Touch Display 2 上跑通，但无法用于早期启动）· D7VK 2.3 发布并进入维护模式（在 Vulkan 之上实现 D3D 7/6/5/3，一次显存放置优化让 Imperial Age 从 80 FPS 升到 137 FPS，2.0 时为 62 FPS）· hw-monitor 0.6 发布（新增按进程的 GPU 使用率与显存占用，支持 AMDGPU、Intel i915/Xe 与 Nouveau，并加入 XDG 自启动项查看页）· Ubuntu 26.10 Snapdragon Concept 镜像（借 Linux 7.3 内核改进 X1 笔记本支持，首次支持 Snapdragon X2 机型 Zenbook A14/A16、Yoga Slim 7、EliteBook X G2q，2027 年计划提供官方认证镜像）· AMD 继续调优 Zen 6 客户端 EPP（性能核 power 档 64→115，低功耗核 balance-performance 51→64、power 115→64，Linux 7.4 被视为下代 Ryzen 初始适配版本）· 针对 JIT 编译器的 Spectre-V2 新攻击 BTR（VUSec 公布「分支目标复用」，影响内核 BPF、Oracle GraalVM 与 Firefox SpiderMonkey，内核缓解已于 7 月上游化，Mozilla 选择优先推进站点隔离）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
