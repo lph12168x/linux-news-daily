@@ -491,6 +491,33 @@
       </div>
     </div>
 
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">12</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Steam-Beta-Use-Proton-Default" target="_blank">Valve Steam 客户端 Beta 将「非 Steam 的 Windows 程序」默认改用 Proton 运行：本地添加的 exe 不再需要手动指定兼容层，同时修复「用浏览按钮更换目标程序后无法启动」「外部工具启动的游戏 Stop 按钮关不掉」等 Linux 问题</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Valve 于 <b>10 月 7 日晚</b>发布新的 <b>Steam 客户端 Beta</b>，其中对 <b>Linux 用户</b>有若干值得注意的改进。<br>
+        <b>主要变化：非 Steam 的 Windows 程序默认走 Proton</b><br>
+        · 对以「<b>非 Steam 游戏</b>」方式注册、即由用户手动添加进库的 <b>Windows 可执行文件</b>，现在<b>默认使用 Proton 来运行</b>；<br>
+        · Phoronix 的表述是「<b>默认走 Proton 最终会带来更好的用户体验</b>」——在此之前，用户把本地 exe 加进库之后，通常还要进入「属性 → 兼容性」手动指定 Proton 才能正常启动；<br>
+        · 这相当于把 <b>Steam 商店游戏</b>所用的那套兼容层（<b>DXVK</b> 把 D3D9/D3D10/D3D11 转到 Vulkan、<b>VKD3D-Proton</b> 把 D3D12 转到 Vulkan，再由 <b>Steam Linux Runtime</b> 容器提供一套可预期的运行库与执行环境）<b>扩展成「所有 Windows 程序」的默认运行路径</b>。<br>
+        <b>同一版 Beta 的其他 Linux 修复</b><br>
+        · 修复<b>非 Steam 游戏在用「浏览（Browse）」按钮更换目标二进制文件后无法启动</b>的问题；<br>
+        · 修复<b>由外部工具启动游戏时，Steam 的「Stop」按钮无法把游戏关掉</b>的问题；<br>
+        · <b>Steam 大画面（Big Picture）</b>新增设置：<b>在游戏中禁用屏幕保护（screensaver）</b>；<br>
+        · <b>Steam Input</b> 也修了一个 Linux 相关的缺陷。<br>
+        完整改动见 Steam 客户端 Beta 的官方公告。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 这条改动的分量不在「多了个功能」，而在「兼容层从用户的显式决策变成了系统的默认行为」。</b>在此之前，Proton 在 Linux 上其实一直有个身份上的裂缝：<b>Steam 商店里的游戏由 Valve 自动决定用不用 Proton、用哪个版本，而用户自己添加的 Windows 程序则被当作「不知道怎么办」的东西，需要用户手动去属性里指定。</b>把默认值翻过来，意味着 <b>Valve 愿意为非商店内容（也就是自己无法预筛、无法预验证的那部分）兜底</b>。<b>判断一个兼容层的成熟度，比「又修好了哪款游戏」更可靠的信号，恰恰是它是否敢于成为默认——因为默认意味着要为最坏情况负责。</b>这也解释了为什么这类改动通常先在 Beta 通道出现：它改变的是所有用户的行为，一旦出问题，面比单个游戏的回归大得多。<br>
+        <b>② 从机制上看，这条新闻给出的是一次「同样的栈，更大的适用范围」的扩张，而不是新造了一层东西。</b>非 Steam 程序与商店游戏走的是同一条路径：<b>DXVK 与 VKD3D-Proton 把 Direct3D 调用翻译成 Vulkan，再交给 Mesa/RADV、NVK 或 NVIDIA 专有驱动；Steam Linux Runtime 容器则把发行版之间的库版本差异挡在外面。</b>也就是说，<b>这次变化在技术上是「零新增组件」的——它的价值来自于把这套已经为商店游戏验证过的栈，开放给用户自带的任意 exe。</b>值得注意的是，这类「扩大适用范围」的改动往往并不显眼，但它对生态的实际推动常常大于某个具体特性的优化：<b>因为它降低的是「尝试」的成本，而门槛降下来之后，愿意把 Linux 当主平台的人才会变多。</b><br>
+        <b>③ 把这一条与本期第 1 条 NVIDIA 615.78.08（VK_NV_low_latency2 第 3 版、修 The Last of Us Part II 方块损坏、修 &gt;2GB GPU 页表分配失败）放在一起看，可以读出 Linux 游戏栈「分层推进」的节奏。</b><b>驱动与扩展层在解决「跑得更好」的问题</b>——延迟、画面损坏、显存管理；<b>而客户端与运行时层在解决「更容易跑起来」的问题</b>——默认值、容器、库环境。<b>这两条线缺一不可：只有前者，用户仍要自己摸索配置；只有后者，跑起来了却体验不佳。</b>当两类改进同时出现、并且方向都指向「减少人工干预」时，通常说明这个平台已经越过了「极客自娱」的阶段，正在往可长期日常使用的方向走。<br>
+        <b>④ 最后一个实用的边界提醒：把默认值改成 Proton，并不等于「所有非 Steam 的 Windows 程序都能跑」。</b>Proton 走的是 <b>API 映射（translation）而不是整机模拟</b>，因此对<b>带内核态反作弊、依赖私有驱动、或深度依赖 Windows 特有服务</b>的程序（部分 DRM、某些专业套件、多数竞技类网游）依然无能为力；此外，<b>默认值只在 Beta 通道先行，正式版才会跟进，而且用户随时可以在「属性 → 兼容性」里把它改回原样、或强制指定某个 Proton 版本 / Steam Linux Runtime。</b>所以合理的预期是「<b>自己添加的小工具、老游戏、独立作品这类程序，开箱即用的概率明显提高了</b>」，而不是「Linux 可以跑一切 Windows 软件了」。
+      </div>
+    </div>
+
   </div>
 <!--PAGE-NAV-BOTTOM-START-->
   <nav class="page-nav bottom" aria-label="日报导航">
@@ -502,7 +529,7 @@
   <!--PAGE-NAV-BOTTOM-END-->
 <div class="footer">
     <p>数据来源：Phoronix | 生成时间：2026-10-08</p>
-    <p>覆盖范围：2026-10-03 ~ 2026-10-07（EDT，国庆假期停更后的合并版）· NVIDIA 615.78.08 Linux 驱动（为 VKD3D-Proton 加入 VK_NV_low_latency2 第 3 版，改善 D3D12 游戏延迟与卡顿、尤其开启帧生成时，并默认让内核接管睡眠时的显存保存）· Valve 的 Timur Kristóf 为老卡 AMD Polaris 实现 RADV 传输队列（修复后 Vulkan CTS 从 50% 失败率变为连续 20 次全过）· Blender 6.0 可能移除 OpenGL（5.0 的 Vulkan 后端趋成熟，虚拟纹理是主要阻碍，Blender 5.5 LTS 或成老平台最后落点）· Mesa 正筹备正式治理模型（拟设「Mesa 委员会」承担冲突解决，新增/移除驱动等争议话题可能交由裁决）· X.Org Server 与 XWayland 又披露 12 个安全漏洞（TrendAI ZDI 借助 AI 发现，含 GLX/XKB/RandR/Glamor 等组件堆溢出与释放后使用，影响 21.1.25 / 24.1.14 之前版本）· Linux 7.4 将支持树莓派 10 英寸 Touch Display 2（MIPI-DSI，Ilitek IL79600A，1200×1920，约 80 美元），并顺带补上 Ryzen AI Max 400「Gorgon Halo」NPU 支持· Linux 7.4 将主线支持 Google Tensor G5 与 Pixel 10 系列（新增 ARCH_GOOGLE，G5 为 1×Cortex-X4 + 5×A725 + 2×A520 与 Imagination PowerVR DXT-48-1536 GPU）· AMD ROCm 10.1 发布（hipFILE 异步快路径与批量 I/O、HIP 支持 NUMA 感知分配、ROCprofiler 内核回放 Beta，升级到 LLVM 24 编译器栈）· AMD 介绍 Zen 6 新特性 IBS Memory Profiler（按访问粒度做轻量内存剖析、追踪源/目标 NUMA 节点，为内核热页检测与迁移提供硬件提示，瞄准 DRAM + CXL 分层内存的 EPYC 服务器）· Meta 工程师在 LPC 介绍为 AMD P-State 引入「动态 governor 驱动 EPP」（按近期繁忙的核心提升每核 EPP，改善 Steam Deck 帧时间尾部与加载时间，评审建议把启发式从驱动上移到 governor）· 高通为 ZRAM 提交 QPaCE 硬件加速驱动（Snapdragon 8 Elite Gen 6「Hawi」内置页压缩引擎，初版聚焦低延迟同步单页路径并引入 qpace-lz4 后端，异步 ring 高吞吐路径尚未实现）</p>
+    <p>覆盖范围：2026-10-03 ~ 2026-10-07（EDT，国庆假期停更后的合并版）· NVIDIA 615.78.08 Linux 驱动（为 VKD3D-Proton 加入 VK_NV_low_latency2 第 3 版，改善 D3D12 游戏延迟与卡顿、尤其开启帧生成时，并默认让内核接管睡眠时的显存保存）· Valve 的 Timur Kristóf 为老卡 AMD Polaris 实现 RADV 传输队列（修复后 Vulkan CTS 从 50% 失败率变为连续 20 次全过）· Blender 6.0 可能移除 OpenGL（5.0 的 Vulkan 后端趋成熟，虚拟纹理是主要阻碍，Blender 5.5 LTS 或成老平台最后落点）· Mesa 正筹备正式治理模型（拟设「Mesa 委员会」承担冲突解决，新增/移除驱动等争议话题可能交由裁决）· X.Org Server 与 XWayland 又披露 12 个安全漏洞（TrendAI ZDI 借助 AI 发现，含 GLX/XKB/RandR/Glamor 等组件堆溢出与释放后使用，影响 21.1.25 / 24.1.14 之前版本）· Linux 7.4 将支持树莓派 10 英寸 Touch Display 2（MIPI-DSI，Ilitek IL79600A，1200×1920，约 80 美元），并顺带补上 Ryzen AI Max 400「Gorgon Halo」NPU 支持· Linux 7.4 将主线支持 Google Tensor G5 与 Pixel 10 系列（新增 ARCH_GOOGLE，G5 为 1×Cortex-X4 + 5×A725 + 2×A520 与 Imagination PowerVR DXT-48-1536 GPU）· AMD ROCm 10.1 发布（hipFILE 异步快路径与批量 I/O、HIP 支持 NUMA 感知分配、ROCprofiler 内核回放 Beta，升级到 LLVM 24 编译器栈）· AMD 介绍 Zen 6 新特性 IBS Memory Profiler（按访问粒度做轻量内存剖析、追踪源/目标 NUMA 节点，为内核热页检测与迁移提供硬件提示，瞄准 DRAM + CXL 分层内存的 EPYC 服务器）· Meta 工程师在 LPC 介绍为 AMD P-State 引入「动态 governor 驱动 EPP」（按近期繁忙的核心提升每核 EPP，改善 Steam Deck 帧时间尾部与加载时间，评审建议把启发式从驱动上移到 governor）· 高通为 ZRAM 提交 QPaCE 硬件加速驱动（Snapdragon 8 Elite Gen 6「Hawi」内置页压缩引擎，初版聚焦低延迟同步单页路径并引入 qpace-lz4 后端，异步 ring 高吞吐路径尚未实现）· Valve Steam 客户端 Beta 将非 Steam 的 Windows 程序默认改用 Proton 运行（本地添加的 exe 不再需要手动指定兼容层），并修复「用浏览按钮更换目标程序后无法启动」、「由外部工具启动的游戏 Stop 按钮关不掉」等 Linux 问题</p>
     <p>关注领域：Linux 图形 · 显示 · 计算</p>
   </div>
 <script>
