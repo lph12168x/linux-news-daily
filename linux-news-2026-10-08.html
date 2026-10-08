@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-08</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 8 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-08.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-09-30.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/NVIDIA-615.78.08-Linux" target="_blank">NVIDIA 615.78.08 Linux 驱动发布：为 VKD3D-Proton 加入 VK_NV_low_latency2 第 3 版，改善 D3D12 游戏的延迟与卡顿（尤其开启帧生成时），并默认让内核接管睡眠时的显存保存</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">NVIDIA 于 <b>10 月 7 日</b>发布 <b>615.78.08</b> Linux 驱动，对通过 <b>VKD3D-Proton</b> 在 <b>Steam Play / Proton</b> 下运行 <b>Direct3D 12</b> 游戏的玩家带来一项实用改进，另含多项修复。<br>
+        <b>核心改进：VK_NV_low_latency2 第 3 版</b><br>
+        · 面向依赖 <b>VKD3D-Proton</b> 的 NVIDIA Linux 玩家，<b>R615</b> 这版驱动加入对 <b>VK_NV_low_latency2 revision 3</b> Vulkan 扩展的支持；<br>
+        · 官方说法是<b>改善 VKD3D-Proton 的延迟与卡顿，尤其是在启用「帧生成（Frame Generation）」时</b>；<br>
+        · VK_NV_low_latency2 的机制是<b>把「渲染队列已排空」的时机提前告知游戏，让游戏据此调度后续的呈现与输入采样</b>，从而缩短从输入到显示的延迟。<br>
+        <b>其他修复</b><br>
+        · 修复游戏 <b>The Last of Us Part II</b> 中观察到的<b>方块状画面损坏</b>；<br>
+        · 更新内核模块，处理<b>某些 SELinux 配置下的问题</b>；<br>
+        · <b>默认启用 NVreg_UseKernelSuspendNotifiers=1</b>——该选项让<b>内核在系统睡眠 / 休眠时自动处理显存保存</b>，不再由驱动自行接管；<br>
+        · 修复<b>分配大于 2GB 的 GPU 页表时可能失败</b>的问题；<br>
+        · 修复与 <b>Wayland color-management-v1 协议</b>配合时，<b>Vulkan HDR 内容可能崩溃</b>的问题。<br>
+        下载与详情见 <a href="https://www.nvidia.com/en-us/drivers/details/280299/" target="_blank">NVIDIA 官网驱动页</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先要看清 VK_NV_low_latency2 到底在优化什么，才能判断这个版本号从 2 升到 3 意味着什么。</b>降低输入延迟的经典难点在于：<b>GPU 是深度流水线的，游戏的逻辑帧和 GPU 的渲染帧之间往往隔着好几帧</b>。游戏如果盲目地继续往下渲染，就会在 GPU 队列里堆积大量已经「过时」的帧——玩家的按键其实早就变了，但屏幕上显示的还是几帧之前的画面。<b>VK_NV_low_latency2 提供的是「睡眠 / 唤醒」语义：让 CPU 侧提交下一批工作之前，先等 GPU 队列排空到合适的位置</b>，从而把「排队深度」压下来。<b>版本号从 2 到 3 通常意味着接口在不改变使用方式的前提下扩展了能力或修正了语义</b>，而这次直接受益的是 <b>帧生成</b>——这恰好是延迟问题最棘手的地方。<br>
+        <b>② 「尤其在开启帧生成时」这句话，点出了这个改进最关键的价值：帧生成天然与低延迟相冲突。</b>帧生成的做法是<b>在两张真实渲染的帧之间，由算法插入一张「生成帧」</b>，因此显示的帧率往往翻倍。但它带来一个副作用：<b>为了给插帧留出空间，管线里会多出额外的缓冲与延迟</b>，玩家可能感觉「帧数很高但手感发飘」。<b>低延迟扩展与帧生成配合时，关键是要让驱动知道「哪些帧是真实的、哪些是生成的」，以便在真实的输入采样点上做同步</b>，而不是被生成帧打乱节奏。<b>这条经验对做实时交互系统的团队普遍适用：当一项「让画面更顺滑」的技术（插帧、平滑、补偿）被引入时，几乎必然要以延迟为代价，二者必须通过显式的同步信号来调和，而不能各自为政。</b><br>
+        <b>③ 表面上最不起眼、却可能是最影响日常使用的一项，是默认打开 NVreg_UseKernelSuspendNotifiers=1。</b>它的含义是：<b>系统进入睡眠（S3）或休眠（hibernate）时，显存内容的保存不再由 NVIDIA 驱动独占处理，而是改用内核提供的「挂起通知」机制交给内核统一协调。</b>这个改动之所以重要，是因为<b>睡眠 / 恢复一直是 Linux 上独立显卡最脆弱的一环</b>——显存容量大、保存与恢复耗时长、与系统其余部分的时序必须严格对齐；一旦驱动「自己另外做一套」，就很容易和其他子系统（如内存管理、PCIe 电源管理）的时序打架，表现为恢复后黑屏、花屏或卡死。<b>把它交给内核统一编排，本质上是把「时序正确性」的责任收敛到单一权威处。这是一个很有代表性的取舍：当某个组件自己实现的机制开始与全局机制冲突时，正确的修法往往不是把局部机制改得更聪明，而是让它承认全局机制的存在。</b><br>
+        <b>④ 剩下两条修复（&gt;2GB 页表分配、Wayland 色彩管理下的 HDR 崩溃）单独看都很「小众」，合起来却揭示了一类正在变多的风险来源——「放大」。</b>页表大于 2GB，通常出现在<b>大显存、长地址空间或高并发多上下文</b>的场景；而 HDR + <b>color-management-v1</b> 组合，则出现在<b>现代 Wayland 桌面 + 新显示器</b>的路径上。<b>两者的共同点是：功能本身早已存在且「能用」，问题只在规模、组合或新协议接入后才暴露。</b>这给出一条实用的工程判断——<b>当一个系统稳定运行很久之后，新出现的缺陷往往不在「有没有这条功能」，而在「这条功能在更大的规模、更新的组合下是否仍然成立」；因此测试策略的重心应当从「功能覆盖」逐步转向「规模与组合覆盖」。</b>对用户而言，这也解释了为什么「更新驱动」常常能修好一些看似毫不相关的问题：它修的往往不是功能，而是边界。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/More-Reliable-Vulkan-Polaris" target="_blank">Valve 的 Timur Kristóf 为十年老卡 AMD Polaris（RX 400/500）实现 RADV 传输队列：修复后 Vulkan CTS 从 50% 失败率变为连续 20 次全过，老显卡上的 Vulkan 可靠性显著提升</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body"><b>Valve Linux 图形团队的 Timur Kristóf</b> 近年在<b>改善老款 AMD GPU 的 Linux 支持</b>上做了大量工作——包括把 <b>GCN 1.0 / 1.1</b> 时代硬件迁移到现代 <b>AMDGPU</b> 内核驱动。<b>最新的工作是增强 RADV Vulkan 驱动对老款 Radeon RX 400/500「Polaris」显卡的支持。</b><br>
+        <b>这次做了什么</b><br>
+        · Timur 正在为 <b>Polaris GPU</b> 实现<b>传输队列（transfer queue）支持</b>，用于执行<b>异步数据拷贝</b>；<br>
+        · 昨日合入的是<b>一批准备性改动与修复</b>，其中最直接的效果是<b>让 Polaris 上的 Vulkan 更可靠</b>；<br>
+        · Timur 在<a href="https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/44800" target="_blank">合并请求（!44800）</a>中原话写道：<b>「有了这些修复，我得以在我们的 CI 那台 Polaris 机器上，用传输队列实现连续完成 20 次完整的 VK CTS 压力测试。（没有这些修复时，它的失败率是 50%。）」</b><br>
+        · 也就是说，这些改动让这批<b>十年前的 RX 400/500 级 GPU</b>能够<b>可靠地跑通 Vulkan 一致性测试套件（CTS）</b>。<br>
+        <b>当前状态与限制</b><br>
+        · 代码位于 <b>Mesa 26.3-devel</b>；<br>
+        · 传输队列支持<b>同时面向 Polaris 与 Hawaii</b>，开发分支为 <code>radv_sdma_legacy</code>；<br>
+        · 该功能<b>尚未排队进主线 Mesa</b>，且目前需要环境变量 <code>RADV_EXPERIMENTAL=transfer_queue</code> 才能启用。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「传输队列」这个名词听起来是性能特性，但这次真正的产出其实是「可靠性」——理解这一点的关键，是把它和显卡的引擎分工联系起来。</b>现代 GPU 内部有多个<b>独立的硬件队列</b>：图形队列负责渲染，计算队列负责通用计算，而<b>传输（拷贝）队列专门负责在显存与系统内存之间搬数据</b>。<b>如果只按「一个队列串行做所有事」，那么一次大的纹理上传或缓冲拷贝就会阻塞后面的渲染命令</b>，出现卡顿。支持独立的传输队列后，拷贝可以在后台并行进行。<b>但「支持一条新队列」是一件牵动全局的事</b>：它改变了命令提交、同步栅栏、内存依赖的整套假设，任何一处处理不当都会在压力场景下暴露为不确定性错误——这正是 CTS 失败率高达 50% 的来源。<b>所以这条新闻的实质是：把一条早已存在于别处的并发路径，正确地移植到一个新的硬件代际上。</b><br>
+        <b>② 用「50% 失败率 → 连续 20 次全过」来描述进度，是一个非常有信息量的表述方式，值得单独琢磨。</b>它没有给出任何「性能提升 X%」的数字，而是给了一个<b>稳定性指标</b>。原因在于：<b>对于涉及并发与异步拷贝的改动，最有价值的结论不是「跑得更快」，而是「结果是否确定」。</b>一次压力测试通过纯属运气不能说明问题；<b>只有当失败率从「掷硬币」降到「连续 20 次不出错」，才说明底层的时序假设已经自洽。</b>这条经验可以直接搬到任何做并发系统的场景：<b>当你在改造一条异步路径时，衡量标准应当是「重复压力测试下的失败率」而不是「单次运行的耗时」——因为带有竞态的加速是没有意义的加速。</b><br>
+        <b>③ 这件事最值得留意的背景，是它的发起方不是硬件厂商，而是 Valve。</b>RX 400/500 是十年前的显卡，<b>对 AMD 而言，为它们持续投入的边际收益已经很低</b>；但对 Valve 而言，<b>这些卡仍然大量存在于 Steam 用户手中</b>，能否在 Linux 上稳定运行直接关系到 SteamOS / Proton 生态的覆盖面。<b>于是出现了一个很典型的分工：由「有商业动机维护存量」的第三方接手本该由原厂承担的维护工作。</b>这条模式对做平台与生态的人有直接启发：<b>当某个组件的原厂退出维护、但用户基数仍然庞大时，机会往往落在「从存量用户中获益的一方」身上</b>——它不需要说服原厂，只需要自己把代码写好并推上游。<b>同时也要看到它的脆弱性：这种维护依赖单一厂商的善意与投入，一旦其战略调整就可能中断，因此在评估可靠性时不能把它等同于原厂支持。</b><br>
+        <b>④ 最后，把「尚未进主线、且需要实验性环境变量才能启用」这一点看清楚，能避免不必要的期待。</b>这种状态说明改动<b>仍然被视为实验性</b>：它还没有通过上游维护者关于「长期可维护性」的审视，也还没有被证明在足够多样的硬件与负载上稳定。<b>对使用者的实际含义是：短期内不要指望发行版默认启用它；它的价值目前主要在于「为后续正式合入铺路」，以及为同类老硬件的移植提供可复用的经验。</b>更一般地说，<b>开源硬件支持的推进有一种稳定的次序——先让功能「正确且确定」，再让它「可默认启用」，最后才谈「性能优化」；跳过前两步直接追求第三步，最终都要返工。</b>这条次序与本期第一条 NVIDIA 驱动的思路其实是一样的：先保证边界情形不出错，性能才有意义。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Blender-6.0-May-Remove-OpenGL" target="_blank">Blender 6.0 可能移除 OpenGL 支持：Blender 5.0 的 Vulkan 后端已趋成熟，官方提案在 6.0（2027 年 11 月）弃用并删除 OpenGL，虚拟纹理是当前主要阻碍</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">随着 <b>Blender 5.0</b> 的 <b>Vulkan API 支持</b>日趋成熟，Blender 开发者正在考虑在 <b>Blender 6.0</b> 中<b>移除 OpenGL 支持</b>。<br>
+        <b>当前状态：只是提案，尚未决定</b><br>
+        · 官方<b>尚未作出决定</b>，但关于<b>弃用（deprecate）OpenGL 并在 Blender 6.0 移除</b>的讨论正在进行；<br>
+        · 昨日（10 月 5 日）的 <b>EEVEE 与 Viewport 模块会议纪要</b>确认了这一点，原文写道：<b>「内部提案：在 Blender 6.0（2027 年 11 月）移除 OpenGL 支持。尚未决定，因为虚拟纹理（virtual texturing）会是一个阻碍。」</b><br>
+        <b>关键阻碍：虚拟纹理</b><br>
+        · <b>虚拟纹理</b>被认为是移除 OpenGL 的<b>主要阻碍</b>——也就是说，只有当虚拟纹理在 Vulkan 后端上可用，才具备移除 OpenGL 的条件。<br>
+        <b>时间线与对老平台的影响</b><br>
+        · <b>Blender 5.5 是长期支持（LTS）版本</b>，因此它很可能会成为<b>那些仅支持 OpenGL 的老旧平台能够继续使用 Blender 的最后一个版本</b>；<br>
+        · 文章也指出：<b>到了 2027 年底仍不支持 Vulkan 的系统，本身已经相当老旧</b>，因此这一取舍在时间上是站得住脚的。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① OpenGL 与 Vulkan 的差别，本质上是「驱动替你做事」和「你自己安排一切」这两种哲学的差别——理解这点才能明白为什么迁移会拖这么久。</b>OpenGL 是<b>状态机式</b>的接口：应用设置一堆全局状态，然后发出绘制命令，<b>驱动负责编排、校验并在内部做大量翻译工作</b>，灵活但开销隐蔽、并行能力有限，也难以预知性能。<b>Vulkan 则把管理权交还给应用</b>：需要显式地创建管线、管理内存、录制并提交命令缓冲、处理同步与队列——<b>代码量大得多，但行为可预测、可多线程、可对性能负责</b>。<b>对一个已经建立在 OpenGL 假设之上的大型应用（如 Blender 的视口与 EEVEE 渲染器），迁移不是「换个后端」那么简单，而是要把整套资源与状态管理模型重写。</b>所以「Vulkan 后端已趋成熟」这句话的背后，是数年量级的工程投入。<br>
+        <b>② 「虚拟纹理是阻碍」这个理由非常具体，它揭示了移除一条旧路径的真正条件不是「新路径能用」，而是「新路径能覆盖老路径的全部能力」。</b>虚拟纹理的核心思想是<b>把远超显存容量的巨大纹理当作「虚拟资源」来管理：按需把用到的部分（tile/mip）流式载入显存，用不到的换出</b>，从而让超大贴图或虚拟场景可行。它之所以与图形 API 强相关，是因为<b>它需要精确控制纹理的驻留、页表映射与分页反馈，而这些恰好是低层 API 才能提供的机制</b>。<b>难点在于：在 OpenGL 上，虚拟纹理往往是靠扩展或额外技巧「凑」出来的；迁移到 Vulkan 后，必须用 Vulkan 的方式重新实现同一套语义，并保证渲染结果一致。</b>这带来一条通用的判断规则：<b>要淘汰一条旧技术路径，必须先把「旧路径上那些非主流但真实存在的能力」逐一在新路径上等价实现——否则淘汰只会以极少数用户的功能缺失为代价，而被长期拖延。</b><br>
+        <b>③ LTS 版本在这里扮演了一个常被低估的角色：它是「停止支持」这一动作的缓冲垫。</b>把 <b>Blender 5.5 LTS</b> 作为分界点，意味着<b>使用老旧硬件的用户仍能获得一个被长期维护的版本</b>，从而把「技术栈升级」与「被强制断供」两件事解耦：<b>软件可以继续演进，用户也有时间规划升级，而不会在某次更新后突然无法使用。</b>这种「LTS 承接旧平台」的安排，是成熟开源项目处理破坏性变更的标准做法，值得任何在做长期维护的产品借鉴——<b>破坏性变更的正确姿势不是「公告后直接删除」，而是「提供一个被长期支持的旧版本作为落脚点」，把风险从「用户被动承受」变成「用户主动决策」。</b><br>
+        <b>④ 从行业视角看，这是整个 Linux 桌面生态「脱 GL 入 VK」大迁移中的一个节点，而它说明这条路线已经走到了应用层。</b>过去几年，<b>合成器、驱动、工具链（如 Zink 把 OpenGL 翻译到 Vulkan）</b>等基础设施层已经大量转向 Vulkan；<b>当像 Blender 这样体量的创作软件开始认真讨论「删除 OpenGL」，意味着迁移已经从「底层就绪」推进到了「上层应用愿意放弃兼容」。</b>这对使用者的现实含义有两面：<b>一方面，新硬件与新特性（更好的多线程、更低的开销）会更快落地；另一方面，「老硬件 + 老驱动」的组合会加速失去支持。</b>从趋势上看，这类迁移最终会形成一条分工清晰的层次——<b>原生 Vulkan 用于新硬件，Zink 之类的翻译层用于过渡期，而陈旧的纯 OpenGL 硬件则被自然淘汰，由 LTS 版本兜底。</b>评估自己是否需要跟进时，真正要问的不是「我的卡支持哪个 API」，而是「我的卡在 2027 年还能拿到被维护的驱动吗」。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-Governance-Model" target="_blank">Mesa 正筹备正式治理模型：长期依赖非正式共识的做法在开发者倦怠与争议改动上显露短板，拟设立「Mesa 委员会」主要承担冲突解决，新增/移除驱动等争议话题可能交由委员会裁决</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Mesa 3D 驱动栈多年来<b>一直依赖非正式的共识机制运作，而没有正式的治理模型</b>。但在某些场合，这种非正式的处理方式<b>表现并不理想</b>，因此上游 Mesa 开发者如今正考虑<b>建立正式的治理模型</b>。<br>
+        <b>动机</b><br>
+        · 提案明确提及<b>开发者的倦怠（burn-out）</b>，以及<b>Mesa 开发者有时没有足够的心力去「顶回」有争议的改动提案</b>；<br>
+        · 因此正在考虑设立一个<b>委员会（council）</b>来治理 Mesa 开发。<br>
+        <b>委员会的角色定位</b><br>
+        · 该委员会<b>主要聚焦于冲突解决（conflict-resolution），而不是主动驱动决策</b>；<br>
+        · <b>Mesa 的日常开发实践大体保持不变</b>，仍以<b>共识</b>为基础；<br>
+        · <b>只有在无法达成共识、或出现其他议题时</b>，才会求助 Mesa 委员会；<br>
+        · 可能被提交给委员会裁决的话题包括：<b>新增或移除驱动、遗留软件支持与老驱动移除，以及其他有争议的特性</b>。<br>
+        <b>进展</b><br>
+        · 目前<b>尚无具体提案提交</b>——该话题只是上周在<b>多伦多 XDC 2026</b> 上被提出；<br>
+        · 相关幻灯片：<a href="https://indico.freedesktop.org/event/12/contributions/577/attachments/381/547/mesa-governance.pdf" target="_blank">mesa-governance.pdf</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先说清楚 Mesa 是什么，才能理解为什么「治理模型」这件事本身值得报道。</b>Mesa 并不是某一家公司的产品，而是<b>Linux / 开源世界几乎所有图形驱动的公共基础设施</b>：<b>Intel、AMD、NVIDIA（NVK/Nouveau）、高通、Arm、Apple（Asahi）等图形栈，以及 OpenGL、Vulkan、OpenCL 等 API 的开源实现，都建立在 Mesa 之上</b>。它的维护者来自数十家公司与独立贡献者，<b>却长期采用「共识 + 无正式章程」的方式运转。</b>这意味着它同时承担了两项矛盾的任务：<b>既要作为一个多方协作的开源项目保持开放性，又要作为事实标准被长期依赖、保持稳定与可预期。</b>当项目规模小、参与者彼此熟悉时，非正式共识是高效的；<b>而当它与整个行业的利益深度绑定后，决策过程本身就成为需要被设计的东西。</b><br>
+        <b>② 把委员会的职责限定在「冲突解决而非主动决策」，是一个经过深思熟虑的设计，也是最值得学习的一点。</b>治理机制常见的失败模式有两种：<b>一是完全依赖共识，导致在分歧发生时陷入僵局</b>；<b>二是设立一个权力过大的机构，反而抑制了平时的讨论与自组织。</b>这个提案刻意避开了后者：<b>它把委员会定位为「最后的裁判」而非「日常的管理者」，只有在共识机制失灵时才介入。</b>这样做的好处是<b>保留了共识机制的优点（决策贴合实际、参与者有主人翁感），同时补上了「僵局时如何收场」这一缺口。</b>这条经验可以推广到任何多方协作的组织：<b>一个有效的仲裁机制的标志，不是它平时有多活跃，而是它在「其他机制都失效」时能否给出一个可被各方接受的结论；因此它的触发条件必须明确、且尽量少用。</b><br>
+        <b>③ 提案把动机明确归结为「开发者倦怠」与「无力顶回有争议的改动」，这一点比机制设计本身更值得正视。</b>在任何长期开源项目中，<b>有一类成本是隐形的：维护者需要反复亲手去拒绝那些技术上可行、但方向上不合适的提案</b>。单独一次拒绝并不费力，但当它变成高频、且每次都要面对提案者的坚持与社区的争论时，<b>累积的消耗会转化为倦怠——而倦怠的直接后果是维护者离开，这是开源项目最不可逆的损失。</b><b>把「该不该拒绝」这个判断交给一个有授权的委员会，本质上是在把「政治成本」从个人转移到一个制度化的角色上。</b>对任何依赖关键维护者的组织，这是一条很实用的洞察：<b>当某个关键角色同时承担技术判断与人际对抗两件事时，最该做的不是劝他「更坚强」，而是为「对抗」这件事建立一个不需由某个人独自承担的出口。</b><br>
+        <b>④ 提案中列举的那些「可能要交给委员会的话题」，恰好勾勒出开源图形栈当前真正的痛点所在。</b>注意这些话题的共同点：<b>「新增或移除驱动」「老驱动与遗留软件支持的取舍」——它们不是关于「怎么写代码」，而是关于「支持谁、放弃谁」。</b>这类问题的特点是<b>技术上并不复杂（往往写代码不是问题），但牵涉到用户、厂商与维护者之间无法两全的利益</b>——保留老驱动意味着长期维护负担，移除则意味着部分用户失去支持。<b>随着硬件代际快速迭代，这类「资源有限、必须取舍」的决策只会越来越多。</b>由此可以预判一个趋势：<b>未来开源基础设施的治理重点，会越来越多地落在「有限维护资源如何在用户群体间分配」上，而不是纯粹的技术路线之争；衡量一个治理模型是否成熟，也应当看它能否就「放弃」给出被接受的答案，而不只是推动「新增」。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/X.Org-12-New-Issues-2026" target="_blank">X.Org Server 与 XWayland 又披露 12 个安全漏洞：借助 AI 发现，含 GLX/XKB/RandR/Glamor 等组件的堆溢出、越界读写与释放后使用，影响 21.1.25 / 24.1.14 之前版本</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">在 <b>AI 的协助</b>下，<b>又一批影响传统 X.Org Server 与 XWayland 的安全漏洞</b>于当晚公开。<br>
+        <b>披露方与背景</b>：<b>TrendAI Zero Day Initiative</b> 发现了这 <b>12 个</b>影响传统 X.Org Server 代码库与 XWayland 的安全漏洞。该机构过去也披露过大量 X.Org 安全问题，文章还援引了 2013 年一位研究者的评语——<b>X.Org 的安全性「比表面看起来还要糟糕」</b>。<br>
+        <b>本轮漏洞清单</b><br>
+        · <b>CVE-2026-88812</b>：XKB SetGeometry TextDoodad <b>双重释放</b>；<br>
+        · <b>CVE-2026-93515</b>：Present 扩展跨窗口通知 <b>释放后使用</b>；<br>
+        · <b>CVE-2026-93516</b>：XInput 被动抓取 modifierDevice <b>释放后使用</b>；<br>
+        · <b>CVE-2026-93517</b>：GLX RenderLarge <b>堆缓冲区溢出</b>；<br>
+        · <b>CVE-2026-93518</b>：XKB ResizeKeyType <b>数值截断</b>；<br>
+        · <b>CVE-2026-93519</b>：XFixes 指针屏障事件列表 <b>缓冲区溢出</b>；<br>
+        · <b>CVE-2026-93520</b>：XKB ChangeKeycodeRange <b>堆越界写</b>；<br>
+        · <b>CVE-2026-93521</b>：RandR ChangeProviderProperty <b>堆缓冲区溢出</b>；<br>
+        · <b>CVE-2026-93522</b>：Glamor CopyArea CPU-FBO <b>堆缓冲区溢出</b>；<br>
+        · <b>CVE-2026-93523</b>：XInput2 PassiveUngrabDevice 修饰键 <b>越界写</b>；<br>
+        · <b>CVE-2026-93524</b>：XKB SetMap 键宽 / 动作数不同步 <b>越界读</b>；<br>
+        · <b>CVE-2026-93536</b>：GestureBuildSprite <b>释放后使用</b>。<br>
+        <b>影响范围与细节</b>：上述问题存在于 <b>xorg-server-21.1.25 与 xwayland-24.1.14 之前的版本</b>中；文章指出 X.Org Server 代码库中<b>「大量的释放后使用、缓冲区溢出与越界读写仍然长期存在」</b>。完整信息见<a href="https://lists.x.org/archives/xorg/2026-October/062294.html" target="_blank">X.Org 邮件列表公告</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「借助 AI 又找出 12 个」这句看似轻描淡写的表述，其实指向软件维护中一个正在成形的转变。</b>传统上，这类老代码的漏洞发现高度依赖人力审计或针对性模糊测试，<b>而人力审计的成本随代码规模与历史增长而快速上升，因此像 X.Org Server 这样庞大、历史悠久、边界情形极多的代码库，长期存在大量「已知有风险但没有被具体找出」的位置。</b><b>当 AI 能以较低边际成本去系统性地扫描这些位置时，结果往往不是「几个新发现」，而是「一批同时被发现」——这正是本期一次披露 12 个 CVE 的结构性原因。</b>由此可以推断一个对运维与安全团队有直接影响的趋势：<b>成熟老代码库的「漏洞披露密度」在短期内会明显上升，但这并不必然意味着软件变差了，而可能只是「发现能力」变强了；相应地，对「老旧但仍在用的基础设施」进行常规补丁跟踪的重要性，会比过去更高，而不是更低。</b><br>
+        <b>② 把这些漏洞的组件归类看，会发现它们高度集中在「输入」与「扩展」这两类代码上，这不是巧合。</b>清单里的 XKB（键盘映射）、XInput / XInput2（输入设备与抓取）、XFixes（指针屏障）、Present（呈现同步）、RandR（分辨率与显示提供者）、Glamor（把绘图加速到 GPU）、GLX（OpenGL 胶水层）——<b>它们的共同点是：都接收来自客户端的、结构复杂且长度可变的请求，并且需要解析、分配、再回传给客户端。</b><b>凡是「解析外部提供的复杂结构 + 手动管理内存」的地方，都是释放后使用与越界问题的天然温床</b>，因为在出错路径上极易漏掉清理或漏掉边界检查。<b>这条规律对任何写解析器的团队都是通用警告：接收变长结构并据此分配内存的代码，必须把「错误路径上的资源回收」与「长度字段的可信性」当作一等公民来审查，而不是依赖正常路径的正确性。</b><br>
+        <b>③ 值得注意的是，这些漏洞同时影响 X.Org Server 与 XWayland——这恰好说明「老协议的代码」会以何种方式长期存活在「新架构」里。</b>在 Wayland 桌面中，<b>原生客户端走 Wayland 协议，但大量尚未迁移的 X11 应用仍通过 XWayland 这个「兼容层」运行</b>，而 XWayland 复用的正是 X.Org Server 的同一套协议实现与代码。<b>结果就是：即使你的桌面已经完全转向 Wayland，X11 的解析代码仍然在处理不可信输入，攻击面并没有因为「改用 Wayland」而消失。</b>这对架构演进是一个重要提醒：<b>「替换掉入口」不等于「消除了旧代码的风险」——只要兼容层还在运行，旧实现的每一个解析缺陷都仍然可被触达。</b>因此在做「新协议替换旧协议」的迁移时，安全评估必须把兼容层纳入范围，并把它视为「仍在生产运行的老系统」，而不是「过渡期的临时产物」。<br>
+        <b>④ 最后，从 2013 年那句「X.Org 的安全性比表面看起来还要糟糕」到今天的 12 个新 CVE，这条时间线本身就值得思考。</b>十多年过去，同样的缺陷类型（释放后使用、缓冲区溢出、越界读写）仍在这一代码库中持续出现，说明<b>这类问题不是「一次修好就结束」的，而是与代码的存续时间同长——只要老代码还在被维护和扩展，新的缺陷就会随新特性一同被引入。</b>更现实的一层是：<b>X.Org Server 的 X11 协议本身早已进入「维护为主、极少新增」的阶段，却依然在持续产出安全修复，这意味着使用者不能指望「它很久没大更新所以应该没问题」。</b>对运维而言，可直接落地的结论有两条：<b>一是把 xorg-server 与 xwayland 的版本更新视为安全更新的常规项（文中已给出 21.1.25 / 24.1.14 这一修复分界）；二是对于暴露在多用户或远程场景下的系统，应默认 X11 会话的协议解析是不可信输入面，优先考虑用 Wayland 原生会话或访问控制来缩小暴露范围。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://phoronix.com/news/Linux-74-RPi-10-Touch-Display-2" target="_blank">Linux 7.4 将支持树莓派 10 英寸 Touch Display 2：DRM-Misc 在合并窗口前补上该 MIPI-DSI 面板（Ilitek IL79600A，1200×1920，约 80 美元），并顺带补上 Ryzen AI Max 400「Gorgon Halo」NPU 支持</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-npu">NPU 计算</span>
+      </div>
+      <div class="news-body">随着 <b>Linux 7.4 合并窗口</b>临近，<b>新特性进入 DRM-Next 的截止时间也快到了</b>。本周又有一轮 <b>DRM-Misc</b> 改动被合入，其中包含若干<b>新硬件支持</b>与一些<b>赶在截止前的收尾项</b>。<br>
+        <b>最受关注的：树莓派 10 英寸 Touch Display 2</b><br>
+        · 该显示屏于<b>今年夏天发布</b>，如今随着设备树改动就位，<b>将在 Linux 7.4 起与主线内核良好协作</b>；<br>
+        · 硬件规格：<b>10 英寸 MIPI-DSI TFT LCD 面板</b>，控制器为 <b>Ilitek IL79600A</b>；<br>
+        · <b>分辨率 1200 × 1920</b>，支持<b>多点触控</b>，零售价约 <b>80 美元</b>。<br>
+        <b>同一批改动中的其他内容</b><br>
+        · <b>补上 Ryzen AI Max 400 系列「Gorgon Halo」的 NPU 支持</b>——这项能力此前似乎被遗漏；<b>只需一个新的设备 ID</b>即可支持该 <b>AIE2 Revision 9</b> NPU；<br>
+        · <b>Renesas DRM 驱动</b>新增对 <b>RZ/G3L SoC</b> 的支持。<br>
+        相关改动来自本周的 <a href="https://lore.kernel.org/dri-devel/20261001120401.GA491855@linux.fritz.box/" target="_blank">drm-misc-next 拉取请求</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「一块消费级显示屏通过设备树被主线支持」听起来像小事，但它恰好是嵌入式 Linux 中最典型、也最难标准化的一类工作，值得说清为什么难。</b>显示屏不是即插即用的标准设备：<b>它由一块面板加上一个控制器组成，上电、复位、时序参数、初始化寄存器序列往往因型号而异，且很少被完整公开</b>。对 MIPI-DSI 面板尤其如此——<b>几乎所有面板都需要一段「不透明的初始化序列」才能被正确点亮，而这段序列通常来自厂商、缺乏文档。</b>因此「支持一块新屏」在实践中意味着：<b>要拿到正确参数、写出 Device Tree 描述、并确保内核在正确的时序下完成上电与初始化。</b><b>主线内核愿意为一块面向爱好者的显示屏纳入这套支持，说明树莓派这类平台在 Linux 生态中已经获得了接近「一等公民」的待遇</b>——它的硬件变动会被上游认真对待，而不是停留在厂商自维护的补丁里。<br>
+        <b>② 与「新 panel 支持」并排出现的「补上 Gorgon Halo NPU 的一个设备 ID」，构成了一组很有对照意义的例子：同一次 PR 里，一边是数百行的时序与设备树工作，另一边只需要一行设备 ID。</b>这种反差恰恰反映了内核支持工作的真实分布：<b>有些硬件之所以「没被支持」，是因为不了解它；而另一些之所以「没被支持」，纯粹是因为「没人注意到它存在」。</b>文中用「似乎是此前被遗漏了」来描述 Gorgon Halo 的 NPU，正是后者——<b>硬件本身在架构上早就兼容（只差一个 ID），但缺少一次正式的登记，于是用户无法使用。</b>这条经验对做驱动与平台适配的人很实用：<b>在排查「某硬件为何用不了」时，应当先区分「能力缺失」与「登记缺失」——后者往往只需极小改动即可解决，却常常因为被误判为前者而长期搁置。</b><br>
+        <b>③ 这批改动出现在「合并窗口前的最后一批 DRM-Misc」，时机本身也说明了内核发布流程的一个运作特征。</b>Linux 的每个版本周期里，<b>新功能必须在合并窗口开启前进入相应的子系统树（这里是 DRM-Next），否则就要等下个周期</b>。因此窗口前的最后阶段，<b>出现的内容往往是「小而确定」的改动——面板设备树、设备 ID、SoC 支持这类风险可控、容易验证的项目，而不是大的架构变更。</b><b>对使用者的启示是：如果你想判断某个硬件支持「什么时候能到」，最有价值的信号不是厂商公告，而是「它有没有赶上某个合并窗口」</b>；而一旦错过，成本就是以「一个内核周期（约两到三个月）」为单位的等待。这也解释了为什么社区对「截止日期」格外在意。<br>
+        <b>④ 把这两项放在一起看，能读出一条关于 Linux 硬件支持广度的结论。</b>同一次提交里同时容纳了<b>面向爱好者创客的显示配件（树莓派触摸屏）</b>与<b>面向高端 AI PC 的 XPU（Gorgon Halo NPU）</b>，覆盖了从几十美元配件到高端 SoC 的极大跨度。<b>这种「广度」不是偶然：它来自一个由厂商、社区与爱好者共同参与的分布式流程——任何人都可以提交支持代码，只要它能通过评审。</b><b>这与闭源平台形成鲜明对比：在那里，「要不要支持某硬件」是一个商业决策；而在主线内核里，它更多是一个「有没有人把代码写好」的问题。</b>对普通用户的现实含义是：<b>当你在 Linux 上发现某硬件不被支持时，它更可能是「尚未有人做」而非「被决定不做」——这条判断既解释了为何一些小众硬件反而支持良好，也说明了为何推动上游支持的可行路径是「提交代码 / 提供硬件」，而不是「等待厂商发善心」。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Google-Tensor-G5" target="_blank">Linux 7.4 将主线支持 Google Tensor G5 与 Pixel 10 系列：新增 ARCH_GOOGLE 架构，为 Pixel 10 / Pro / Pro XL 添加初始设备树，G5 采用 1×X4 + 5×A725 + 2×A520 与 Imagination PowerVR DXT-48-1536 GPU</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body"><b>早在去年就有让主线 Linux 内核在 Pixel 10 设备上启动的补丁</b>，如今这些 <b>Google Pixel 10 设备树与 Tensor G5 SoC 支持</b>终于要在 <b>Linux 7.4</b> 主线化。<br>
+        今天发出的<b> SoC 树拉取请求</b>引入了 <b>ARCH_GOOGLE</b>，并加入 <b>Tensor G5 SoC 家族</b>以及 <b>Google Pixel 10（Frankel / Blazer / Mustang）设备的初始设备树文件</b>。<br>
+        <b>拉取请求原文要点</b><br>
+        · <b>「为 Google Tensor G5（Laguna）SoC 家族引入新的 ARCH_GOOGLE。最早的设计（Google GS101）是三星 SoC 的衍生物，因此曾归入三星 SoC；但 G5 走了自己的路，与三星没有共同点，因此需要新的 ARCH_GOOGLE 符号。当前上游支持的 SoC 用于 Google Pixel 10 手机，并加入其三个变体的基础支持（Pixel 10、Pixel 10 Pro、Pixel 10 Pro XL）。」</b><br>
+        <b>Tensor G5 硬件规格</b><br>
+        · <b>CPU</b>：<b>1 个 Cortex-X4 大核 + 5 个 Cortex-A725 中核 + 2 个 Cortex-A520 小核</b>；<br>
+        · <b>GPU</b>：<b>Imagination PowerVR DXT-48-1536</b>；<br>
+        · 支持 <b>LPDDR5X</b> 内存，并配备<b>第 4 代 TPU</b>。<br>
+        因此，关心 <b>Tensor G5 与 Pixel 10 / Pixel 10 Pro / Pixel 10 Pro XL 能否跑主线内核</b>的人，可以期待即将到来的 <b>Linux 7.4</b> 周期。相关讨论见<a href="https://lore.kernel.org/lkml/20261005101657.34571-2-krzk@kernel.org/" target="_blank">内核邮件列表</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「为了一个 SoC 新增一个架构符号（ARCH_GOOGLE）」这件事，比它字面上看起来更有分量，因为它牵涉到内核如何组织「设备家族」这一基础问题。</b>内核里的 <code>ARCH_*</code> 符号，本质上是在回答<b>「这块芯片和谁共享代码」</b>：如果两个 SoC 的启动流程、时钟、电源、引脚控制等基础实现高度相似，就可以归入同一个架构目录、共享大量代码。<b>Google 早期的 Tensor（GS101）此前被归到三星架构下，正是因为它是三星 SoC 的衍生物、共享同一套基础。</b>而 G5「走了自己的路」，意味着它在这些最底层的部分已经不再兼容——<b>这时候「归类」就不再是组织上的偏好，而是技术上的必然：强行复用只会带来维护负担与隐患。</b>由此可以得到一条对平台架构的判断规则：<b>「归类」的依据应当是「共享多少底层实现」，而不是「属于哪个品牌或产品线」；当底层实现出现分化时，及时拆分出独立的架构符号，是避免长期技术债的主动选择。</b><br>
+        <b>② G1 到 G5 的这条演进线，其实是自研芯片的一条典型路径，值得把它和软件侧的后果连起来看。</b>从「基于成熟 SoC 改」到「完全自研」，中间要跨越<b>CPU/GPU 组合、内存子系统、外设接口乃至电源管理</b>等整条链路。<b>对软件而言，这种转变的现实代价是：此前可以「继承」的底层代码，现在必须重新编写与验证——而这恰恰是「主线支持」需要数年、且必须从头做设备树的原因。</b>文章强调「早在去年就有补丁」，正说明这条路径的周期之长。<b>它的启发在于：硬件自研带来的自由度，最终都会以「软件适配成本」的形式付账；因此在评估自研收益时，必须把「从零建立上游支持所需的年数」计入成本，而不是只看硬件本身的性能提升。</b><br>
+        <b>③ 在具体规格里，GPU 的归属是本条最值得图形从业者注意的地方：G5 用的是 Imagination PowerVR DXT-48-1536，而非主流开源栈中常见的 Arm Mali 或高通的 Adreno。</b>这带来一个实际后果：<b>其开源驱动依赖 Imagination 提供的内核驱动（DRM）与 Mesa 中的 PowerVR 后端（PVR），而这条路径历来在开源生态中相对薄弱、推进较慢。</b>相比之下，<b>Arm Mali 有 Panfrost/PanVK 这样的成熟开源实现，高通 Adreno 有 Freedreno/Turnip，NVIDIA 有 Nouveau/NVK——这些都有着活跃的社区与厂商投入。</b>因此这条新闻对 Linux 图形生态的含义是双向的：<b>一方面，Google 设备进入主线意味着 Pixel 上跑 Linux 的可能性更进一步；另一方面，「能启动」与「图形可用」之间仍隔着 Imagination 开源栈的成熟度这道坎。</b>这条区分对任何评估「某设备能否良好运行 Linux」的人都适用：<b>SoC 主线化解决的是「能不能开机」，而「用得爽不爽」取决于 GPU、摄像头、调制解调器等各子系统的开源驱动是否同时到位——两者进度往往相差很远，不能混为一谈。</b><br>
+        <b>④ 最后，从更宏观的角度看，这条新闻是「手机 SoC 进入 Linux 主线」这一趋势的延续，而它反映的是 Linux 生态在移动端定位的变化。</b>过去，<b>手机 SoC 的 Linux 支持几乎完全由厂商在 Android 分支中维护，主线内核基本不关心</b>；近年来，<b>无论是通过 SoC 厂商的推动、还是社区的逆向工程，越来越多的移动平台开始向主线靠拢。</b><b>这一变化的直接受益者不局限于「想在手机上装 Linux」的极客——它还包括单板机、开发板、汽车与各类嵌入式产品，因为这些场景会更廉价地获得某个 SoC 的长期内核支持。</b>对使用者的实用建议是：<b>当你考虑采用某款移动/嵌入式 SoC 做长期项目时，最有价值的尽调指标之一就是「它的支持是否已经（或正在）进入主线内核」——如果是，你能获得持续多年的免费安全更新与硬件适配；如果只停留在厂商 BSP 分支，那么可维护性将完全取决于厂商的持续投入。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-ROCm-10.1" target="_blank">AMD ROCm 10.1 发布：延续六周节奏，hipFILE 为 Infinity Storage 加异步快路径与批量 I/O、HIP 支持 NUMA 感知主机内存分配、ROCprofiler 引入内核回放（Beta），并升级到 LLVM 24 编译器栈</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">继 8 月底的 <b>ROCm 10.0</b> 之后，<b>ROCm 10.1</b> 现已发布，延续 AMD <b>六周发布周期</b>的节奏。<br>
+        <b>本版主要更新</b><br>
+        · <b>hipFILE 改进</b>：面向 <b>AMD Infinity Storage</b> 带来<b>异步快路径（async fast-path）后端</b>、<b>批量 I/O API</b>，以及<b>多层（multi-tier）I/O 统计</b>；<br>
+        · <b>HIP 支持 NUMA 感知的主机内存分配（NUMA-aware host memory allocations）</b>；<br>
+        · 新增 <b>ROCm CLI</b> 与 <b>AMD skills</b>；<br>
+        · <b>ROCprofiler 引入内核回放（kernel replay）支持</b>，目前为 <b>Beta</b> 形态；<br>
+        · 编译器栈<b>升级到 LLVM 24</b>；<br>
+        · <b>更快的重新构建（faster rebuilds）</b>；<br>
+        · <b>持续改进 WSL2</b> 体验；<br>
+        · <b>hipThreads</b>：为线程化代码提供<b>增量式 GPU 加速</b>；<br>
+        · 以及一批其他改进。<br>
+        更多细节见 AMD 的 <a href="https://rocm.blogs.amd.com/ecosystems-and-partners/rocm-10.1-blog/README.html" target="_blank">ROCm 博客</a>与<a href="https://rocm.docs.amd.com/en/latest/" target="_blank">官方文档</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 在这批更新里，真正决定「能不能训得动大模型」的，往往不是算力选项，而是 I/O 与内存这两条「数据通路」——hipFILE 与 NUMA 感知分配正落在这里。</b>大模型训练与推理的一个常见瓶颈是：<b>GPU 算力很快，但数据喂不进去</b>——模型权重、KV cache、数据集动辄数十到数百 GB，需要在存储、主机内存与显存之间反复搬运。<b>hipFILE 面向 Infinity Storage 加入「异步快路径」与「批量 I/O API」，本质上是把「一次搬一小块、逐个等待」改成「成批提交、异步完成」，从而让存储带宽被真正利用起来；而多层 I/O 统计则让用户能够定位「是哪一层慢」。</b>与此同时，<b>NUMA 感知的主机内存分配解决的是另一个方向的浪费</b>：在多路服务器上，若 GPU 读到的数据位于「远端 NUMA 节点」的内存里，访问要跨 CPU 互联，延迟与带宽都会明显变差；<b>让分配时就落到靠近 GPU 的节点，可以避免这种「看似在用内存、实则在做跨节点搬运」的隐蔽损耗。</b><b>这条经验对所有做异构计算的团队都适用：性能预算里，数据搬运的开销常常超过计算本身，因此 I/O 与内存放置的优化优先级，应当不低于算子优化。</b><br>
+        <b>② 「六周一个版本」这个节奏本身，是理解 ROCm 近况的关键背景，其影响远不止「更新频繁」。</b>对软件生态而言，<b>发布周期的长短直接决定了「上游框架多久能用上新能力」</b>：如果把 PyTorch、vLLM、各类推理/训练框架的适配比作接驳，那么<b>较短的固定周期意味着这些框架可以预期性地跟进，而不会陷入「不知道下个版本什么时候来」的不确定。</b>更重要的是，<b>固定节奏会迫使内部把工作切分得更细、更可预测，从而减少「憋大招」式的大版本（这类版本往往伴随兼容性阵痛）。</b><b>这条思路对所有做平台/中间件的团队都有参考价值：如果你希望生态愿意依赖你，稳定而可预期的发布节奏，其价值往往高于单次发布的特性数量——因为依赖方最怕的不是「功能少」，而是「无法规划」。</b><br>
+        <b>③ 「ROCprofiler 引入内核回放（kernel replay）」是一个容易被低估、但对性能工程很关键的能力，值得说清它的意义。</b>GPU 性能分析的一个核心难题是：<b>要评判某个内核（kernel）的快慢，需要把它从整个应用里「单独拎出来」反复测量，才能得到稳定、可比的数据。</b>但在真实应用中，<b>内核的执行与数据、通信、依赖交错在一起，很难在不动整体行为的前提下单独重跑它。</b><b>内核回放的价值正在于此：它把「现场」保存下来，允许在可控条件下重放同一段工作负载，从而把「测量」与「运行」解耦。</b>这与 CPU 侧的「指令级采样 / 重放」思路同源。<b>对做性能优化的人，判断一个平台是否成熟，可以看它有没有这类「可重复实验」的能力——因为没有被精确定位到具体内核的优化，往往只是在凭感觉调参。</b>它目前处于 Beta，也说明这正是 AMD 在补齐与竞品在工具链成熟度上的差距。<br>
+        <b>④ 把「升级到 LLVM 24 编译器栈」与「更快的重新构建」放在一起，能看出 ROCm 正在解决一类更根本的问题：开发者体验。</b>GPU 编程工具链的一大痛点是<b>编译慢</b>——大量内核要针对特定架构编译，一次全量构建可能耗时很久，这直接拖慢迭代。<b>升级编译器栈带来的是更高的代码生成质量与更广的语言/特性支持，而「更快重建」则直接改善日常体验。</b>更值得注意的是，<b>ROCm 建立在 LLVM 之上意味着它与整个开源编译生态共享上游成果：LLVM 的每一次优化、每一个新指令集支持，都会间接惠及 ROCm。</b><b>这条策略对比封闭的专有编译器栈是一种明显的结构优势——它让「跟进硬件新特性」的成本大幅降低。对使用者的实际建议是：在选择异构计算平台时，除了看峰值性能，还应关注它的编译工具链是否建立在主流开源基础设施之上，因为这决定了它能否快速跟上硬件与新算子的演进。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-Zen-6-IBS-Memory-Profiler" target="_blank">AMD 工程师详解 Zen 6 新特性 IBS Memory Profiler：按访问粒度做轻量内存剖析并可追踪源/目标 NUMA 节点，为 Linux 内核热页检测与迁移提供硬件提示，瞄准 DRAM + CXL 分层内存的 EPYC 服务器</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">AMD Zen 6 CPU 的一项特性——<b>IBS Memory Profiler</b>——此前除了出现在一份公开的 AMD 技术文档中之外，<b>并未被广泛讨论</b>。本周在布拉格举行的 <b>LPC 2026（Linux Plumbers Conference）</b>上，一位 AMD 工程师介绍了 <b>Zen 6 的 IBS Memory Profiler</b>，以及它<b>对 Linux 系统上「热页检测与迁移（hot page detection and promotion）」的价值</b>。<br>
+        <b>谁在讲、讲什么</b><br>
+        · AMD 工程师 <b>Bharata Bhasker Rao</b> 在 LPC 上介绍了<b>Zen 6 新增的 IBS Memory Profiler</b>；<br>
+        · <b>IBS（Instruction-Based Sampling，基于指令的采样）Memory Profiler</b> 提供<b>以「每次访问」为粒度的轻量级内存访问剖析</b>：<br>
+        &nbsp;&nbsp;· 覆盖<b>虚拟地址与物理地址</b>；<br>
+        &nbsp;&nbsp;· 可追踪<b>源与目标 NUMA 节点</b>；<br>
+        · 它可以为 Linux 内核提供<b>关于热页检测与迁移的提示</b>，面向的是<b>配备分层内存（如常规 DRAM 与基于 CXL 的内存）的 AMD EPYC 服务器</b>。<br>
+        <b>与内核的集成与实测</b><br>
+        · IBS Memory Profiler 正被推进<b>与 Linux 的 <code>pghot</code> 子系统补丁集成</b>，用于热页迁移；<br>
+        · 设计上它<b>可以跨不同 CPU / 厂商工作</b>——只要对方也提供 CPU 级采样机制；<br>
+        · 文章提到，<b>在一台 256 核 AMD EPYC Venice 服务器上</b>的基准数据显示，<b>通过 pghot 调用该硬件提示时 IBS Memory Profiler 的开销确实很低</b>；<br>
+        · <code>pghot</code> 的工作仍在进行中，最终如何进入主线内核尚待观察。<br>
+        演讲稿与相关资料见 <a href="https://lpc.events/event/20/contributions/2425/" target="_blank">LPC 2026 会议页面</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 要理解「热页检测」为什么需要硬件协助，得先理解分层内存带来的新矛盾。</b>所谓分层内存，是指服务器上<b>同时存在多级内存：靠近 CPU 的普通 DRAM 快但贵且容量有限，通过 CXL 挂接的内存容量大但延迟高、带宽低。</b>理想情况下，<b>访问频繁的「热页」应当放在快的 DRAM 里，访问稀疏的「冷页」可以放在慢的大容量内存里</b>，从而在成本与性能之间取得平衡。<b>问题在于：谁来持续判断哪些页是热的，并在页面冷热变化时把它们搬来搬去？</b>纯软件监测（如内核周期性扫描页表、统计访问）<b>需要消耗相当多的 CPU 与内存带宽，而且采样精度受限于采样频率</b>——扫描太快影响业务，扫描太慢则跟不上变化。<b>这正是硬件采样的价值所在：把「谁在被访问」这件事交给 CPU 内部的采样电路去观察，开销极低，且粒度可达单次访问。</b><br>
+        <b>② IBS 的「基于指令的采样」这一机制，决定了它能给出比别人更细的信息——这一点值得展开。</b>常见的硬件性能计数器通常是<b>「聚合式」的：告诉你某个核心的缓存未命中率是多少，但不告诉你具体是哪条指令、哪个地址导致的。</b><b>IBS 的思路不同：它以极低的概率随机选择一条正在执行的指令，把这条指令的完整上下文（地址、来源、目标、是否命中、走了哪条路径）记录下来。</b>这样积累足够多次采样后，就能<b>统计性地重建出「哪段代码、访问了哪些地址、数据从哪里来/到哪里去」的画像</b>。<b>把这种能力专门用于内存访问与 NUMA 节点追踪，恰好可以得到热页迁移最需要的信息：不只是「这个页很热」，还包括「访问它的是哪个核心、数据实际存放在哪个 NUMA 节点」。</b>这条经验可以推广：<b>在为某种自动优化（如迁移、缓存、调度）设计反馈信号时，应当优先选择那些「能回答具体问题」的细粒度信号，而不是只能反映总体状态的聚合指标——后者的可操作性通常很差。</b><br>
+        <b>③ 「设计上可跨不同 CPU / 厂商工作」这句话，是这条新闻里最具战略意味的部分，因为它决定的是这类技术能否成为公共基础设施。</b>如果 IBS Memory Profiler 只服务于 AMD 自家 CPU，那么内核里对应的支持就会变成<b>「针对单一厂商的私有路径」</b>，难以获得维护者青睐，也难以被其他平台复用。<b>而如果内核侧设计的是一个「与厂商无关的采样与热页提示接口」，各厂商只要提供对应的底层能力即可接入，那么这套机制就有可能进入主线、并长期存在。</b><b>这与本期 Mesa 治理、RADV 移植等新闻背后的逻辑是同一个：Linux 生态中，一项技术能否被广泛采用，往往不取决于它的性能有多好，而取决于它是否被设计成「可被他人实现的通用机制」。</b><b>对做底层库或平台接口的人，这是一个可以直接应用的取舍原则：在设计接口的第一天就假设「将来会有别的实现者」，把厂商特有的部分尽量压缩在最小、可替换的一层里。</b><br>
+        <b>④ 最后，这条新闻也提示了一个关于「性能」的重要转向：当硬件扩展越来越倾向于「堆容量」而非「堆速度」时，软件侧的自动数据放置会变得和算力同等重要。</b>从 DDR 到 CXL、从本地显存到统一内存、从单路到多路 NUMA，<b>硬件层面的「内存层级」正在变多，而每一层之间的带宽与延迟差距可达数倍。</b><b>在这种结构下，同一套代码运行在同一台机器上，性能差异可能完全取决于「数据恰好被放在了哪一层」——这已经不是算法优化能解决的问题，而是需要系统级的自动管理。</b>因此可以预判一个趋势：<b>未来服务器性能的关键命题，会从「如何算得更快」越来越偏向「如何把数据放对位置」，而这类能力的实现离不开「硬件提供可观测性 + 内核提供自动决策」的配合。</b>对使用者的现实建议是：<b>在评估新平台时，除了关注核心数与频率，也应关注它是否提供「内存访问的可观测性与自动迁移能力」——在分层内存成为常态之后，这往往比单纯的算力指标更能决定实际吞吐。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">10</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Boost-Recently-Busy-CPUs" target="_blank">Meta 工程师在 LPC 介绍为 AMD P-State 引入「动态调速器驱动 EPP」：按「近期繁忙的核心」提升每核 EPP，改善 Steam Deck 等设备的帧时间尾部与加载时间，评审建议把启发式从驱动上移到 governor</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">今年 7 月，Phoronix 曾报道过<b>一组 AMD P-State 驱动补丁，能让游戏的 1% low 帧率最高提升 31%</b>。该项工作由 Meta 的 Linux 内核工程师 <b>David Vernet</b> 完成。本周，Vernet 在布拉格举行的 <b>Linux Plumbers Conference</b> 上就此做了演讲。<br>
+        <b>他讲了什么</b><br>
+        · Vernet 介绍的工作是：<b>为「近期繁忙（recently busy）」的 CPU 核心建立「每核 EPP 提升」启发式（per-CPU Energy Performance Preference boost heuristic）</b>；<br>
+        · 相比 AMD P-State 驱动的<b>默认 EPP 行为</b>，它能<b>在 Steam Deck 等 AMD 设备上带来更好的游戏性能</b>，具体改善体现在<b>帧时间尾部（frame-time tails）与加载时间</b>；<br>
+        · <b>评审意见</b>方面：暑期原始补丁的代码评审过程<b>建议把它做成 governor 层级的机制，而不是驱动内的启发式</b>，并要求做些其他设计调整。<br>
+        <b>新的提案方向</b><br>
+        · <b>让一个动态 governor 来驱动 EPP</b>；<br>
+        · 另一个正在考虑的想法是：<b>让 Wine / Proton 之类的软件提供线程提示（thread hints）</b>，以便更准确地判断「这是游戏线程」。<br>
+        <b>数据</b>：Vernet 分享的基准结果在<b>功耗与性能两方面都相当可观</b>。演示资料见 <a href="https://lpc.events/event/20/contributions/2403/" target="_blank">LPC 2026 页面</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① EPP 是什么、为什么它值得用「每核动态调整」的方式去优化，是理解这项工作的前提。</b>EPP（Energy Performance Preference）是 CPU 提供给硬件的<b>一个「偏好旋钮」</b>：它不指定具体频率，而是告诉处理器的电源管理固件「在性能与省电之间我更偏向哪一边」，由固件据此在给定负载下决定频率与电压。<b>问题在于这个旋钮传统上是「全局或按策略」设定的：要么整机省电优先（续航长但爆发慢），要么性能优先（反应快但耗电）。</b><b>而现代处理器的现实是：同一时刻，不同核心在干的活差别巨大</b>——有的在跑游戏的主渲染线程（延迟敏感，希望立刻拉满频率），有的在做后台编译或解压（吞吐敏感，频率低一点也无所谓，省电更划算）。<b>「为一颗近期待过忙的核心单独提高 EPP」的思路，正是把「全局旋钮」变成「按核心、按近期活跃度自适应」。</b><br>
+        <b>② 为什么它特别强调「帧时间尾部」这个指标？因为对游戏体验而言，最差的那些帧比平均帧更重要。</b>平均帧率容易给人「游戏很流畅」的错觉，<b>但真正让人感觉到卡顿的，是那些偶尔出现的、耗时极长的帧——它们会造成可见的顿挫。</b>帧时间的「尾部」（如 1% low、0.1% low）正是用来描述这些最差帧的指标。<b>它们的成因常常是「某个线程突然需要立刻满频运行，但处理器还停留在低功耗状态，需要一段时间才能升频」，这段「升频延迟」就体现为一次超长的帧。</b><b>针对「近期繁忙的核心」做 EPP 提升，本质上是「提前把曾经忙碌的核心保持在较积极的状态」，从而缩短这类突发负载下的升频等待。</b><b>这条经验对所有做性能优化的人都适用：当优化的目标是人机交互体验时，衡量标准应当是「最差情况」而非「平均情况」——平均值的改善可能完全无法被感知，而尾部的改善却直接决定「卡不卡」。</b><br>
+        <b>③ 评审要求把启发式「从驱动上移到 governor」，是一次教科书式的分层修正，值得关注它的理由。</b>驱动（driver）的职责通常是<b>「认识这块硬件、把它正确地驱动起来」</b>；而 governor 的职责是<b>「根据系统状态做策略决策」</b>。<b>把「近期是否繁忙 → 是否提高 EPP」这样的判断写在驱动里，会带来几个现实问题：一是策略与硬件细节耦合，难以独立演进；二是无法被别的平台复用；三是用户难以按需替换或调整策略。</b><b>把它移到 governor 层后，策略就可以被独立地修改、测试和复用，甚至可以针对不同场景选择不同的 governor。</b><b>这与本期 Mesa 治理、RADV 移植、IBS 跨厂商设计等新闻背后是同一套工程直觉：把「机制」与「策略」分开，让机制稳定、让策略可替换。</b><b>这条原则可以推广到任何系统设计：当你在实现一个「判断什么情况下该怎么做」的逻辑时，先问自己「这段判断属于硬件适配，还是属于系统策略」——放错层次的代码，短期内能跑，长期一定会变成难以移除的耦合。</b><br>
+        <b>④ 最后，「让 Wine / Proton 提供线程提示」这个正在考虑的想法，指向了跨层协作中一个更普遍的机会与风险。</b>要准确地做「这是游戏线程」这样的判断，<b>最可靠的信息其实来自应用层——而 Wine / Proton 恰好位于「Windows 游戏」与「Linux 系统」之间，它知道哪些是渲染线程、哪些是音频线程。</b><b>让运行层把这类信息以「提示」的形式传给内核调度，理论上可以让电源管理做得更精准。</b>但风险也同样清楚：<b>一旦系统行为依赖应用/兼容层提供的提示，就必须回答「提示不可信、或不提供时怎么办」——否则会演变成「只有被特别适配过的软件才表现好」的碎片化局面。</b><b>因此一个成熟的方案应当把提示视为「优化而非依赖」：不提供提示时退回到通用启发式（这也是为什么主体思路仍是「让 governor 依据系统状态自行判断」）。</b>对做平台的人的启示是：<b>引入来自上层的「提示」通道时，务必同时设计好「缺失提示时的降级行为」，并在设计上明确「提示只能带来更好的结果，不能成为正确性的前提」——这决定了系统是「对所有人都不错」，还是「只对适配过的人不错」。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">11</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Qialcomm-QPaCE-Linux-ZRAM" target="_blank">高通为 ZRAM 提交 QPaCE 硬件加速驱动：Snapdragon 8 Elite Gen 6「Hawi」内置页压缩引擎，初版聚焦低延迟同步单页路径并引入 qpace-lz4 后端，基于 ring 的异步高吞吐路径尚未实现</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">高通 <b>Snapdragon 8 Elite Gen 6「Hawi」SoC</b> 内置了一个硬件加速器——<b>Qualcomm Page Compression Engine「QPaCE」</b>。近日公开的 Linux 补丁为该引擎提供了驱动，用于<b>为 ZRAM 块设备加速页压缩与解压</b>。<br>
+        <b>补丁要点</b><br>
+        · 引入 QPaCE Linux 支持的补丁说明<b>该硬件块出现在高通的新款 SoC 上</b>；<br>
+        · 目前的补丁<b>仅将其添加到 Hawi SoC（即 Snapdragon 8 Elite Gen 6）的设备树</b>中；<br>
+        · 对 Linux 的 <b>ZRAM</b>——作为存在于物理内存中的压缩块设备（例如用于压缩交换）——<b>QPaCE 能提供低延迟、更快的压缩与解压性能</b>。<br>
+        <b>当前实现的范围与限制</b><br>
+        · 初版 QPaCE Linux 驱动<b>聚焦于该引擎的「urgent」同步路径</b>，面向<b>低延迟的单页操作</b>；<br>
+        · 该硬件<b>同样具备基于 ring 的异步操作能力</b>，可用于高吞吐的批量压缩，<b>但初版 Linux 驱动尚未实现</b>这一点；<br>
+        · 补丁<b>引入了一个新的 <code>qpace-lz4</code> Zcomp 后端</b>，通过该硬件进行压缩 / 解压。<br>
+        相关补丁系列见 <a href="https://lore.kernel.org/lkml/20260930145215.3380977-1-georgi.djakov@oss.qualcomm.com/#t" target="_blank">内核邮件列表</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 要理解「为 ZRAM 加速压缩」为什么值得开发一颗专用硬件，得先看清 ZRAM 在现代系统里扮演的角色。</b>ZRAM 的思路是：<b>在物理内存里划出一块区域，当作「压缩后的块设备」使用</b>——写入的数据先被压缩再存放，读取时再解压。<b>它最常见的用途是压缩交换（compressed swap）。</b>这样做的好处是：<b>当物理内存紧张时，系统可以把不常用的页压缩后留在内存里，而不必把它们写到速度慢几个数量级的闪存上。</b>这个取舍有两层价值：<b>一是速度快得多（内存 vs 存储），二是避免了闪存写入带来的磨损与寿命消耗</b>——后者对移动设备尤其重要。<b>而它的代价完全落在一个地方：CPU。每一次换出与换入，都要做一次压缩或解压，这消耗的不只是算力，还有内存带宽。</b>在手机上，<b>内存带宽与功耗恰恰是最稀缺的两项资源。</b><br>
+        <b>② 因此「把压缩卸载到专用硬件」这件事，在移动端的经济账是算得过来的——这解释了高通为什么专门做一颗 QPaCE。</b>通用 CPU 做 LZ4 之类的压缩当然很快，<b>但它的能耗效率远不如一块为压缩量身定做的固定功能电路。</b>而且，<b>让 CPU 从压缩任务中解放出来，还能顺带降低整机的热压力</b>——在手机这种散热受限的形态里，省下的每一瓦热预算都可以转给 CPU/GPU 去跑真正的工作。<b>这类「用固定功能硬件替代通用 CPU 做高频重复任务」的做法，正是现代 SoC 设计的核心思路之一（编码器、DSP、NPU 都是同一逻辑）。</b>由此可以提炼一条判断规则：<b>当某项操作「出现频率极高、算法固定、且结果有明确定义」时，就具备了硬件卸载的条件；反过来，如果算法仍在快速演进或需要频繁改逻辑，则不适合固化为硬件（因为硬件难以修改）。</b>压缩算法之所以适合，正是因为 LZ4 这类算法已经高度标准化。<br>
+        <b>③ 「初版只做同步单页路径、异步 ring 路径尚未实现」这个取舍，是一份很典型的「先争取低垂果实」的工程路径，但它同时意味着性能收益是有上限的。</b>同步单页路径的特点是<b>逻辑简单、延迟确定性好</b>：收到一个页面的压缩请求，引擎处理完立即返回——<b>这对「换页」这类需要尽快完成、且单次数据量很小的场景非常合适。</b>而基于 ring 的异步路径则面向<b>「批量提交、高吞吐」</b>：一次性把大量页面丢进队列，引擎流水线处理。<b>先实现前者是合理的——它风险小、能立即覆盖最常见的使用模式；但它也意味着「批量压缩」这一最能体现硬件吞吐优势的场景暂时享受不到收益。</b><b>这条经验对所有做硬件加速或异步改造的人都有用：这类工作的收益通常不是一步到位的，而是随「异步程度」逐级释放的；因此在评估时应当区分「当前版本能拿到多少」与「设计潜力有多大」，不要因为首版收益有限就否定方向，也不要因为宣称「支持硬件加速」就默认已拿到全部收益。</b><br>
+        <b>④ 从整条新闻的形态看，它清晰地展示了一个「新硬件能力进入 Linux 支持」的标准流程，而这套流程本身对使用者的期待管理很有价值。</b>注意当前状态：<b>补丁刚发到邮件列表、只添加到一款 SoC 的设备树、只实现了同步路径、需要新后端（qpace-lz4）才能生效</b>——这意味着<b>距离普通用户「开箱即用」还有相当距离：它先要经过代码评审，再进入内核版本，然后才能被发行版/厂商固件采用。</b><b>与此同时，它还需要软件侧的配合（例如 ZRAM 要选择 lz4 后端，才可能走到这条硬件路径上），也就是说「硬件支持」与「默认启用」是两件事。</b>这对关注新平台的用户来说是一条实用提醒：<b>当看到「某 SoC 新增了硬件加速器支持」时，合理的预期是「它会在未来一到两个内核周期内变得可用，并且初期通常是可选的、需要手动配置的」，而不是「立刻就能享受」。</b>判断进度最可靠的信号，不是新闻标题，而是「补丁是否已被合入、以及它是否出现在设备树之外的默认配置里」。
+      </div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-08.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-09-30.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-08</p>
+    <p>覆盖范围：2026-10-03 ~ 2026-10-07（EDT，国庆假期停更后的合并版）· NVIDIA 615.78.08 Linux 驱动（为 VKD3D-Proton 加入 VK_NV_low_latency2 第 3 版，改善 D3D12 游戏延迟与卡顿、尤其开启帧生成时，并默认让内核接管睡眠时的显存保存）· Valve 的 Timur Kristóf 为老卡 AMD Polaris 实现 RADV 传输队列（修复后 Vulkan CTS 从 50% 失败率变为连续 20 次全过）· Blender 6.0 可能移除 OpenGL（5.0 的 Vulkan 后端趋成熟，虚拟纹理是主要阻碍，Blender 5.5 LTS 或成老平台最后落点）· Mesa 正筹备正式治理模型（拟设「Mesa 委员会」承担冲突解决，新增/移除驱动等争议话题可能交由裁决）· X.Org Server 与 XWayland 又披露 12 个安全漏洞（TrendAI ZDI 借助 AI 发现，含 GLX/XKB/RandR/Glamor 等组件堆溢出与释放后使用，影响 21.1.25 / 24.1.14 之前版本）· Linux 7.4 将支持树莓派 10 英寸 Touch Display 2（MIPI-DSI，Ilitek IL79600A，1200×1920，约 80 美元），并顺带补上 Ryzen AI Max 400「Gorgon Halo」NPU 支持· Linux 7.4 将主线支持 Google Tensor G5 与 Pixel 10 系列（新增 ARCH_GOOGLE，G5 为 1×Cortex-X4 + 5×A725 + 2×A520 与 Imagination PowerVR DXT-48-1536 GPU）· AMD ROCm 10.1 发布（hipFILE 异步快路径与批量 I/O、HIP 支持 NUMA 感知分配、ROCprofiler 内核回放 Beta，升级到 LLVM 24 编译器栈）· AMD 介绍 Zen 6 新特性 IBS Memory Profiler（按访问粒度做轻量内存剖析、追踪源/目标 NUMA 节点，为内核热页检测与迁移提供硬件提示，瞄准 DRAM + CXL 分层内存的 EPYC 服务器）· Meta 工程师在 LPC 介绍为 AMD P-State 引入「动态 governor 驱动 EPP」（按近期繁忙的核心提升每核 EPP，改善 Steam Deck 帧时间尾部与加载时间，评审建议把启发式从驱动上移到 governor）· 高通为 ZRAM 提交 QPaCE 硬件加速驱动（Snapdragon 8 Elite Gen 6「Hawi」内置页压缩引擎，初版聚焦低延迟同步单页路径并引入 qpace-lz4 后端，异步 ring 高吞吐路径尚未实现）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
