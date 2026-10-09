@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-09</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 9 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-09.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-08.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-26.3-RADV-VK_AMD_anti_lag" target="_blank">Valve 为 AMD RADV 驱动合入 VK_AMD_anti_lag 支持（Mesa 26.3）：以通用 vk_frame_pacer 框架取代旧的隐式 Anti-Lag 层，并为 NVIDIA 的 VK_NV_low_latency_2 铺路</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Valve 主导的 <b>VK_AMD_anti_lag</b> 支持于 <b>10 月 8 日</b>合入 <b>Mesa 26.3</b> 的 <b>RADV</b>（Radeon Vulkan）驱动，为 AMD Linux 玩家带来比此前实现更好的低延迟体验。<br>
+        <b>背景</b><br>
+        · <b>VK_AMD_anti_lag</b> 是随 <b>Vulkan 1.3.291（2024 年 7 月）</b>发布的 AMD Anti-Lag 扩展，用于降低游戏延迟；<br>
+        · 其机制是<b>自动对 CPU 节流（pacing）</b>，避免 CPU 提交渲染工作领先 GPU 太多，从而压缩「输入事件 → 屏幕更新」之间的延迟；<br>
+        · 2025 年该扩展曾以<b>隐式 Vulkan 层（implicit layer）</b>的形式进入 Mesa；今年 Valve 工程师开始开发<b>取代该隐式层</b>的新实现。<br>
+        <b>这次合入的内容</b><br>
+        · 由 Valve 开发者 <b>Daniel Schürmann</b> 主导，<a href="https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/42048" target="_blank">合并请求 !42048</a>；<br>
+        · 引入通用的 <b>「vk_frame_pacer」工具框架</b>，可在 Mesa 各 Vulkan 驱动之间共享；<br>
+        · 在此框架之上落地 <b>RADV 的具体实现</b>；<br>
+        · 新实现整体更优，且<b>便于在其之上轻松实现 NVIDIA 的 VK_NV_low_latency_2 扩展</b>。<br>
+        <b>时间线</b>：该代码已进入 <b>Mesa 26.3-devel</b>，Mesa 26.3 预计于 <b>11 月</b>发布稳定版。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先看清「隐式层」为什么会被淘汰，才能理解这次改动的价值所在。</b>Vulkan 的<b>隐式层</b>是一种由驱动 / 运行时自动加载的扩展层，它能在不改动游戏代码的前提下，把某些功能注入到调用链里。<b>它的优点是完全透明、兼容性最好，缺点是「对上层黑暗」</b>——游戏与驱动都不知道它存在，因此无法参与调度决策，也无法针对性地优化。<b>把 Anti-Lag 从隐式层改成一个由驱动原生实现的框架，本质上是把一项功能从「外挂」升级为「内建」：它从被动拦截变成了主动参与，因而能做得更准、更省。</b>这跟很多系统的演化规律一致——<b>一项功能最早往往以外挂 / 补丁 / 中间件的形式出现（因为改动最小、落地最快），当它被验证有长期价值之后，才值得被吸收进核心并把接口正式化。</b><br>
+        <b>② 真正值得关注的是「vk_frame_pacer」这个通用框架的抽象层次——它把「节流」这件事从某一家的扩展里抽了出来。</b>如果直接为 VK_AMD_anti_lag 写一套节流逻辑、再为 VK_NV_low_latency_2 写另一套，那么 Mesa 里就会出现两份高度相似但彼此独立的实现。<b>Valve 的做法是先抽出一个中性的「帧节流器」框架，再让各家的扩展在它之上做适配。</b>这既减少了重复代码，也带来了一个隐含好处：<b>当框架被两家扩展共用时，它的正确性会被两套不同的测试场景同时检验，任何缺陷都会更早暴露。</b><b>这是软件设计里一条很实用的经验：当你发现两处需求「形似而不同」时，先问「它们的共同部分能不能被抽成一个更中性的东西」，往往比各写一份更划算——尤其是当这两处需求未来还可能继续增加时。</b><br>
+        <b>③ 「为 NVIDIA 的 VK_NV_low_latency_2 铺路」这句话，透露了一个有意思的走向：Valve 在跨厂商地做低延迟。</b>AMD 与 NVIDIA 的低延迟扩展在目标上是一致的（缩短输入到显示的延迟），但接口语义并不相同。<b>Valve 同时是 Steam Deck / SteamOS / Proton 的维护者，它真正关心的是「无论用户用哪家的卡，都能获得一致且可预测的低延迟行为」。</b>换句话说，Valve 的动机不在于偏袒某一方，而在于<b>把「低延迟」变成平台上的一项公共能力，而不是各家驱动各自为政的专有特性。</b><b>这个视角值得借鉴：当一个平台方发现用户的关键体验（这里是游戏延迟）依赖于某个上游组件（这里是显卡驱动）的专有实现时，最稳妥的做法往往不是依赖其中一家，而是先在平台层定义一个中性的抽象，再让各家去适配它。</b>——这样即便某家将来改了接口，平台侧的整体行为也不会随之崩掉。<br>
+        <b>④ 最后回到用户能直接感知的部分：Anti-Lag 这类技术的收益是「手感」而非「跑分」。</b>它不会让平均帧率变高，甚至在某些情况下还可能略微降低峰值帧率，<b>但它降低的是「你按下键」到「画面响应」之间的时间差</b>。这类优化在评测里常常被忽略（因为图表上看不出大幅变化），却恰恰是竞技类游戏最在意的指标。<b>这也提醒我们：在选择评估指标时，要区分「容易测量的指标」和「真正影响体验的指标」——二者并不总是一致，当它们不一致时，应当明确说明「我们优化的到底是哪一个」，否则很容易用漂亮的数字掩盖了手感的退步。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Nova-Driver-LPC-2026" target="_blank">NVIDIA Nova 驱动在 LPC 2026 公布进展：长期定位是「取代 Open RM」，让官方 Linux 驱动最终改用上游 Rust 内核模块，Turing 至 Blackwell 已能启动 GSP 固件</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">在布拉格举行的 <b>LPC 2026</b>（Linux Plumbers Conference）上，NVIDIA 工程师 <b>John Hubbard</b> 与 Red Hat 的 <b>Danilo Krummrich</b> 介绍了开源上游 <b>Nova</b> 驱动栈的进展。Nova 是一款<b>用 Rust 编写的开源 NVIDIA Linux 内核驱动</b>。<br>
+        <b>长期定位</b><br>
+        · Nova 被明确定位为长期上「<b>取代 Open RM（Resource Manager）</b>」的方案；<br>
+        · <b>Open RM</b> 是 NVIDIA 这几年在用的<b>开源但树外（out-of-tree）的内核模块</b>；<br>
+        · 最终目标是让<b>整条 NVIDIA Linux 驱动栈改用上游 Nova 内核代码</b>，替换掉现在树外的开源内核模块；<br>
+        · Nova 同时是现有上游 <b>Nouveau</b> 驱动（面向 <b>Turing 及更新</b> GPU）的替代者。<br>
+        <b>当前状态</b><br>
+        · 已在 <b>Turing 到 Blackwell</b> 的硬件上<b>启动 GSP（GPU System Processor）及其固件</b>，基本功能开始跑通；<br>
+        · 但<b>尚未达到终端用户可用的程度</b>。<br>
+        <b>后续计划</b><br>
+        · 让 <b>VM 中的 Linux 与 Windows 客户机</b>在 Nova 下工作，以及各种虚拟化特性；<br>
+        · 让 <b>Vulkan Compute 与 CUDA 应用</b>在 Nova 上运行；<br>
+        · 补齐更多<b>图形 / 显示功能</b>。<br>
+        <b>重要前提</b>：Nova <b>并非现有树外驱动接口的直接替代（drop-in / API 兼容）</b>，NVIDIA 用户态驱动组件需要相应适配。<br>
+        演示材料见 <a href="https://lpc.events/event/20/contributions/2346/" target="_blank">lpc.events</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「取代 Open RM」这句话的分量，要放在 NVIDIA 开源策略的演进史里看才清楚。</b>过去几年 NVIDIA 陆续开放了内核模块源码，但它是<b>树外</b>的——意味着它不和内核主线一起演进，每次内核内部接口变动（这在内核里非常频繁）都需要 NVIDIA 自己去跟进适配。<b>树外模块永远处在「追着内核跑」的位置，这是一个结构性的负担：它使得驱动与内核之间的接口兼容性成为持续的成本，也让发行版无法像对待其他驱动那样统一打包。</b>把 Nova 定位为「取代 Open RM」，意味着一项根本性的角色转换——<b>从「外部供应商提供的封闭组件」变成「与内核同源、共同演进的上游模块」。</b>这类转变在业界有先例，也有一条共同的经验：<b>它的难点从来不在技术本身，而在于「上游化之后，谁来为接口的稳定性和兼容性负责」——一旦成为上游代码，就必须接受内核社区的评审标准与向后兼容约束，这与厂商过去相对自由的做法是不同的。</b><br>
+        <b>② 这次进展里最扎实的一句是「Turing 到 Blackwell 已能启动 GSP 固件」——要理解它为什么关键，得知道 GSP 在现代 NVIDIA GPU 里扮演什么角色。</b>GSP（GPU System Processor）是 GPU 内部一颗独立的处理器，<b>现代 NVIDIA 驱动的大量初始化、电源管理、调度工作实际上是由运行在 GSP 上的固件完成的，而非由 CPU 侧驱动逐条下发。</b>因此对开源驱动来说，<b>「能不能把 GSP 连同它的固件正确启动起来」，几乎是所有后续功能的前置条件</b>——GSP 起不来，就谈不上渲染、计算、显示。<b>把它跨三代硬件（Turing / Ampere / Ada / Blackwell 中的多代）跑通，说明 Nova 已经跨过了「能不能用」的第一道门槛。</b><br>
+        <b>③ 但紧接着的一句话同样重要：「尚未达到终端用户可用」。这两句话放在一起，恰好勾勒出一个项目从「能跑」到「能用」之间的真实距离。</b>工程上有一个反复出现的现象：<b>系统在演示场景下「跑起来」所需的工作，往往只是它在真实场景下「稳定可用」所需工作的很小一部分。</b>剩下的工作藏在错误处理、边界条件、异常恢复、性能调优里——它们不出现在演示视频中，却决定了用户是否会在关键时刻被卡住。<b>对团队而言，一个有用的判断标准是：不要在「第一个 demo 跑通」时宣告接近完成，而要看「有多少条失败路径已经被显式处理」。<b>Nova 目前列出的后续工作（虚拟机、Vulkan Compute / CUDA、图形显示）恰好就是这些真实场景的具体清单，这比任何进度百分比都更能说明它离可用还有多远。</b><br>
+        <b>④ 还有一条容易被忽略、但对实际部署影响很大的信息：Nova 不是 drop-in / API 兼容的，用户态需要适配。</b>这意味着<b>即便内核侧成熟了，从旧栈迁移到新栈也不是「换个模块」那么简单，而是要协同升级用户态驱动组件。</b><b>凡是涉及跨越「内核 / 用户态」边界的重构，都必须把两侧当作一个整体来规划；任何只改一侧的方案，都会在切换的那一刻暴露出来。</b>这也解释了为什么 NVIDIA 至今没有给出承诺的时间表——<b>当一个改动需要上下游同时就位时，「何时可用」就不再取决于单点的开发进度，而取决于两侧节奏的匹配。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/COSMIC-Epoch-1.10" target="_blank">COSMIC Epoch 1.10 发布：启动器（Launcher）默认改用 GPU 渲染，修复「输入即卡到 1 帧」的著名性能问题，并加入数位板映射到指定显示器等功能</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">System76 于 <b>10 月 8 日</b>发布 <b>COSMIC Epoch 1.10</b>，这是其<b>用 Rust 编写、与 Pop!_OS 同步开发</b>的桌面环境的最新增量版本。<br>
+        <b>重点改进：启动器默认走 GPU 渲染</b><br>
+        · <b>COSMIC Launcher</b> 现在<b>默认使用基于 WGPU 的 GPU 渲染路径</b>；<br>
+        · 起因是一些系统在<b>软件渲染</b>下慢到「操作起来感觉迟钝」；<br>
+        · 这源自一个<a href="https://github.com/pop-os/cosmic-launcher/issues/465" target="_blank">著名的缺陷报告</a>，标题直言「<b>COSMIC Launcher 依然是现存最慢的启动器</b>」：<br>
+        · 报告者称在 Intel / AMD / NVIDIA 三台不同机器上都复现——<b>只要在搜索框里输入任何内容，列表滚动就慢到约 1 帧 / 秒，输入越多越慢</b>，从第一天起就是这样。<br>
+        · 换成 GPU 渲染后，这个卡顿问题应当得到解决。<br>
+        <b>其他变更</b><br>
+        · 支持<b>把数位板（drawing tablet）映射到指定显示器</b>；<br>
+        · <b>COSMIC Compositor</b> 的一批修复；<br>
+        · <b>COSMIC Initial Setup</b> 只在检测到无线网卡时才显示 WiFi 设置页；<br>
+        · 以及大量其他修复。<br>
+        下载与详情见 <a href="https://github.com/pop-os/cosmic-epoch/releases/tag/epoch-1.10.0" target="_blank">GitHub 发布页</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「软件渲染 vs GPU 渲染」这个选择，是理解整条新闻的关键，也是很多桌面 / UI 项目反复踩过的坑。</b>软件渲染是<b>完全用 CPU 来计算每一帧的像素</b>；GPU 渲染则把同样的工作交给显卡。<b>在很多简单界面上，软件渲染完全够用，甚至更省电——这正是很多新桌面环境早期倾向于软件渲染的原因（实现简单、依赖少、在虚拟机和远程桌面里也更稳）。</b>但问题在于<b>它的复杂度是「非线性」增长的</b>：一旦界面里出现「长列表 + 实时过滤 + 滚动 + 连续输入」这样的组合，CPU 侧每帧要处理的工作量会随列表项数量与字符数急剧上升，于是从「流畅」直接跌到「1 帧 / 秒」<b>——而中间几乎没有平滑的过渡区间。</b>这与报告者观察到「从第一天起、三台不同机器都如此」完全吻合：<b>它不是某个硬件的问题，而是这条路径在当前实现下的固有上限。</b><br>
+        <b>② 这条新闻真正值得记住的，是它展示了一种「正确的问题被误判为错误的原因」的典型过程。</b>报告里提到，曾经有人判断这是 <b>iced</b>（Rust GUI 库）的问题，并说「升级到新版 iced 之后就会好」，结果升完毫无变化。<b>这是一个非常常见的诊断陷阱：当性能问题的症状表现得很「局部」（就是这一个控件卡）时，人们倾向于把责任归给最靠近它的那一层（这里就是 UI 库）。</b>但真相往往在更底层——<b>无论上层框架写得多好，如果底层选择了「CPU 逐像素绘制」，在这种负载下就注定过不去。判断的诀窍是：如果一个看似局部的性能问题「在各种硬件上都一致地出现、且随数据规模而非交互类型恶化」，那么嫌疑就应当从「上层代码」转向「底层路径」。</b><br>
+        <b>③ 值得注意的是，这里的修复方式是「换渲染路径」，而不是「优化 CPU 绘制」。</b>这个取向本身值得一看：<b>有时候最优解不是把一条注定要输的路径优化到极致，而是换一条本质上更合适的路径。</b>对现代桌面来说，GPU 就在那儿闲置着，图形栈也早已成熟，<b>把绘制工作交给它既是「回归本分」，也让 CPU 从逐像素的负担中解脱出来，去做它更擅长的事（逻辑、输入、编排）。</b><b>不过这里有一个需要警惕的副作用：GPU 路径会引入对驱动和 GPU 的依赖——在虚拟机、远程桌面、无 GPU 的服务器等场景下，它可能反而不如软件渲染稳。所以「默认走 GPU」这个决定之所以成立，往往意味着「保留一条软件渲染的回退路径」是必要的配套设计。</b>对做跨环境软件的人来说，这是一条通用经验：<b>默认值应当跟随主流场景（本地有 GPU 的真实用户），但回退路径必须为边缘场景（虚拟化 / 无 GPU）保留，二者缺一不可。</b><br>
+        <b>④ 「数位板映射到指定显示器」这一条看似与性能无关，却和上面的主题暗暗呼应：两者都是「把正确的事交给正确的硬件去做」。</b>数位板映射是让<b>输入设备的坐标空间对齐到某一块具体显示器的坐标空间</b>——对多显示器用户来说，如果没有这个功能，笔的落点会混乱，创作体验很差。<b>把这条功能与「启动器改用 GPU 渲染」放在同一版发布里，其实透露出一个共性趋势：桌面环境正在从「先把基本功能做出来」转向「把每项体验做对」。<b>这也意味着评价一个桌面环境成熟度的标准，正在从「功能清单有多长」转向「那些容易被人忽视、但天天都要用的细节有没有被照顾到」。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/SpacemiT-Linux-7.4" target="_blank">SpacemiT RISC-V SoC 在 Linux 7.4 获得更多上游支持：K3 / Muse Pi Pro / 香橙派 R2S·RV2 等启用 CPU 调频，新增 RFKILL 与来自 CTF2301 传感器的热控与风扇控制</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">对关注 <b>SpacemiT K3</b> 这款目前少数可现货购得、符合 <b>RVA23</b> 的 RISC-V SoC，以及 <b>K3 Pico-ITX</b> 等板卡的人来说，其在 <b>Linux 7.4</b> 中的上游内核支持将获得更多改进。<br>
+        <b>Linux 7.4 带来的设备树更新</b><br>
+        · 更多硬件<b>启用 CPU 调频（CPU scaling）</b>支持；<br>
+        · 启用 <b>RFKILL 节点</b>；<br>
+        · 新增<b>热控（thermal）与风扇控制</b>支持——面向 <b>SpacemiT K3 CoM260</b> 系统级模块上搭载的 <b>CTF2301 热敏芯片</b>。<br>
+        <b>受益的具体板卡</b><br>
+        · <b>SpacemiT Muse Pi Pro</b>、<b>香橙派（Orange Pi）R2S</b>、<b>香橙派 RV2</b> 等基于 SpacemiT 的 SBC，均通过这批设备树补充<b>启用了 CPU 调频</b>。<br>
+        <b>其他</b><br>
+        · <b>K1 SoC</b> 支持启用<b>板载 EEPROM</b>，并支持<b>从 EEPROM 数据中设置 MAC 地址</b>。<br>
+        详情见<a href="https://lore.kernel.org/lkml/20261008011902-KYC9093695@kernel.org/" target="_blank">内核补丁列表</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 这条新闻看起来琐碎（调频、RFKILL、热控、EEPROM），但对一个新的 SoC 生态而言，这些恰恰是「能不能真正拿来用」的分水岭。</b>需要理解的是：<b>上游内核支持是分层的，而「能让系统启动」和「能让系统好用」之间隔着相当长的距离。</b>最早一批补丁通常只做到「基本启动 + 基本外设」，而清单里的这几项——<b>CPU 调频</b>（决定性能 / 功耗的平衡）、<b>热控与风扇控制</b>（决定高负载下会不会过热降频甚至宕机）、<b>RFKILL</b>（决定无线开关是否能被系统统一管理）、<b>板载 EEPROM 与 MAC 地址</b>（决定每台设备的网络地址是否稳定唯一）——<b>都属于「没有它机器也能跑，但有了它才谈得上产品化」的那一类。</b><b>对做硬件 / 板卡的人来说，这条清单其实是一个实用的检查表：当你在评估一个平台的上游支持成熟度时，不要只看「能不能起来」，而要看这几类「产品化必需但演示看不出来」的项目是否齐全。</b><br>
+        <b>② 值得注意的是「热控与风扇控制来自 CoM260 模块上的 CTF2301 热敏芯片」这个细节——它揭示了嵌入式支持里一个容易被低估的复杂度来源：具体板型与具体元器件的绑定。</b>同一个 SoC 会被做成各种各样的成品（本新闻里就同时出现了 Muse Pi Pro、香橙派 R2S、香橙派 RV2 等不同板卡），<b>它们虽然在 SoC 层面共享大部分支持，但在「温度传感器在哪里、风扇怎么接、EEPROM 里存了什么」这类板级细节上各不相同。</b>而设备树（Device Tree）的存在，正是为了把这些差异显式化。<b>这条经验对做平台化产品的人很有普适性：越是想做到「一套代码支持多种硬件」，越需要把「硬件之间的差异」变成显式、可声明的数据，而不是藏在代码的分支判断里。</b>否则每加一种硬件，就要改动一次逻辑，可维护性会迅速恶化。<br>
+        <b>③ 「K1 支持从 EEPROM 数据设置 MAC 地址」这一条，单独看很不起眼，但它触及的是一个真实世界的刚需。</b>MAC 地址必须在同一网段内唯一且稳定——如果每台设备重启后 MAC 都变（因为驱动没有从固化存储里读，而是随机生成或用了固定值），网络上就会出现地址冲突、DHCP 反复分配、设备识别混乱。<b>能正确地从板载 EEPROM 读取 MAC，意味着这个平台终于可以「像正常的量产品那样」接入网络。</b>这类「看似微小但决定能否上生产环境」的补丁，往往比任何性能数字都更能反映一个生态的实际成熟度。<br>
+        <b>④ 最后值得把它放到更大的背景下看：RISC-V 生态目前的竞争焦点，早已不是「有没有可用的 SoC」，而是「上游支持的完整度与跟进速度」。</b>新闻中特别点出 SpacemiT K3 是目前少数可现货购得、符合 RVA23 的芯片——<b>「符合 RVA23」这个标准本身很关键，因为它是 RISC-V 应用处理器走向「一份通用软件能跨不同厂商芯片运行」的前提。</b>换句话说，这个生态正在从「各家各搞一套」走向「按统一规范来做」。<b>在这个阶段，判断一家芯片厂商是否值得投入，不应只看它芯片的参数表，更要看它「把支持持续送上上游」的意愿与节奏——因为上游支持才是软件生态能够长期复利的基础，任何停留在树外的补丁都会随着时间流失价值。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Google-More-Kernel-Compiler-Opt" target="_blank">Google 推进内核编译优化：在 LPC 2026 宣讲 PGO / AutoFDO / Propeller，希望把 PGO 上游化并让「内核模块」也能用这些优化，提出统一 Kbuild 接口</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">尽管 Linus Torvalds 此前曾<a href="https://www.phoronix.com/news/Clang-PGO-Linux-Shot-Down" target="_blank">否决把 PGO 引入内核主线</a>的计划，Google 工程师仍希望在 <b>LPC 2026</b> 期间推动这些<b>树外（out-of-tree）</b>功能上游化。<br>
+        <b>他们想做的事</b><br>
+        · 希望<b>把 PGO（Profile Guided Optimization，基于剖析数据的优化）上游化</b>；<br>
+        · 希望 Linux <b>内核模块（kernel modules）也支持这些优化</b>，而不只是主内核镜像；<br>
+        · 希望突破目前 <b>AutoFDO 与 Propeller</b> 在内核模块上的限制。<br>
+        <b>方式与动机</b><br>
+        · Google 工程师在本周布拉格的 <b>LPC 2026</b> 上介绍了面向 Linux 内核推进 <b>PGO / AutoFDO / Propeller</b> 的工作；<br>
+        · 这些优化<b>既服务于 Google 自家服务器</b>，也对 <b>Android 设备</b>有意义；<br>
+        · 他们提出一套<b>统一的 Kbuild 接口</b>，以降低以内核模块为对象的编译优化难度，让剖析数据可以方便地为模块生成。<br>
+        <b>现状</b>：由于 Linus 此前拒绝过 PGO，能否说服他仍有待观察。演示材料见 <a href="https://lpc.events/event/20/contributions/2396/" target="_blank">lpc.events</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 要理解这场争论，先得知道 PGO 到底是什么、以及它为什么在内核里有争议。</b>PGO 的思路是：<b>先让程序在真实负载下跑一遍、采集「哪些分支走得多、哪些函数调得频」的剖析数据，然后让编译器据此重新排布代码</b>——把热点路径放在一起、让分支预测更准、把冷代码挪到远处。<b>它带来的性能收益是实实在在的，但代价是构建流程被复杂化：多了一个「先跑一遍采集数据」的步骤，构建不再是确定性的、也不再有单一的产物。</b>这就是它进入内核主线的核心摩擦点——<b>内核的构建流程被要求尽可能简单、可复现、可交叉编译，而 PGO 天然与这些要求相冲突。</b><b>理解这条新闻的关键，不是「PGO 好不好」（它显然好），而是「把一项有收益的技术纳入主线时，需要为此付出的流程复杂度是否值得」。</b>这类取舍几乎在每个成熟项目里都会出现：<b>社区对「引入新机制」的警惕，往往不是怀疑它的收益，而是在保护一套长期积累起来的、让所有人受益的简单性。</b><br>
+        <b>② 「只有主内核镜像能用、内核模块用不了」这句抱怨，点出了一个在模块化系统里长期存在的结构性不平等。</b>现代内核的很大一部分功能实际上运行在<b>可加载模块</b>里（各种文件系统、驱动、网络协议等）。<b>优化如果只作用于主镜像，那就等于默认「主镜像里的代码更重要」——这个假设在很多实际负载下是不成立的</b>（比如一台存储服务器，它的瓶颈完全可能就在某个文件系统模块里）。<b>Google 想做的「让模块也能享受剖析优化」，本质上是在补上这块结构性缺口。</b><b>这给出一条通用的工程提醒：当一套优化 / 工具链只为「系统的一部分」服务时，需要主动追问「另一部分是为什么被排除在外的」——排除的理由可能曾经成立（比如当年模块还不是主流），但随着系统演化很可能已经失效，而失效的排除会持续造成不公平的性能分配。</b><br>
+        <b>③ 提出的「统一 Kbuild 接口」这个方案，透露了 Google 的现实主义策略：不与技术难点正面硬碰，而是先降低「要不要做」的门槛。</b>内核模块的编译本来就比主镜像复杂（各自有独立的编译单元、链接方式、符号解析规则），<b>如果把剖析优化硬塞进现有的模块构建流程，会制造出大量特例；而先定义一个统一的接口，让「为模块生成剖析数据」这件事变得标准化，就把问题从「能不能做」变成了「要不要开」。</b><b>这是一种很成熟的推进策略：当一项改动受阻于「成本和复杂度」而非「价值判断」时，最有效的做法往往不是反复论证价值，而是把成本本身降下来——一旦成本降到可接受区间，原本的反对意见就会自然松动。</b><br>
+        <b>④ 最后，注意「既服务服务器、也对 Android 有意义」这句话的分量——它是 Google 推动这件事的真实动力结构。</b><b>同一个优化如果能同时让两处受益，那么推动它的投入就有了双重回报</b>，这也是为什么 Google 会愿意持续在「Linus 已经拒绝过」的方向上再花力气。<b>这提示了一个判断上游投入可持续性的方法：看推动者是否能在多个场景里复用同一份工作。只服务单一场景的投入很容易随该场景的优先级变化而中断；而能在多场景复利的投入，才有更大概率被坚持到落地。</b>对关注这条线的团队来说，Android 的参与是一个正面的信号——它意味着这项工作的「燃料」不止来自一个部门。
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/ubuntu-2610-amd-epyc" target="_blank">Ubuntu 26.10 在 64 核 AMD EPYC 9655P 上相对 26.04 LTS 取得不错的 I/O 性能提升：内核 7.0 → 7.3、GCC 15.2 → 15.3</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Ubuntu 26.10 <b>不是 LTS 版本</b>，因此在企业部署上会比 26.04 LTS 少得多；但<b>对愿意留在前沿的用户而言，它在当前第五代 AMD EPYC「Turin」硬件上带来了不错的性能提升</b>。<br>
+        <b>测试平台</b><br>
+        · <b>Gigabyte MZ33-AR1</b> 服务器平台（通过 Dasharo 运行 <b>AMD openSIL + Coreboot</b>）；<br>
+        · <b>64 核 AMD EPYC 9655P（Turin）</b>，<b>12 × 64GB DDR5-4800</b> 内存，<b>3.2TB Micron 7450 MAX NVMe SSD</b>。<br>
+        <b>对比对象</b><br>
+        · <b>Ubuntu 26.04 LTS</b>：开箱使用 <b>Linux 7.0</b> 内核、<b>GCC 15.2</b>；<br>
+        · <b>Ubuntu 26.10</b>（接近最终形态）：<b>Linux 7.3</b> 内核、<b>GCC 15.3</b>，以及这半年间其他更新过的软件组件。<br>
+        <b>关注点</b>：从 26.04 LTS 升级到 26.10，对高端 AMD EPYC 服务器性能意味着什么——本次测试重点体现为 <b>I/O 性能上的可观收益</b>。<br>
+        全文为 6 页评测，原文：<a href="https://www.phoronix.com/review/ubuntu-2610-amd-epyc" target="_blank">Phoronix</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 这条评测里最值得关注的，不是某个具体倍数，而是它把「升级发行版」和「升级内核 / 编译器」这两个常被混为一谈的动作区分开了。</b>Ubuntu 26.04 → 26.10 <b>表面上是一次发行版升级，实质上携带了两层变化</b>：内核从 7.0 跨到 7.3（三个小版本，累计大量调度、内存管理、块层与文件系统的改动），编译器从 GCC 15.2 到 15.3。<b>对 I/O 路径来说，这两层都可能带来收益，但来源完全不同</b>——<b>内核侧的收益通常来自调度策略、队列深度、预读 / 回写策略、NUMA 感知的提升，属于「运行时行为」的改善；编译器侧的收益则来自生成的指令更优，属于「静态代码质量」的改善。</b><b>在评测里把二者混在一起看是可行的（用户实际感受到的就是整体），但在做技术决策时必须把它们分开——因为这两条升级路径的「风险与可回退性」完全不同：内核可以在同一发行版内单独升级 / 回退，编译器的收益则往往需要重编译整个用户态才能获得。</b><br>
+        <b>② 「I/O 性能」这个词在当前服务器领域的分量，值得专门说一下。</b>过去十几年，CPU 单核性能的提升已经明显放缓，而存储（NVMe SSD）与网络的带宽 / 延迟却在快速改善。<b>结果是：在越来越多的工作负载里，瓶颈从「算得不够快」转移到了「数据喂得不够快」。</b>数据库、向量检索、日志聚合、对象存储、AI 训练的数据加载——这些负载的瓶颈往往都在 I/O 路径上。<b>所以「I/O 性能提升」这四个字，对服务器用户的实际价值可能比「综合跑分提升」更大，因为前者影响的恰恰是最常见的瓶颈所在。</b><b>这也解释了为什么发行版在内核版本上的推进值得认真对待：很多 I/O 相关的改进（队列、调度、预取）都是在内核里逐版本累积的，它不会体现在某个单一功能上，而是散落在整条路径的效率里。</b><br>
+        <b>③ 「不是 LTS」这个前提必须被强调，因为它直接决定了这条新闻的适用人群。</b>LTS 版本的价值在于<b>长期的安全更新与接口稳定</b>，非 LTS 版本的价值在于<b>更早拿到新内核与新工具链</b>。<b>这两者服务的诉求是相反的：前者要的是「别变」，后者要的是「早变」。</b>因此这条评测的现实意义是——<b>它告诉你「前沿的收益有多大」，从而帮助你判断「为此承担前沿的不稳定性是否划算」。</b><b>一个实用的做法是：如果这套收益（这里是 I/O）恰好命中你的瓶颈，那么即使在 LTS 环境里也值得考虑单独升级内核（而不是整个发行版）；如果收益落在你并不敏感的方向上，那就老老实实待在 LTS 上。把「有没有收益」和「值不值得迁移」当成两个独立的问题来回答，是评估这类升级时最省事的思路。</b><br>
+        <b>④ 最后，测试平台的配置本身也传达了一个信息：AMD openSIL + Coreboot（通过 Dasharo）。</b>这类开源固件方案近年被越来越认真地对待，<b>它意味着服务器平台正在从「依赖厂商封闭固件」逐步走向「可审计、可自行构建」的路径。</b>对做基础设施的团队来说，<b>固件是否开源，直接关系到能否对启动流程、安全基线、供应链做真正意义上的掌控。</b>把这一点和「内核 / 编译器升级带来 I/O 提升」放在一起看，会发现一个共同的趋势：<b>服务器软件栈的每一层（固件、内核、用户态）都在变得「更可替换、更可追踪」，而性能提升往往只是这个趋势顺带带来的结果之一。真正长期的价值，在于你因此获得了「不依赖单一厂商也能掌控全局」的能力。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/H-Peter-Anvin-Rosaic-Labs" target="_blank">传奇 Linux x86 开发者 H. Peter Anvin 加盟神秘芯片初创 Rosaic Labs：他曾长期任职 Intel 并共同维护内核 x86/x86_64，此次以「(Rosaic)」署名 Acked x32 ABI 移除补丁</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">围绕神秘半导体初创公司 <b>Rosaic Labs</b> 的猜测又多了几分。今年早些时候有消息称 <b>Intel 曾向 Rosaic Labs 提供 Atom 技术的 RTL 代码访问权</b>；此外还出现过一些<b>并非来自 Intel 或 AMD（也不是兆芯 / 海光）的、颇为神秘的 x86 新增内容</b>，从时间上看或许与 Rosaic Labs 有关。而今天的最新消息是：Rosaic 近期招募了一位资深的 Linux x86 开发者。<br>
+        <b>H. Peter Anvin（HPA）</b><br>
+        · 自 <b>1992 年</b>起就参与 Linux 开发；<br>
+        · Linux <b>x86 / x86_64 代码的共同维护者</b>；<br>
+        · <b>SYSLINUX</b> 的作者；在开源开发史上成就众多；<br>
+        · 自 <b>2008 年起供职于 Intel</b>，在其早年的开源技术中心（OSTC）从事 Linux x86 相关工作。<br>
+        <b>时间线</b>：据今日消息，HPA 在今年夏天 Intel 持续重组期间被裁，此后加入神秘的 Rosaic Labs。<br>
+        <b>确认方式</b><br>
+        · 今日在 Linux 内核邮件列表上得到确认——他在<a href="https://www.phoronix.com/news/Patches-Removing-Linux-x32-ABI" target="_blank">「开始移除 Linux x32 ABI」的补丁</a>下以<br>
+        · <code>Acked-by: H. Peter Anvin (Rosaic)</code><br>
+        · 署名。这是他第一次在内核邮件列表上以 Rosaic 的身份署名。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 判断这条人事新闻的分量，关键在于理解「内核 x86 维护者」这个角色意味着什么。</b>x86 是 Linux 上最重要、也最保守的架构之一——<b>它承载着数量最庞大的设备与向后兼容承诺，任何改动都要同时兼顾四十年的历史包袱与最新的硬件特性。</b>能长期担任这一架构的共同维护者，意味着此人<b>既有极深的硬件与体系结构理解，也掌握着该架构在社区中的信任与话语权。</b><b>把这样一个人从一个芯片厂商挖到另一个初创公司，其意义不只是一次普通招聘——它传递的信号是「这家公司正在按严肃的方式做 x86，而不是玩玩而已」。</b>因为在 CPU 领域，<b>真正的门槛往往不在流片，而在软件与生态：一款新 CPU 能不能被 Linux 正确、高效地支持，直接决定它是否有人愿意用。</b><br>
+        <b>② 这次确认的方式本身很有意思：不是新闻稿，而是一条内核邮件列表上的 Acked-by。</b>在内核社区里，<b>「Acked-by」是一种正式的、留痕的技术背书</b>——它意味着署名者认可这些补丁。<b>HPA 选择用这种方式（而不是发新闻）来间接确认自己的新东家，恰好符合他几十年来的行事风格：用代码和补丁说话，而不靠公关。</b><b>这给出一条判断技术动向的实用方法：当一家公司不愿公开细节时，去它的相关代码仓库和邮件列表里看「谁在署名」往往比看新闻更有信息量——人的流动会在提交记录里留下确定无疑的痕迹。</b><br>
+        <b>③ 他被裁的背景（Intel 重组）与「神秘 x86 新特性」这两件事，应当联系起来看。</b>芯片行业近年经历了大规模重组，<b>一批资深工程师从大厂流向了初创公司</b>——这在历史上往往是新架构、新公司崛起的先兆（因为技术的传承是跟着人走的）。<b>而当同一个人、同一段时间内，既出现了「并非来自任何已知厂商的 x86 新特性」，又出现了「x86 内核老将被这家新公司招募」，那么这些线索相互印证的权重就相当高了。</b><b>对关注技术判断的人来说，这是一个很典型的「多点弱信号相互印证」的场景：单看任何一条都可以解释成巧合，但放在一起就构成了一条有说服力的推论文——尤其当这些信号来自不同类型的信息源（专利 / 邮件列表 / 人事）时，可信度会显著高于同源重复。</b><br>
+        <b>④ 最后，「Acked」的恰好是 x32 ABI 移除补丁，这个巧合值得留意。</b>x32 是「在 x86_64 上使用 32 位指针」的 ABI，<b>当年提出时是为了兼顾「寄存器更多」与「指针更省内存」两个优点，但最终因为内存早已不再稀缺、而它带来的兼容与攻击面负担却实实在在，始终没有得到广泛采用。</b>如今连它的老维护者都 Ack 了移除，等于给这项技术的生命周期画上了句号。<b>这里有一条通用的教训：一项技术能否成功，不只取决于它「解决了什么问题」，更取决于「这个问题在它成熟之前有没有被别的方式解决掉」。x32 的问题（内存占用）被「内存变便宜」这件事解决了，所以它没能跑赢时间。</b>对做技术选型的人来说，<b>评估一项新技术时，除了问「它比现有方案好在哪」，更要问「它想解决的那个问题，会不会在它成熟之前自行消失」——后者往往更容易被忽略，却更有决定性。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Sashiko-Linux-AI-Metrics" target="_blank">Google 的 Sashiko AI 一年完成 19.1 万次补丁评审、覆盖 99 个邮件列表：1277 个上游提交引用它，今年已有 463 个内核 CVE 引用其结论，正开发本地 / 终端评审模式与持久化缺陷数据库</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">由 Google 工程师打造、用于<b>对 Linux 内核代码改动做智能体（agentic）评审</b>的 <b>Sashiko</b>，正持续向内核开发者证明其价值。自<a href="https://www.phoronix.com/news/Sashiko-Linux-AI-Code-Review" target="_blank">上线</a>至今尚不足一年，成果相当可观。Google 工程师 <b>Roman Gushchin</b> 在本次 <b>LPC 2026</b> 上给出了 Sashiko 的状态更新。<br>
+        <b>运行数据（不足一年）</b><br>
+        · 完成 <b>超过 19.1 万次补丁评审</b>，覆盖 <b>99 个不同的邮件列表</b>；<br>
+        · 在评审过程中执行了 <b>超过 1900 万次自主 Git 查询（autonomous Git lookups）</b>；<br>
+        · 收到来自 <b>1100 多位内核开发者</b>的 <b>7600 多条回复</b>。<br>
+        <b>影响力</b><br>
+        · 今年已有<b>超过 1277 个上游提交</b>引用了 Sashiko；<br>
+        · 另有 <b>1567 个 linux-next 提交</b>引用它；<br>
+        · 今年已有 <b>463 个 Linux 内核 CVE</b> 引用了 Sashiko。<br>
+        <b>后续方向</b><br>
+        · 为 Sashiko 开发<b>本地 / 终端评审模式</b>（local / terminal review mode）；<br>
+        · 建设<b>持久化的缺陷数据库</b>；<br>
+        · 甚至用 Sashiko <b>自我评审 Sashiko</b>（dog-fooding）。<br>
+        详情见 <a href="https://lpc.events/event/20/contributions/2645/" target="_blank">LPC 2026 演示材料</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 在解读这些数字之前，先要弄清 Sashiko 做的是一件什么性质的事——它审的不是「编译错误」，而是「逻辑与意图」。</b>编译器、静态分析工具、内核自带的 <b>checkpatch</b> 这类工具能抓的是形式问题（语法、风格、明显的空指针）；<b>但它们抓不到「这个补丁在语义上会不会引入竞态」「这个错误路径是否漏了引用计数」这类需要理解上下文与设计意图的问题。</b>Sashiko 的价值恰恰在于它试图覆盖这一层——<b>这解释了为什么它需要执行 1900 万次 Git 查询：要判断一个改动是否破坏某项不变量，必须去读历史、读相关代码的上下文、读此前的讨论。</b><b>换句话说，它之所以有意义，不是因为「机器会审代码」，而是因为「审代码这件事的真正难点在于获取和理解上下文，而这恰好是既有工具最欠缺、而 AI 相对擅长的部分」。</b><br>
+        <b>② 「463 个 CVE 引用它」这个数字，是这份材料里分量最重的一条，值得单独拆开看。</b>CVE 是安全漏洞的正式编号，<b>一个漏洞能被赋予 CVE，意味着它经过了确认、被公认为需要修复。</b>「引用 Sashiko」的意思是：<b>这些漏洞的发现过程中，Sashiko 提供了关键线索。</b>一年 463 个，平均不到一天就超过一个。<b>这个量级值得注意的，不是「AI 很厉害」，而是它揭示了一个此前被低估的事实：成熟项目里仍然存在大量「没有被形式化工具覆盖」的缺陷，它们长期潜伏，只等有人用「理解语义」的方式去看。</b><b>这对所有维护大型代码库的团队都是一条提示：如果你的质量保障只依赖编译器和静态检查，那么你其实只覆盖了缺陷的一部分，而且是相对容易的那一部分。</b><br>
+        <b>③ 但同样要冷静看待「1277 个提交引用它」与「评审工具参与度」的关系。</b>引用数量衡量的是「影响力」，而不是「准确率」。<b>一个会大量产出的工具，即便误报率不低，只要每若干条里有一条命中真实问题，它的引用数也会很高——因为人只需要采信那些命中的部分，被忽略的误报不会留下痕迹。</b>所以在没有「误报率 / 开发者实际采纳率」这类数据的情况下，引用数只能说明「它变得有存在感」，不能直接推出「它已经可靠」。<b>而这里恰好有一个正面信号可以弥补：7600 多条来自 1100 多位开发者的回复。</b><b>真正的评审者不会回复一个总是胡说八道的工具——有相当数量的人愿意花时间与之互动，说明它的输出至少达到了「值得一辩」的门槛。用「人是否愿意与它交互」来判断一个自动化系统有没有实际价值，往往比看它的产出总量更可靠。</b><br>
+        <b>④ 最值得关注的是它的后续方向：本地 / 终端模式、持久化缺陷数据库、自我评审。</b>这三件事分别对应着自动化工具落地的三个典型阶段——<b>「本地化」解决的是可用性与隐私（不必把代码送到远端、能在开发者的日常流程里随时调用）；「持久化数据库」解决的是记忆与去重（避免同一个问题被反复发现、反复讨论）；「自我评审」解决的是信任与迭代（用同样的标准检验自己）。</b><b>这三步的共同点是：它们都不增加「新能力」，而是在把已有能力变得可持续、可沉淀、可自我改进。</b><b>任何把 AI 引入关键流程的团队，最终都会走到这一步——最初的兴奋来自「它能做一件新事」，长期的成败却取决于「它能不能被纳入日常流程并持续产出可积累的结果」。所以判断这类工具是否真会长期存续，看它有没有在走这三步，比看它的论文或演示更有说服力。</b>
+      </div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/EXT4-Deprecates-Journal-Mode" target="_blank">EXT4 弃用其日志式 data=journal 模式：Linux 7.3 合入弃用标记，计划在 2027 LTS 之后、2028 年初正式移除——该模式牺牲写入性能换取数据完整性，同时禁用延迟分配与 Direct I/O</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body"><b>EXT4</b> 文件系统于 <b>10 月 8 日</b>弃用它<b>日志式（journaled）的 <code>data=journal</code> 挂载模式</b>。在被弃用之后，该模式计划于 <b>2028 年</b>正式移除。<br>
+        <b>data=journal 是什么</b><br>
+        · 该模式会把<b>所有文件数据与元数据先写入文件系统日志，再提交到主文件系统</b>；<br>
+        · 因此一旦崩溃或断电，<b>可以通过重放日志来恢复数据</b>。<br>
+        <b>代价</b><br>
+        · 它适合<b>极度看重数据完整性与安全性的用户</b>；<br>
+        · 但相比默认的 <b>data=ordered</b> 或 <b>data=writeback</b> 模式，<b>写入性能有明显损失</b>；<br>
+        · 使用该模式还会<b>禁用延迟分配（delayed allocation）与 Direct I/O 支持</b>。<br>
+        <b>时间线</b><br>
+        · 根据 10 月 8 日的<a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6c377d19d4a5116d9bec5203aa3c6c11523e7898" target="_blank">Git 合并</a>（面向 <b>Linux 7.3</b>），EXT4 的 data=journal 特性被标记为弃用；<br>
+        · 其支持将在 <b>2027 年 Linux LTS 版本之后、2028 年初</b>被移除。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 要理解 EXT4 为什么在「日志」这件事上做减法，得先分清 log-structured 与 journaling 是两种不同的思路。</b>很多人下意识会觉得「日志越多越安全」，但 EXT4 的三种 mode 恰恰展示了其中的取舍梯度：<b>data=writeback</b> 最激进（只保证元数据一致性，数据顺序不保证）；<b>data=ordered</b> 是默认（保证数据先落盘、再更新元数据，避免崩溃后出现「元数据指向尚未写入的垃圾数据」）；<b>data=journal</b> 最保守（数据本身也先写日志再落主区，因此崩溃后可完整重放）。<b>但「最保守」在这里的代价是双重的</b>——除了额外的写入放大（同一份数据要写两遍），它还<b>直接禁用了 delayed allocation 与 Direct I/O</b>。<br>
+        <b>② 后一个代价特别值得展开，因为它是「一项保守特性如何抑制整条路径优化」的典型案例。</b><b>延迟分配</b>是一套关键机制：<b>它让文件系统在内存里先攒一段时间的写入，等到真正要落盘时，才能「从整体上看」知道哪些数据该放哪里，从而做出更好的布局、减少碎片</b>。<b>Direct I/O</b> 则允许应用绕过页缓存直接读写磁盘，是数据库等自己管理缓存的应用所依赖的。这两项机制<b>都要求「不预先承诺数据的位置与顺序」</b>，而 data=journal 恰恰要求「所有数据先按日志顺序走一遍」，<b>二者在语义上无法共存。</b><b>因此 data=journal 不只是一个「慢一点」的选项，它是一个会让现代文件系统整整一类优化失效的选项。</b><b>这条经验非常通用：当某个特性要求「把顺序 / 位置预先固定下来」时，它往往会连带排除掉那些依赖「延迟决策」的优化——评估这类特性时，不能只算它自身的开销，还要把它压制的那些优化机会一并算进去。</b><br>
+        <b>③ 那为什么以前会存在这样一个选项？答案在于它与现代的块设备生态已经脱节。</b>data=journal 的黄金时代是<b>磁盘（HDD）时代</b>——那时设备本身没有可靠的内建保护，突然断电确实容易造成大范围不一致，日志重放是最有效的兜底。<b>但今天的存储栈已经层层加厚：SSD 内部有自己的掉电保护与 FTL，企业级设备普遍有电池 / 电容保护的写缓存，文件系统下层还有 dm-integrity、校验、RAID 等机制，再加上写屏障与缓存刷新语义的规范化。</b><b>结果是：data=journal 试图解决的那个「崩溃后数据不一致」的问题，已经在别处被更高效地解决了。</b><b>这与本日另一条新闻（x32 ABI 的移除）是同一个道理——一项技术被淘汰，很少是因为它「做错了」，更多是因为「它要解决的问题被别人以更好的方式接管了」。识别这一点，比争论技术优劣更有价值。</b><br>
+        <b>④ 最后是时间线本身透露的治理智慧：先弃用（Linux 7.3），2027 LTS 之后、2028 年初才移除。</b>这中间留出了<b>超过一年</b>的过渡期，而且特意<b>跨过了 2027 年的 LTS 版本</b>。<b>这是一个成熟项目处理「移除功能」的标准节奏：先宣布、再留出跨越至少一个长期支持版本的时间窗，让依赖方有机会自查、迁移、或在必要时提出异议。</b><b>为什么必须跨过 LTS？因为 LTS 的内核会被长期维护——如果有人依赖 data=journal，他一定是在某个 LTS 上依赖它；如果移除不跨越 LTS，就等于在没有任何缓冲的情况下切断了这条依赖。</b><b>这套「弃用 → 缓冲 → 移除」的流程值得所有做平台 / 基础软件的团队借鉴：移除任何对外可见的功能时，真正的成本不发生在移除的那一刻，而发生在那之前——你留了多少时间、给了多少提示、有没有让人提前暴露依赖。把这段缓冲期设计好，比在移除时争辩「该不该移除」重要得多。</b>
+      </div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-09.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-08.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-09</p>
+    <p>覆盖范围：2026-10-08（EDT）· Valve 为 AMD RADV 合入 VK_AMD_anti_lag 支持（Mesa 26.3，以通用 vk_frame_pacer 框架取代旧的隐式 Anti-Lag 层，并为 NVIDIA 的 VK_NV_low_latency_2 铺路）· NVIDIA Nova 驱动在 LPC 2026 公布进展（长期定位「取代 Open RM」，让官方 Linux 驱动最终改用上游 Rust 内核模块，Turing 至 Blackwell 已能启动 GSP 固件，但仍未达到用户可用）· COSMIC Epoch 1.10 发布（启动器默认改用 GPU 渲染，修复「输入即卡到 1 帧」的著名性能问题，并支持数位板映射到指定显示器）· SpacemiT RISC-V SoC 在 Linux 7.4 获得更多上游支持（K3 / Muse Pi Pro / 香橙派 R2S·RV2 等启用 CPU 调频，新增 RFKILL 与 CTF2301 热敏芯片的热控与风扇控制）· Google 推进内核 PGO / AutoFDO / Propeller 编译优化上游化（希望内核模块也能用，提出统一 Kbuild 接口，此前被 Linus 否决过 PGO）· Ubuntu 26.10 在 64 核 AMD EPYC 9655P 上相对 26.04 LTS 取得 I/O 性能提升（内核 7.0→7.3、GCC 15.2→15.3，Gigabyte MZ33-AR1 + AMD openSIL/Coreboot）· H. Peter Anvin 加盟神秘芯片初创 Rosaic Labs（长期担任 Linux x86/x86_64 共同维护者、SYSLINUX 作者，以「(Rosaic)」署名 Acked x32 ABI 移除补丁）· Google 的 Sashiko AI 一年完成 19.1 万次补丁评审、1277 个上游提交与 463 个内核 CVE 引用它（正开发本地 / 终端评审模式与持久化缺陷数据库）· EXT4 弃用 data=journal 日志模式（Linux 7.3 合入弃用标记，2027 LTS 之后、2028 年初移除；该模式牺牲写入性能换取完整性，并禁用延迟分配与 Direct I/O）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
