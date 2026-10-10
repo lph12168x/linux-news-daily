@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-10</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 10 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-10.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-09.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-AMDGPU-Final" target="_blank">AMD 为 Linux 7.4 的 AMDGPU / AMDKFD 画上句号：再送一批 HDMI 2.1 修复，VRR 元数据改走 VTEM 信息包槽、修链路训练超时位以满足合规测试</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">AMD 于 <b>10 月 8 日（周四）</b>发出面向 <b>Linux 7.4 合并窗口</b>的<b>最后一批 AMDGPU / AMDKFD 特性拉取请求</b>，官方说法是「收尾的零碎补丁」（<i>few last odds and ends</i>），以 bug 修复为主，但其中几条值得单独拎出来说。<br>
+        <b>背景：HDMI 2.1 在 Linux 7.4 默认开启</b><br>
+        · 此前 HDMI Forum 曾长期拒绝 AMDGPU 开源实现的 HDMI 2.1，今年风向变化（外界普遍推测与 Valve 的介入有关），补丁开始陆续出现；<br>
+        · <b>HDMI 2.1 FRL</b>（Fixed Rate Link，固定速率链路，用于在 HDMI 上支撑更高分辨率与刷新率）已在 <b>Linux 7.2</b> 落地；<br>
+        · 到 <b>Linux 7.4</b>，<b>FreeSync / VRR（可变刷新率）与 ALLM（自动低延迟模式）</b>均已就位，因此 <b>HDMI 2.1 与 FRL 在 7.4 改为默认启用</b>（此前为规避回归而默认关闭）。<br>
+        <b>本批修复的关键两条</b><br>
+        · <b>VRR 元数据改由 VTEM 信息包槽位承载</b>——这是本批最值得注意的一条。此前每次<b>开启或关闭可变刷新率</b>时，HDMI 输出会<b>短暂黑屏一下</b>；改走 VTEM（HDMI 2.1 定义的信息包类型）槽位后，元数据有了规范归属的通道，这一闪断问题应被解决；<br>
+        · <b>更新链路训练超时位</b>——否则 <b>HDMI 链路训练的一致性（compliance）测试会失败</b>。AMD 正持续推动其 HDMI 2.1 实现通过规范合规验证。<br>
+        <b>同批还包含</b><br>
+        · 为部分 DRM 格式<b>启用直接扫描输出 alpha（direct scan-out alpha）</b>；<br>
+        · 用户队列（<b>UserQ</b>）相关修复；<br>
+        · 尚未发布的 <b>GFX12.1</b> 硬件修复；<br>
+        · <b>SR-IOV</b> 修复；<br>
+        · <b>UALink</b>（加速器间互连规范）相关修复。<br>
+        <b>时间线</b>：Linux 7.4 合并窗口将在 <b>10 月下半月</b>开启（取决于 7.3 稳定版的进度）；7.4 预计落在 <b>2026 年底至 2027 年 1 月初</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先看这条「VRR 元数据走 VTEM 槽位」为什么值得单独讲：它是一个典型的「元数据该放哪儿」问题，而答案由规范而不是由实现决定。</b>在 HDMI 上，主视频流之外还有一条由多种<b>信息包（InfoFrame / InfoPacket）</b>构成的辅助通道，链路两端靠这些结构化小包交换时序与能力信息。<b>把 VRR 元数据放进「非它本来的那个槽位」，在实现上完全跑得通——它能被对端读到、功能也能工作——但它违反了对端解析器的预期，从而产生副作用。</b>本例中的副作用就是<b>每次启停 VRR 时输出短暂黑屏</b>：对端在「按规范该出现 VRR 元数据的地方」没看到东西，于是重新协商了一次链路。<b>这条经验很通用：当你发现某个功能「能用但会伴随一次莫名的重协商 / 闪烁 / 重置」时，第一件该怀疑的事往往不是逻辑错，而是「这段信息有没有被放在双方约定的位置上」。</b>在跨厂商协议里，位置本身就是语义的一部分。<br>
+        <b>② 第二条「链路训练超时位」则暴露了一个更隐蔽的工程事实：合规测试失败常常不是功能不工作，而是实现「慢了一点」。</b>HDMI 的<b>链路训练</b>是一段有严格时间约束的握手——发送端试探、接收端反馈均衡结果，超时就要按规范给出正确的位标志。这个补丁改的正是那个「超时位」。<b>也就是说：功能是通的，数据是通的，唯独「超时这件事有没有被如实上报」不对，而恰好是这一点让一致性测试判为失败。</b><b>做基础软件的团队常低估这类问题：合规 / 认证测试检的是「实现与规范的逐条对应」而不是「用户能不能用」。功能通过不等于合规通过，而合规失败往往卡在一个位、一个边界条件上——这也是为什么开源驱动做 HDMI 2.1 会拖了这么多年才走完。</b><br>
+        <b>③ 「默认启用」这个决定的时机也值得留意。</b>AMD 的做法是：<b>代码先进内核但默认关闭</b>，等到 VRR / ALLM 等配套能力齐备、回归风险可控之后，<b>才在一个版本里统一切到默认开启</b>。<b>这是把一个高风险的新功能推向全体用户的稳妥路径——先让愿意开开关的人当小白鼠，等功能在真实世界里被磨得差不多了再改默认值。</b>因为<b>「改默认值」在效果上等于「一次性向所有人部署这个功能」</b>，它的风险等级远高于「加一个默认关闭的开关」。<b>如果你的项目里有长期挂在「实验性 / opt-in」状态的功能，评估它何时转正时，请按「发布等级」而不是「代码完成度」来讨论。</b><br>
+        <b>④ 最后回到硬件时间表：Linux 7.4 要等到今年年底甚至明年 1 月初。</b>而本批补丁的时点是 <b>7.4 合并窗口开启之前</b>——这意味着<b>用户真正用上「HDMI 2.1 默认可用 + 不再闪断」的体验，还要再等一到两个发布周期</b>。上游驱动的节奏就是这样：<b>合入内核 ≠ 发布内核 ≠ 进到你的发行版内核</b>，中间每一跳都按自己的周期走。<b>评估一项开源图形特性的可用时间时，务必把这三级延迟叠加起来看，而不是按补丁出现在邮件列表的那天算。</b></div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Qualcomm-MSM-DRM-HDR" target="_blank">高通 MSM DRM 驱动准备支持静态 HDR：面向 Snapdragon X 笔记本的 DisplayPort 与 eDP 面板，聚焦 HDR10 + BT.2020 RGB，暂不含动态 HDR 与色调映射</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">在 Linux 上使用 <b>高通 Snapdragon X 系列笔记本</b>的用户，将迎来内核 <b>MSM DRM 驱动</b>的一项新能力：为 <b>DisplayPort 输出与 eDP 内屏面板</b>提供<b>静态 HDR 支持</b>。<br>
+        <b>这批补丁做了什么</b><br>
+        · 加入<b>静态 HDR（static HDR）</b>支持，聚焦 <b>HDR10</b> 与 <b>BT.2020 RGB</b> 信号；<br>
+        · 与其它已支持 HDR 的开源 Linux 图形 / 显示驱动一样，为 MSM 补上这条能力线；<br>
+        · <b>当前尚不提供动态 HDR，也不含色调映射（tone mapping）</b>——即只做静态元数据的传递与信令，不做逐帧 / 逐场景的动态优化；<br>
+        · 补丁系列<b>由 LLM 编码助手协助撰写</b>；<br>
+        · 已在 <b>Snapdragon X1 Elite 平台的 Lenovo Yoga Slim 7x</b> 笔记本上<b>测试通过</b>；<br>
+        · 目前状态为<b>上游评审中（under review）</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「静态 HDR」与「动态 HDR」的区别，是理解这条新闻全部价值的关键——它决定了这次落地的是「能正确显示」还是「能漂亮显示」。</b><b>静态 HDR</b> 指的是整段内容共用一组元数据（例如「这段视频整体峰值亮度 X、色域为 BT.2020」），显示器按这组固定信息去映射自己的实际能力；<b>动态 HDR</b> 则允许元数据<b>逐场景甚至逐帧变化</b>，让暗场景能更暗、亮场景能更亮，从而在同一块屏幕上榨出更大的观感动态范围。<b>这次 MSM 驱动先做静态，是一个非常合理的第一步：静态 HDR 只需要打通「元数据怎么传到显示器」这条链路，不需要引入复杂的映射与决策逻辑，风险与改动量都小得多。</b><b>做显示 / 图像方向的团队可以借鉴这个推进顺序：先把「信息能不能传对」做扎实，再去做「信息怎么被最优利用」。反之，如果一上来就做动态映射，一旦画面不对，你无法判断是元数据链路的问题还是映射算法的问题——两个变量同时在场，调试成本会成倍上升。</b><br>
+        <b>② 值得单独点出的第二个事实是：这批补丁是「由 LLM 编码助手协助撰写」的。</b>Phoronix 特意在正文中标注了这一点，而不是把它当成无关紧要的花絮。<b>它说明到 2026 年，AI 辅助已经进入那些「需要严格遵循既有框架与硬件手册」的底层驱动代码——也就是传统上被认为最难被自动化、最依赖工程师经验的领域。</b>但同时也请注意措辞的精确性：是「协助撰写」（authored with the help of），而不是「由 AI 生成」。<b>这个区别很重要：在驱动这种一错就黑屏的代码里，AI 提速的是「把已知规则翻译成样板代码」，而判断规则边界、确定哪些寄存器组合真正安全，仍然是人。看到这类标注时，理性的读法是「这个领域的上手门槛在被降低」，而不是「这个领域已经不需要人」。</b><br>
+        <b>③ 从平台战略看，这条新闻的意义大于它字面上的技术含量。</b>Snapdragon X 笔记本在 Windows 上的卖点之一就是「长续航 + 好屏幕」，而<b>屏幕体验里包含 HDR</b>。<b>Linux 侧一旦缺了 HDR，这块硬件在开源系统上就是「显示能力被截断」的状态——硬件买到了，能力用不出来。</b>因此<b>补齐静态 HDR 是把 Snapdragon X 从「能跑 Linux」推向「能当日常机用」的必要拼图之一</b>，这类补丁的价值往往被低估：它不产生任何跑分，却直接决定用户会不会留下来。<b>这也呼应了近年开源图形栈的一个清晰趋势——各家 SoC / GPU 厂商都在把「消费级体验特性」（HDR、可变刷新率、电源管理）作为上游补丁的重点，因为决定平台成败的早已不是「能不能点亮」。</b><br>
+        <b>④ 最后是状态提醒：尚在评审中，且仅在一款机型上验证过。</b><b>「单机型测试通过」意味着这条路径在其它 eDP 面板、其它 DP 拓扑（例如 USB-C 转接、扩展坞、多屏）上仍未经验证</b>——而 DP 相关的 bug 恰恰最喜欢藏在拓扑里。<b>对此类补丁的合理预期是：功能会合入，但走向「所有 Snapdragon X 笔记本开箱即用」还需要一段时间的问题收集与修复。</b></div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/amd-perfopt-prior-gen" target="_blank">AMD PerfOpt 对前代 Ryzen APU 同样有效：Ryzen 7 PRO 7840U / Radeon 780M 实测，AI 基准普遍提升 4~12%，主要来自首 token 延迟下降</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Phoronix 上周测过 <b>Linux 7.4 新引入的 AMD PerfOpt</b> 在当前代 Ryzen AI APU / SoC 上的表现（AI 性能最高提升 <b>18~23%</b>）。有读者问：<b>前代 Ryzen 硬件是否也能受益？</b>于是有了本轮追加测试。<br>
+        <b>PerfOpt 是什么</b><br>
+        · 全称 <b>AMD IOMMU Performance Optimization</b>；<br>
+        · 机制是：<b>AMD 集成显卡在直接访问系统内存时，可以绕过 IOMMU</b>，从而避免地址转换带来的开销；<br>
+        · 在 <b>Linux 7.4</b> 中，只要使用 <b>Radeon 集成显卡，该特性将默认启用</b>。<br>
+        <b>本轮测试平台</b><br>
+        · 较老的 <b>Lenovo ThinkPad P14s Gen 4</b> 笔记本，<b>AMD Ryzen 7 PRO 7840U</b>（Zen 4），<b>Radeon 780M</b> 集成显卡——Phoronix 评价该核显在 2026 年仍相当常见、这代笔记本 SoC 依然够用；<br>
+        · 系统为 <b>Ubuntu 26.04 LTS</b>，内核使用 <b>IOMMU next Git 树</b>的构建（早于 Linux 7.4 合并窗口开启）；<br>
+        · 测试期间<b>除开关 PerfOpt 外，系统无任何其它变量改动</b>（干净的 A/B 对照）。<br>
+        <b>结果</b><br>
+        · 在 <b>Lemonade 本地 AI 服务</b>下测试不同模型与场景，<b>改善最明显的是更低的 token 延迟（首 token 时间）</b>，吞吐量也有小幅提升；<br>
+        · 直接测试 <b>Llama.cpp Vulkan</b> 性能时，<b>token 生成与提示处理（prompt processing）两项均有清晰改善</b>；<br>
+        · <b>Vulkan 与 ROCm 两条路径都能从 PerfOpt 受益</b>（针对 Radeon 核显）；<br>
+        · 在该平台上，各类 AI 基准的<b>常见提升幅度为 4~12%</b>。<br>
+        Phoronix 的结论是：<b>对成熟平台而言，一个即将默认启用的内核特性带来这样的提升，算相当不错。</b></div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先理解 PerfOpt 到底省掉了什么，才能判断它为什么对「AI 推理」这一类负载特别敏感。</b>IOMMU 的作用是把设备看到的「虚拟地址」翻译成真实物理地址，并附带权限检查——这是虚拟化与设备隔离的安全基石，但它<b>每一次 DMA 访问都要走一遍页表查询</b>。<b>对显卡这种「以海量小规模内存访问为常态」的设备而言，翻译开销会随访问次数线性叠加。</b>PerfOpt 允许核显在访问系统内存时<b>绕过这条翻译路径</b>（仅保留必要的权限位），<b>等于把每次访问省下的几纳秒乘上了海量的访问次数。</b><b>这也解释了为什么 Phoronix 观察到「首 token 延迟下降最明显」：首 token 之前要做的是把模型权重、KV 缓存等大量数据搬运并建立访问模式，这一阶段正是 DMA 访问最密集的时期。</b><b>做性能优化时的通用经验：先找到「单位成本很小、但被调用次数极大」的那条路径，优化的收益几乎总是出现在它身上，而不是出现在算法层面的宏大改写上。</b><br>
+        <b>② 「前代硬件也能受益」这件事，对存量设备用户的实际价值可能高于新一代的提升数字。</b>新特性通常被宣传为「给最新一代硬件加速」，而<b>真实世界里绝大多数在役设备都不是最新一代</b>。<b>Phoronix 专门为老平台补测，正是因为这个视角：Ryzen 7 7840U / Radeon 780M 是大量 2023~2024 笔记本的配置，它们不会换新，但会跟着内核升级。</b><b>一款软件特性如果能在不动硬件的前提下让存量设备变快，它的「社会总收益」往往远超只对新硬件生效的特性。</b>不过这也有<b>代价与前提</b>——见下一条。<br>
+        <b>③ 但必须把「绕过 IOMMU」带来的安全性问题摆到台面上，不能只看数字。</b><b>IOMMU 不只是性能组件，它同时是安全边界</b>：它保证一个设备无法访问不属于它的内存区域，在虚拟化（尤其是 GPU 直通 / SR-IOV）场景中，这条边界是「虚拟机只能碰自己的内存」的全部依据。<b>PerfOpt 让核显「绕过」这一层，等价于在核显访问系统内存的路径上收窄了这层保护。</b>AMD 选择 <b>仅对集成显卡默认启用</b>，而 iGPU 在物理机上本就在同一可信域内，这个范围限定是有意为之的。<b>对读者的实用建议是：在物理机日常使用场景下，默认开启基本无碍且白拿性能；但在做 GPU 直通 / 多租户虚拟化 / 处理他人数据的机器上，请主动了解并评估 amdgpu.iommu_perfopt 这个开关——内核给出了关闭它的手段，说明设计者清楚这个取舍是有场景边界的。</b><b>看到「默认启用」时，正确的反应不是照单接受，而是问一句「它在什么条件下不该被启用」。</b><br>
+        <b>④ 最后是方法论层面的看点：这条评测的价值有一半来自它的实验设计。</b>「<b>除开关 PerfOpt 外无任何其它改动</b>」这句话，把「特性收益」从「系统整体变化」里彻底剥离了出来。<b>开源项目里最常见的一类误导，就是把「换了内核 / 升级了 Mesa / 更新了编译器」的合计收益归功于其中某一个被重点宣传的开关。</b><b>当你要向团队或上级论证「某个优化值得引入」时，这种单变量、可复现、明确基线的测法是最有说服力的形式——它让结论不依赖信任，只依赖复现。</b></div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/NVIDIA-Boro-Linux-Kernel-AI" target="_blank">NVIDIA 开源「Boro」：Rust 编写的本地 AI 辅助内核开发 CLI，主打补丁回移校验、构建/启动/测试与树外模块破坏检测，已在 LPC 2026 演讲（Apache 2.0）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">过去几个月，NVIDIA 一直在开发 <b>Boro</b>——一款<b>用 Rust 编写、面向本地 AI 的内核开发辅助 CLI</b>，目标是提升内核开发的效率。<br>
+        <b>定位与来历</b><br>
+        · 由 NVIDIA 的 <b>Andrea Righi</b> 主导开发；<br>
+        · <b>灵感来自 Google 的 Sashiko</b> AI 工具（后者已在邮件列表上做出大量有效的代码评审）；<br>
+        · Righi 在本周于<b>布拉格举行的 Linux Plumbers Conference（LPC 2026）</b>上做了 Boro 的演讲。<br>
+        <b>Boro 目前聚焦的能力</b><br>
+        · <b>本地 AI 驱动的补丁校验</b>，特别针对<b>把补丁回移到旧版内核（backporting）</b>这一场景；<br>
+        · 补丁的<b>构建 / 启动 / 测试</b>；<br>
+        · 规划中的能力：<b>检测可能的树外（out-of-tree）模块被破坏</b>。<br>
+        <b>可用的后端</b><br>
+        · 本地算力不足的用户，可用<b>远程 OpenAI 兼容服务</b>；<br>
+        · 也支持 <b>Claude、OpenCode、Codex</b> 等本地后端。<br>
+        <b>其它</b><br>
+        · 采用 <b>Apache 2.0</b> 许可证，代码位于 <b>GitHub 上的 NVIDIA/boro</b>；<br>
+        · Righi 在 LPC 2026 上表示，有兴趣<b>把部分功能导入 Sashiko 本身</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先说清「Boro 与 Sashiko 的分工」，这是判断它是否值得关注的第一个问题。</b>Sashiko 的定位是<b>「评审新补丁」</b>——盯着邮件列表上刚提交的改动，从多个角度找问题，属于「入口处把关」。<b>Boro 则把目光放在了内核维护中另一类长期被低估的工作上：回移（backporting）。</b>把一个修复搬到旧版内核，绝不是「git cherry-pick 一下」这么简单——<b>旧分支的上下文与主干不同，相邻代码可能早就重写过，依赖的辅助函数可能还不存在，测试覆盖也可能完全不一样。</b>而<b>下游发行版（企业发行版尤其）恰恰是靠回移来维持长期维护的：他们不升级内核，只挑修复往回搬。</b><b>Boro 把「本地 AI 驱动的补丁校验」对准这个场景，说明设计者想解决的是真实维护工作里最耗人、最多重复、又最依赖经验的那一段，而不是做一个「AI 帮你写内核代码」的噱头。</b><b>判断一个 AI 开发工具的实用性，一个很有效的角度就是看它瞄准的是「创造性任务」还是「高重复、有明确正确性判据的验证性任务」——后者才是 AI 目前真正能稳定交付价值的领域。</b><br>
+        <b>② 「检测树外模块被破坏」这一条规划，看似不起眼，实际上切中了一个真实的工程痛点。</b>Linux 内核<b>每个版本都会调整内部 API</b>，而大量驱动（尤其是显卡、存储、网络厂商驱动）长期在树外维护。<b>这些树外模块没有跟着内核一起改的义务，于是每次内核升级，它们就可能在某处编译不过或行为异常——而发现这个问题的人，通常不是内核开发者，而是第二天开机发现设备不工作的用户。</b><b>如果工具能在补丁合入的早期就把「这会破坏哪个树外模块」指出来，它实际上是在把「用户侧故障」提前转移到「开发者侧的任务」。</b><b>这个优化方向值得所有做平台 / 框架的团队借鉴：最高价值的自动化不是让本职工作更快，而是把那些「本来会由别人在很晚的时候才发现」的问题，提前到你能处理的时刻。</b><br>
+        <b>③ 更值得注意的是「本地优先」这个设计取向，它揭示了一个非技术的约束。</b>Boro 强调<b>面向本地 AI</b>，同时也提供远程 OpenAI 兼容服务与 Claude / OpenCode / Codex 本地后端。<b>为什么内核开发场景要对「本地」这么在意？因为内核补丁在正式公开之前，往往处于 embargo（禁运）状态——未发布的 CVE 修复、尚未披露的硬件问题，都不能送到第三方云端去分析。</b><b>这条约束解释了为什么「把代码发给大模型」在很多严肃工程场景里迟迟走不通：不是模型能力不够，而是数据不能出门。</b><b>当一个工具同时提供「本地」与「远程」两套后端时，它传达的信息是：设计者清楚这个领域的保密要求，并为算力不足的用户留了台阶。评估任何进入企业的 AI 工具时，「数据流向哪里」都应是与「效果好不好」并列的一级问题。</b><br>
+        <b>④ 最后是生态层面的信号：NVIDIA 明确表示有意把功能「导入 Sashiko」，而不是另立山头。</b><b>这是 AI 辅助内核开发正在从「各家各做试点」走向「收敛到少数公共基础设施」的标志。</b>Sashiko 已经把代码交给 Linux Foundation 并以 Apache 2.0 开源，Boro 同样用 Apache 2.0。<b>对使用者而言，这个走向是好事：许可证一致、能力互补、且明确表达了合并意愿，意味着这些工具不太可能长期分裂成互不兼容的几套。</b><b>在基础设施类工具上，这种「先各自探索、再主动收敛」的演化路径，比一开始就追求统一设计更现实——因为该类工具的正确形态，往往要等真跑过一轮之后才看得清。与本期第 8 条（内核 AI Agent 资源提案）合起来看，可以看到 2026 年内核社区在 AI 协作上的三条并行线索：评审（Sashiko）、维护性工作（Boro）、以及把技能与约定写进内核源码树（agents/ 目录）。</b></div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-Hibernation-With-Lockdown" target="_blank">Linux 终于有望在 Secure Boot / 锁定模式下休眠：NVIDIA 的 Matthew Garrett 提出 RFC，用 TPM 为休眠镜像签名，堵住「休眠镜像被篡改」这条攻击路径</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">使用 <b>UEFI Secure Boot</b> 启动 Linux 时，内核会进入<b>锁定模式（lockdown mode）</b>，以限制修改运行中的内核镜像、或从内核内存中窃取数据的能力；锁定模式也可由用户 / 管理员手动开启。<b>该模式下的一项限制就是「不支持休眠」</b>——而新的补丁提议有望解除这一限制。<br>
+        <b>为什么此前不支持休眠</b><br>
+        · 休眠时，<b>内存内容会被整体写入磁盘</b>，恢复时再从磁盘读回内存；<br>
+        · 问题在于：<b>内核目前无法确保写到磁盘上的这份镜像没有被篡改过</b>；<br>
+        · 因此它可被恶意软件利用——<b>改写将要被载回内存的内核镜像，或借机读取敏感的内核内存</b>；<br>
+        · 在锁定模式的威胁模型下，这构成一条<b>绕过 Secure Boot 的攻击路径</b>，故直接禁用休眠。<br>
+        <b>这次补丁怎么做</b><br>
+        · 由 <b>NVIDIA 的 Matthew Garrett</b> 发出 <b>RFC（征求意见稿）</b>；<br>
+        · 核心思路是<b>用 TPM 背书的安全机制，解决休眠处理「未加密、未认证」的问题</b>；<br>
+        · 具体包含：<b>在内核中新增经审计（audited）的 TPM 会话</b>、<b>为审计会话生成 TPM 签名密钥</b>，以及相关基础设施改造；<br>
+        · 最终目标是让<b>休眠镜像被安全签名</b>，从而确保它在休眠过程中未被篡改。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 这条新闻最值得学的是「一个功能为什么会被安全策略整体禁掉」的思维模式——它不是「休眠有 bug」，而是「休眠破坏了安全链条的某个不变量」。</b>Secure Boot 建立的信任链是：<b>固件校验引导程序 → 引导程序校验内核 → 内核因此可被认为未被篡改。</b>而休眠在磁盘上留下了一份<b>「将被原样装载回内存的镜像」</b>——它在语义上等同于「一份内核镜像 + 一份全部内存内容」。<b>只要这份镜像可以被任何能写这块磁盘的人替换，攻击者就获得了一条绕过整条信任链的捷径：他不需要攻破 Secure Boot，只需要改一下休眠文件，然后在下次启动时让内核把它当作「可信的自己的内存」装载进来。</b><b>锁定模式选择「直接禁掉休眠」，是一个典型的防御性取舍：当一项功能无法被纳入现有信任模型时，理性的做法是先关掉它，而不是带着已知缺口发布。</b><b>这条思路对所有做安全边界的团队都适用——发现某个功能的语义和你的信任模型不一致时，先问「它能不能被纳入模型」，而不是先问「怎么把它做出来」。</b><br>
+        <b>② 那么补丁的解法为什么是 TPM？因为 TPM 恰好提供了这类场景唯一可靠的答案：一个「外部无法伪造、本机可以验证」的凭证。</b><b>问题的本质是「内核需要判断这份磁盘上的镜像是自己写的，还是别人改过的」</b>。仅靠磁盘上的任何数据都无法回答这个问题——因为改了镜像的人同样可以改掉那串校验值。<b>唯一能逃出这个循环的办法，是把验证依据放在攻击者改不到的地方，而这正是 TPM 的角色：它内部持有只有它能使用的密钥，可以为一组数据生成签名，而这个签名无法在 TPM 之外被伪造。</b>因此补丁需要<b>在内核中建立「经审计的 TPM 会话」、并生成专门的签名密钥</b>。<b>这套「把信任锚点移出被保护对象本身」的思路，是安全设计的通用手法：软件里的一切校验值都可被同权限的代码改写，只有硬件 / 外部锚点才能打破这个对称性。</b><br>
+        <b>③ 从实际使用角度看，这条补丁修的是一个长期存在的「两难」。</b>过去用户被要求二选一：<b>要么开 Secure Boot 拿到安全保证、但失去休眠（对笔记本意味着合盖续航与省电能力受限）；要么放弃 Secure Boot 换取休眠。</b><b>把「安全」与「可用性」摆成对立选项，是安全策略最不受欢迎、也最容易被用户绕过的一种形态——用户一旦养成「关掉安全开关」的习惯，你后续的所有安全投入都会打折。</b><b>因此这类补丁的真正价值，不在于新增了某个功能，而在于消除了一次「安全 vs 便利」的用户级妥协。</b><b>做工具与平台时值得记住：凡是让用户必须在「正确」与「好用」之间做选择的默认设定，长期看都会输——用户会选好用，而你要承担「正确」被关掉后的全部后果。</b><br>
+        <b>④ 需要注意两点边界：状态是 RFC，且方案依赖 TPM 硬件。</b><b>RFC 意味着「提出讨论」而非「即将合入」</b>，从 RFC 到进主线通常要经历多轮评审与改写；同时，<b>TPM 背书的能力并非所有机器都有（例如部分老设备、部分虚拟机配置）</b>，因此这套方案大概率会以「满足条件时可用」而非「普遍可用」的形态落地。<b>读到这类「终于可以 XX 了」的标题时，一个稳妥的阅读习惯是：先确认它是 RFC、Patch 还是已合并，再确认它依赖哪些硬件前提——这两个问题能过滤掉绝大部分「即将到来」的错觉。</b></div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Ubuntu-26.10-RISC-V-Desktop" target="_blank">Ubuntu 26.10 将首次提供 RISC-V 桌面镜像：Ubuntu Desktop 与 Xubuntu 最小版并行，测试聚焦 RVA23 合规的 SpacemiT K3，10 月 15 日发布</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">迄今为止，<b>RISC-V 64 位的 Ubuntu ISO 只提供服务器 / 命令行版本，没有预置任何桌面环境</b>。而随下周发布的 <b>Ubuntu 26.10</b>，将<b>首次出现 RISC-V 桌面 ISO</b>——包含正式的 <b>Ubuntu Desktop</b>，以及一个<b>非官方的 Xubuntu 最小镜像</b>（轻量 Xfce 桌面）。<br>
+        · 由 <b>Valentin Haudiquet</b> 宣布这项工作，随 <b>10 月 15 日</b>的正式版发布；<br>
+        · <b>测试聚焦于 SpacemiT K3</b> 硬件，该芯片<b>符合 RVA23 规范</b>；<br>
+        · 关于 QEMU 下的测试，官方<b>推荐使用 Xubuntu 版本</b>，理由是：「Xubuntu 变体的存在有很实际的原因——基于 Xfce 的最小镜像在模拟环境下要好应付得多（GNOME 桌面在 QEMU 下加载可能要 30 分钟以上）。」</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「RISC-V 终于有桌面镜像了」这句话的重量，取决于你把它理解成需求还是供给——它其实是供给方对需求方的一次正式认可。</b>RISC-V 这些年缺的从来不是芯片，而是<b>「把它当作一台正常电脑来用」的完整体验</b>：发行版不提供桌面 ISO，用户就得自己折腾 rootfs、手动装桌面、再自己解决显卡与输入设备，几乎没有人能作为「日常使用」坚持下来。<b>而一个发行版决定把桌面 ISO 纳入官方发布流程，意味着它判断「有足够多的人会想用它」，同时也意味着它愿意把「在这套硬件上跑桌面」当作一个需要长期维护、需要响应用户问题的产品承诺，而不是一次性 demo。</b><b>这是 RISC-V 从「能启动」走向「能使用」的关键一步——真正的分水岭往往不是性能数字，而是有没有人愿意为它承担售后。</b><br>
+        <b>② 更值得关注的技术细节是「测试聚焦 RVA23 合规硬件」，这把新闻从「支持某个板子」提升到了「对齐某个规范基线」。</b><b>RVA23 是 RISC-V 的一个 profile（配置文件）</b>，它规定了「符合该 profile 的处理器必须支持哪些扩展」。<b>在此之前，RISC-V 生态最头疼的问题正是「碎片化」：每家的指令集扩展组合都可能不同，于是同一个二进制镜像在不同板子上跑不起来，发行版不得不为每个板子单独做一套。</b><b>Ubuntu 把 RISC-V 桌面版的验证基线锚定在 RVA23 硬件上，等于在说「我们按规范做事，而不是按板子做事」——这既是发行版降低自身维护成本的必然选择，也是推动硬件厂商向统一 profile 收敛的最有效杠杆。</b><b>对任何做平台适配的团队来说，这条经验都很直接：优先支持「符合标准的实现」而非「出货量最大的单一型号」，短期看覆盖率低，长期看才是唯一能收敛的路径。</b><br>
+        <b>③ Xubuntu 与 GNOME 在 QEMU 下「30 分钟 vs 可接受」的差距，是一个被无意间透露出来的重要信息。</b>官方说得直白：<b>GNOME 桌面在 QEMU 里加载可能要 30 分钟以上，而 Xfce 最小镜像「好应付得多」。</b><b>这个数字说明：当前 RISC-V 的桌面可用性，还强烈依赖于「桌面环境有多重」——也就是说，瓶颈更多在缺乏成熟的加速路径与算力余量，而不是某个具体功能的缺失。</b>从另一个角度看，这也解释了为什么先推出「轻量版 + 完整版」双轨是聪明的做法：<b>它让不同能力的硬件（以及模拟环境）都能找到一条能真正跑起来的路径，而不是让所有用户共同承担完整桌面的开销。</b><b>在平台能力尚不均衡的阶段，「同时提供一条轻量可用路径」几乎总是比「只提供旗舰体验」更能守住用户。</b><br>
+        <b>④ 时间点与链条意义：10 月 15 日发布，紧接 SpacemiT K3 的上游支持落地。</b>回顾本系列近期报道可以看到一条清晰的链条：<b>SpacemiT 的 RISC-V SoC 先在内核 7.4 拿到 CPU 调频等功能支持（10-09 期已收录），随后 Ubuntu 26.10 提供 RISC-V 桌面镜像</b>——<b>底层驱动补齐 → 发行版提供完整发行形态 → 用户真正可以上手</b>。同时 Ubuntu 26.10 采用 <b>Linux 7.3</b> 内核，恰好处在这条链条的合理位置。<b>观察一个新兴架构的成熟度，这种「按链条看」的方法比看单点新闻可靠得多：只有当内核支持、发行版形态、实际硬件供得上三者对齐时，一个平台才真正可用。今天是这三者在 RISC-V 桌面上第一次较完整地同框。</b></div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Faster-Zswap-Batch-Writeback-IO" target="_blank">Zswap 补丁批量提交回写 I/O：内核编译这类负载省下 3~4% 时间，与本周另一批「更大提升」的 Zswap 补丁分属两个系列</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">在<b>内存价格高企</b>的当下，把 <b>Zswap</b> 当作交换页的压缩内存缓存来用的人明显增多。本周又有一批 Zswap 补丁提交，通过<b>批量提交回写（writeback）I/O</b>带来增量性能提升。<br>
+        <b>与本周另一批补丁的区别</b><br>
+        · 本周稍早还有<b>另一批 Zswap 补丁，带来「相当显著」的性能提升</b>（详见 <i>Linux-Better-Zswap-Performance</i>）；<br>
+        · 本批是<b>另一个独立系列</b>，提供的是<b>更具增量性质的收益</b>。<br>
+        <b>机制（作者 Alexandre Ghiti 的说明）</b><br>
+        · 自提交 <b>8f29aa226f82</b>（<i>mm/swap: introduce struct swap_io_ctx</i>）起，<b>回收路径（reclaim）已能把连续槽位的 folio 的交换写入合并成单个 bio</b>；<br>
+        · 但 <b>Zswap 的回写仍然「一个条目发一次 I/O」</b>，没有享受这一优化；<br>
+        · <b>补丁 1</b>：让每次 <b>Zswap LRU 遍历（LRU walk）批量提交其回写 I/O</b>；<br>
+        · <b>补丁 2</b>：对这次遍历做 <b>plug</b>（缓冲 / 插头），使得<b>批量自身无法合并的部分，还能交给块层去合并</b>。<br>
+        <b>效果与状态</b><br>
+        · 在有 Zswap 的情况下，以内核编译为例的负载<b>节省 3~4% 的时间</b>；<br>
+        · 补丁<b>正在评审中，目前评审意见是正面的</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 先看懂「补丁 2（plug）」为什么是这套改动里最关键的一环——它展示的是「分层优化中，最聪明的一层往往不是自己做完所有事，而是不挡住下面那一层」。</b><b>补丁 1 的思路是「把多次小 I/O 攒成一次大的」，这在任何系统里都是第一反应。</b>但现实中<b>批量并不总能完美合并</b>：内存里相邻的条目，落到磁盘上未必相邻；还有对齐、长度等各种约束。<b>如果只做批量，那些「批内也合不了」的碎片仍然会各自变成一次独立 I/O，优化效果就被卡住了。</b>而 <b>plug</b> 是 Linux 块层早就有的机制：它让上层的写入先在一个缓冲里停一下，不急着往下发，从而给块层的调度器一个机会去<b>跨批次合并</b>。<b>补丁 2 的价值就在于：它没有试图在 Zswap 层把合并做到底（那需要 Zswap 知道块设备的拓扑，职责就错了），而是把「合不了的」交还给块层——那一层本来就最清楚设备能接受什么样的请求。</b><b>这条经验非常通用：当你在某个子系统里做批量化 / 缓冲优化时，除了关注「我自己能合多少」，还要主动检查「我是不是把下层的合并能力给掐断了」。很多看起来「下层优化失效」的问题，根因是上层把 I/O 拆得太碎或发得太急。</b><br>
+        <b>② 「已能合并，但有一处没跟上」这个 bug 的形态，值得所有做内存 / 存储路径的人留意。</b>提交 8f29aa226f82 给交换路径引入了 <b>struct swap_io_ctx</b>，从此<b>回收路径的交换写入能合并成单个 bio</b>。<b>但 Zswap 的回写是另一条代码路径——它走了同样的数据、同样的设备，却没有享受到同一项优化。</b><b>这类「同一件事有两条路径，其中一条被优化了、另一条被遗漏」的情况，是靠单点优化不可能发现的：只有当有人愿意把「这个子系统里所有写盘的地方分别是谁、各自怎么发 I/O」列一遍，才会发现漏掉的那条。</b><b>因此这类补丁的贡献往往不在代码量（两句提交说明就讲完了），而在于有人做了一次跨路径的清点。在你自己的项目里，也可以定期做这类「对同一类操作做代码路径普查」的工作——它产出的常常是最便宜的优化。</b><br>
+        <b>③ 3~4% 这个数字，正好提供了一个观察「优化收益如何被正确解读」的好样本。</b>单看 3~4% 似乎不大，但请注意两点：<b>其一，这是「以内核编译作为样例负载」测出的整体时间节省</b>——编译过程本身并没有多少 swap 活动，Zswap 只是背景角色，因此这 3~4% 是被大量无关工作稀释之后的结果；<b>对真正内存吃紧、swap 活跃的负载（例如在低内存机器上跑构建、跑推理），收益占比应当明显更高。</b><b>其二，这类改动是「无副作用的白拿收益」——它不改变任何策略、不牺牲任何功能，只是把已经存在的 I/O 合并机会利用起来。</b><b>判断一项优化的优先级时，「收益 / 风险」比「收益绝对值」更有意义：纯效率型、零语义变更的改动，即使百分比不大也值得做，因为它几乎不会带来回归；而为了大数字去改动行为策略的优化，则要额外承担「行为变了、有人依赖旧行为」的风险。</b><br>
+        <b>④ 最后是存储方向的一个真实背景：Zswap 为什么在 2026 年变得重要。</b>Phoronix 开篇直接点出了原因——<b>内存价格高企</b>。<b>当「加内存」从「便宜的常规操作」变成「要给预算的项目」之后，软件侧用压缩来「扩内存」的价值就重新上升了。</b>这也解释了为什么 Zswap / ZRAM 方向近期密集出现补丁，包括本系列此前报道过的厂商内置页压缩引擎等（如高通的 QPaCE）。<b>这是一个很好的「技术价值随外部条件变化」的示例：同一项技术，在硬件充裕的年代会被评价为「有用但边缘」，在硬件昂贵或受限的年代就变成核心路径。评估技术优先级时，把外部约束（成本、供货、环境）纳入考虑，往往比只看技术本身更能解释「为什么这件事突然被重视」。</b></div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-AI-Agent-Resources" target="_blank">内核拟新增 AI Agent 资源目录（agents/）：首个 skill 用 LLM 自动为补丁判定「Fixes:」标签，由 NVIDIA 的 Sasha Levin 提出</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">上游内核的最新提案是<b>引入 AI Agent 资源（AI agent resources）的基础设施</b>。<br>
+        <b>拟新增什么</b><br>
+        · 规划一个<b>新目录</b>：目前提议为内核源码树根目录下的 <b><i>agents/</i></b>，也可能改为放进现有的文档目录；<br>
+        · 该目录将由内核现有的 <b>AI / 生成式内容文档</b>引用，用以指引 AI Agent 找到它；<br>
+        · 目标是<b>汇集 skills、prompts 及其它面向编码助手的资源</b>，并随内核一起演进。<br>
+        <b>首个 skill</b><br>
+        · 用 <b>LLM 判定新补丁的「Fixes:」标签</b>——即为一个补丁自动标出「它修复的是哪一个内核提交」。<br>
+        <b>提出者与背景</b><br>
+        · 提案由 <b>NVIDIA 的 Sasha Levin</b> 发出；他此前也推动了多项内核 AI 计划，包括提议 <b>AGENTS.md</b>、<b>AI 驱动的合并冲突解决</b>，以及<b>用 AI 判定需要回移到旧版内核的补丁</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「给补丁补上 Fixes: 标签」听起来是件小事，但它触及了内核维护最贵的那个环节：搞清楚「这个改动到底在修什么」。</b>内核的 <b>Fixes:</b> 标签用于标注「本补丁修复了哪个更早的提交」，它是<b>回移（backport）决策的起点</b>：下游发行版维护旧内核时，正是靠扫描 Fixes: 标签来判断「哪些后续补丁需要一起搬过来」。<b>但这个标签的填写质量长期不稳定——有人填得准确，有人漏填，有人凭印象填错。缺失或错标意味着：一个 bug 在主干上被修好了，而使用旧内核的企业用户永远不会知道这个修复的存在。</b><b>而这件事恰好是 LLM 的合适战场：判定「这个补丁修复了哪个提交」需要的不是创造力，而是沿着 diff 的上下文、调用链与历史去搜索证据——这是一个可验证、有客观答案、但极其枯燥的检索任务。</b><b>这也延续了本条提出的通用判断：AI 在内核里最先站稳的位置，不是「写代码」，而是「补元数据」和「做检索」——这类工作出错可以被人工复核，收益却直接落在维护效率上。</b><br>
+        <b>② 真正具有长期意义的是「把 AI 资源放进内核源码树」这个决定。</b>把 skills 与 prompts 放在 <b>agents/</b> 目录（而不是项目 wiki、某个人的博客或公司仓库里），意味着<b>它和内核代码一同被评审、一同被版本化、一同经历「随上游变化而更新」的过程</b>。<b>这个选择的深层含义是：内核社区开始承认「供 AI 使用的提示与技能」是本项目需要维护的一等资产，而不是外部工具的私有配置。</b><b>为什么这很重要？因为 AI 辅助开发工具目前最大的隐患正是「与人所阅读的规范脱节」：模型用的还是训练时记住的旧规则，而规范早就改了。把资源放进源码树，就等于让这套「给机器的说明书」获得与人读的文档同样的待遇——改了内核，就得同步改它。</b><b>这个范式值得所有维护长期项目的团队考虑：如果你的项目开始依赖 AI 助手，那么「给 AI 的说明」迟早也必须进入版本控制，否则它一定会腐烂。</b><br>
+        <b>③ 从本期几条新闻的彼此呼应，可以看出 2026 年内核社区对 AI 的态度已经相当清晰——「分工明确的有限引入」，而不是笼统的拥抱或拒绝。</b>把它和本期的另两条放在一起看：<b>Sashiko 在评审入口处筛问题（Google，已运行一年、19.1 万次评审）；Boro 做回移校验与树外模块破坏检测（NVIDIA，本地优先以避开 embargo 限制）；这条提案则把「skills 与 prompt 的定义」纳入源码树管辖。</b><b>三者覆盖了「入口把关 / 维护性验证 / 规范沉淀」三个互不重叠的位置，且都以「可人工复核」为前提。</b><b>值得注意的是这条路径的演进方式：从 Sasha Levin 先是提议 AGENTS.md、再做 AI 合并冲突解决、再做 AI 回移判定，现在推进到资源目录——每一步都小、都可回退、都在上一轮被社区接受之后才走下一步。</b><b>在一个以「稳定压倒一切」为文化的项目里，这种推进方式可能是比技术方案本身更值得学习的部分。</b><br>
+        <b>④ 最后给一个务实提醒：提案终究是提案，拟议目录位置本身还在讨论（根目录 agents/ 或挪进文档目录）。</b><b>连「放在哪儿」都尚未定论，说明这件事仍处在早期共识形成阶段。</b>而<b>「目录位置」在开源项目里从来不只是审美问题：放在根目录意味着它被视为与代码同等重要、会被所有贡献者看到；放进文档目录则意味着它被视为辅助材料。这个争论的实质是「内核社区想把 AI 协作放到多重的位置上」。</b><b>关注这个提案的进展，观察点不妨就放在最终落地的目录位置上——它往往比提案正文更能说明社区的最终态度。</b></div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Steam-Play-Proton-11.0-2e" target="_blank">Proton 11.0-2e 发布修复 EA App 问题：修复 Gamescope 下 EA App 登录窗口无法正确获得焦点，以及 EA 游戏不显示正确启动画面图</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">CodeWeavers 与 Valve 于 <b>10 月 9 日</b>发布 <b>Proton 11.0-2e</b>——Proton 是他们基于 Wine 的下游项目，也是 <b>Steam Play</b>「在 Linux 上玩 Windows 游戏」的底层支撑。<br>
+        <b>本次更新只有少量改动，全部围绕增强 Steam Play 下的 EA App 支持</b>（EA App 是 EA 用以取代 Origin 的数字发行 / 游戏管理平台）：<br>
+        · <b>修复 EA App 启动器登录窗口在 Gamescope 下无法正确获得焦点的问题</b>；<br>
+        · <b>修复 EA 游戏不显示正确启动画面图（splash image）的问题</b>。<br>
+        对<b>想在 Steam Deck / Steam Machines（以及其它 Linux 硬件）上运行 EA App 的用户</b>来说，这两项修复都有实际意义，<b>尤其是那条 Gamescope 焦点修复</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 「登录窗口拿不到焦点」是一类非常典型、也确实非常致命的 Linux 桌面兼容性缺陷——它会让整个应用在用户眼里「完全不能用」，尽管技术上一切正常。</b>想象一下：程序已经启动，窗口也已经画出来了，但<b>键盘输入进不去</b>，你连账号密码都敲不了。<b>这类问题在 Proton 的适配工作中出现率很高，原因在于游戏 / 启动器往往假设自己运行在一个「窗口管理与输入分发都符合 Windows 预期」的环境里，并且可能主动争抢焦点、或者只在特定时机注册输入。</b>而 <b>Gamescope</b> 是 Valve 为 Steam Deck 与掌机场景写的<b>嵌套合成器</b>，它对窗口与输入的处理方式与常规桌面合成器不同（它更接近「独占一个游戏窗口」的模型）。<b>两者相遇，就产生了「窗口在、但焦点不对」这类问题。</b><b>这条修复提示了一个通用经验：当上层应用假设「窗口系统会按某种方式自动处理焦点 / 输入」时，任何改变这套行为的环境（嵌套合成器、嵌入式、远程桌面、多窗口方案）都需要额外适配——而且这类缺陷不会在功能测试里暴露，它只在真人上手操作时才会出现。</b><br>
+        <b>② 第二条「启动画面图不对」看似是纯视觉小问题，其实同样是兼容层的重要课题。</b>启动画面（splash image）通常是启动器在等待阶段读一个资源文件并按某套规则显示。<b>它显示不正确，往往意味着路径解析、资源加载或时序处理中的某一段没有对齐——而同一段代码在别处可能承担着更关键的角色。</b><b>换句话说，一条看似微不足道的视觉 bug，常常是「某个底层机制只是部分正确」的可见症状。</b>这也是为什么可靠的项目会认真修这类小问题：<b>不是因为它影响观感，而是因为它是一个还在漏的信号。</b><b>对使用者的实用建议则是：在兼容层场景下遇到「界面显示异常」时，不要只把它当作外观问题忽略掉，它有时是更深层不兼容的先兆。</b><br>
+        <b>③ 从生态角度看，「今天仍在为 EA App 这类具体应用打零星补丁」这件事本身，说明游戏在 Linux 上的可用性是一个持续维护出来的结果，而不是一次性攻克的结果。</b>每发布一款新版本，就可能有新的启动器、反作弊、登录流程引入新的不兼容；而<b>专有游戏 / 启动器的代码无法被修改</b>，因此所有适配成本都必须由 Wine / Proton 这一侧承担。<b>这决定了 Linux 游戏体验的改善节奏：它不是靠某次大版本「打通」，而是靠这类小版本补丁长期、密集地累积。</b><b>这也解释了一个常见现象：为什么「Linux 能玩游戏了」这句话，在不同人嘴里可信度差别巨大——它高度取决于你玩的那几款游戏恰好落在哪个维护状态上。</b><br>
+        <b>④ 值得留意的还有发布节奏本身：</b>本次是 <b>11.0 系列的第 2 个补丁级（2e）小版本</b>，距离上一个同系列修复不远。<b>Valve / CodeWeavers 采用的是「发现问题、快速发布小版本」的节奏，而不是攒够了再发大版本。</b><b>对兼容层这类「问题清单永远在变」的软件而言，这个节奏是理性的：小步快发的成本低、回滚容易、也让遇到问题的用户不必等待数月。这与本系列此前记录的趋势一致——Steam Beta 已开始把非 Steam 的 Windows 可执行文件默认交给 Proton 运行（10-08 期），说明 Valve 正持续扩大 Proton 的默认覆盖面，而覆盖面越大，这类针对具体应用的「补丁式适配」就越会成为常态性工作。</b></div>
+    </div>
+
+
+  </div>
+
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-10.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-09.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-10</p>
+    <p>覆盖范围：2026-10-09（EDT）· AMD 为 Linux 7.4 的 AMDGPU/AMDKFD 收尾（HDMI 2.1 修复：VRR 元数据改走 VTEM 信息包槽位以消除启停 VRR 时的短暂黑屏、修正链路训练超时位以满足一致性测试；另含直接扫描输出 alpha、UserQ、GFX12.1、SR-IOV、UALink 修复；HDMI 2.1 与 FRL 在 7.4 默认启用，合并窗口 10 月下半月开启）· 高通 MSM DRM 驱动准备支持静态 HDR（面向 Snapdragon X 笔记本的 DP 与 eDP 面板，聚焦 HDR10 + BT.2020 RGB，暂无动态 HDR 与色调映射，补丁由 LLM 辅助撰写、已在 Lenovo Yoga Slim 7x 测试通过、评审中）· AMD PerfOpt 对前代 Ryzen APU 同样有效（Ryzen 7 PRO 7840U / Radeon 780M 实测，AI 基准普遍 4~12% 提升，主要来自首 token 延迟下降，Vulkan 与 ROCm 均受益）· NVIDIA 开源 Boro（Rust 编写的本地 AI 辅助内核开发 CLI，Apache 2.0，聚焦回移校验、构建/启动/测试、树外模块破坏检测，LPC 2026 演讲，支持本地与 OpenAI 兼容远程后端）· Linux 有望在 Secure Boot / 锁定模式下休眠（Matthew Garrett 的 RFC：以 TPM 为休眠镜像签名，新增经审计 TPM 会话与签名密钥，堵住镜像篡改这条绕过 Secure Boot 的路径）· Ubuntu 26.10 首次提供 RISC-V 桌面镜像（Ubuntu Desktop 与 Xubuntu 最小版并行，测试聚焦 RVA23 合规的 SpacemiT K3，10 月 15 日发布，QEMU 下推荐 Xubuntu）· Zswap 批量回写补丁（让 Zswap LRU 遍历批量提交回写 I/O 并对遍历做 plug 交由块层合并，内核编译负载省 3~4% 时间，评审中）· 内核拟新增 AI Agent 资源目录 agents/（首个 skill 用 LLM 判定补丁的 Fixes: 标签，由 NVIDIA 的 Sasha Levin 提出，与 AGENTS.md、AI 合并冲突解决等一脉相承）· Proton 11.0-2e（修复 Gamescope 下 EA App 登录窗口焦点问题与 EA 游戏启动画面图显示问题，利好 Steam Deck 上的 EA App 用户）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
