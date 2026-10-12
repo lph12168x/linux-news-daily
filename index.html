@@ -292,6 +292,15 @@
     🔗 <a href="https://github.com/lph12168x/linux-news-daily">GitHub 仓库 →</a>
   </div>
 
+  <a class="entry" href="linux-news-2026-10-12.html">
+    <span class="entry-date">10-12</span>
+    <span class="entry-main">
+      <div class="entry-title">Linus Torvalds 用 Claude Code 推进内核大改进：新建分支 noref-filemap-read-with-llm，目标是让 page cache 读取不再持有 folio 引用，以缓解多线程小读同一文件时的引用计数争用；他在补丁说明中公开承认代码、测试程序、评审与初稿均由 LLM 助手完成、测量在自己机器上跑，是否进 7.4 待定 · Linux 合入 AMD TLBI Erratum #1718 内核规避：部分 Zen 上 INVLPGB / TLBSYNC 指令对在旧微码下可能失效失败、留下过期页表项，内核强制补一次 TLBSYNC；随 7.3-rc7 的 x86 修复进线并回移近两年受支持分支 · 微软贡献 Hyper-V 半虚拟化 IOMMU 驱动：新驱动 hv-iommu-guest（HYPERV_PVIOMMU 配置项）为 Hyper-V 上的 Linux 客户机带来内核 DMA 保护与 VFIO 设备直通，兼容 Intel VT-d 与 AMD IOMMU，RFC 可追溯到 2023 年 12 月，目标 Linux 7.4 · 自动向量化 RISC-V 内核初见成效（LPC 2026）：LZ4 最高 +15%、Btrfs +8.4%、XFS +5%、Nginx +2%；代价是内核依赖 Vector 单元、可移植性下降、需 per-CPU 编译器定向 · KNOD 推进用 GPU 承担内核网络包处理：XDP 程序 JIT 成 GPU 机器码、网卡直投 GPU 内存，消费级显卡可达约 7000 万包/秒、RX IPsec 80 Gbit/s；后续探索 Intel Arc 与 AMD 核显，兼容 Broadcom / Intel 网卡 · KDE Plasma 6.8 定于 10 月 14 日发布（恰逢 KDE 30 周年）：最后一刻修复 NVIDIA 专有驱动下平铺窗口卡顿，让 Qt 改用单一持久 OpenGL 上下文；另有 KRunner 方向键导航与 Flatpak 自动更新修复 · Linux 7.4 大批笔记本与掌机支持改进：华硕 ROG Flow X13 平板模式、ProArt 独显开关回退；MSI 电池阈值；HP OMEN 17 与 Victus 温度档位；TUXEDO 键盘背光与灯条；Acer Nitro ANV15-51；OneXPlayer 3 与 AYANEO 2S 掌机电源/风扇控制 · Meta 的可编程调试器 drgn 0.3：加固不可信调试信息与 core dump、优化 QEMU 客户机调试、新增 IRQ 读取与 crash BPF / net 命令、支持 Linux 7.2 / 7.3 特性、正确识别 LoongArch64 · Linux 7.3-rc7 网络子系统：转移 50+ 修复到 7.4 仍体量庞大，维护者直言被 AI 引发的补丁洪流与 AI slop 冲击</div>
+    </span>
+    <span class="entry-hint">覆盖 10-10 ~ 10-11（EDT）9 条：图形/显示/计算重点动态</span>
+    <span class="entry-arrow">→</span>
+  </a>
+
   <a class="entry" href="linux-news-2026-10-10.html">
     <span class="entry-date">10-10</span>
     <span class="entry-main">

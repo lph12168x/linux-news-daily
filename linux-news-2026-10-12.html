@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-12</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 12 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-12.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-10.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linus-Torvalds-Claude-Code" target="_blank">Linus Torvalds 用 Claude Code 推进内核大改进：读 page cache 不再持有 folio 引用</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linus Torvalds 在自己的 torvalds/linux.git 里新建了一个不寻常的分支 <b>noref-filemap-read-with-llm</b> —— 他平时基本只维护 master、很少开分支，而分支名里的「<b>LLM</b>」后缀直接点明了来历。<br>该系列要解决的是一个具体瓶颈：<b>多线程对同一个文件做小尺寸读取时，会在 folio 引用计数上激烈竞争</b>。目标是让 <b>page cache 的读取路径不再需要持有 folio 引用</b>。<br>Linus 在补丁说明里明确承认了 AI 的参与：「<i>上面的代码、测试程序、评审，以及本文初稿，都是我指导下由 LLM 编码助手（Claude Code）完成的；测量则在我自己的机器上跑。</i>」<br>目前补丁停留在该分支上，是否赶上下一个 <b>Linux 7.4 合并窗口</b>尚待观察。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>这是内核上游第一次由 Linus 本人带头发起、并公开署名「AI 参与」的核心内存管理改进。</b>过去他反复强调 AI 产物需要人工把关，这次他亲自下场，等于亲手划出一条可参考的边界：<b>方向由人定、代码与测试可由 AI 起草、最终由人验证</b>。<br>技术层面同样值得重视——<b>「不带 folio 引用读 page cache」如果成立，海量小读并发场景（数据库、文件服务、构建系统、AI 数据加载）的锁竞争会显著下降</b>。这是能直接反映到吞吐上的底层改动，而不是又一个驱动 quirk。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-WA-TLBI-Erratum-1718" target="_blank">Linux 合入 AMD TLBI Erratum #1718 内核规避补丁</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">AMD <b>TLBI（地址转换缓存失效）勘误 #1718</b> 此前只能靠 CPU 微码修复：部分 Zen 处理器在执行 <code>INVLPGB</code> / <code>TLBSYNC</code> 指令对时可能失效失败，留下<b>过期的页表翻译项</b>。<br>对于尚未更新微码的受影响机器，内核现在补上软件规避——<b>强制补一次 TLBSYNC</b>，确保 TLB 项被正确失效。<br>该修复随 <b>Linux 7.3-rc7</b> 的 x86 修复拉取请求进入主线，并将<b>回移到近两年内的受支持内核分支</b>。<br><b>背景</b>：自 <b>2024 年末</b>起，Linux 内核已在 TLB 刷写路径中使用 AMD 的 <code>INVLPGB</code> 指令来提升性能，因此这批 CPU 上的正确性尤为关键。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>INVLPGB 是 AMD 近两年内核性能优化的关键一环</b>（此前 Phoronix 实测过它的收益，内核侧对 TLB 刷写做了大幅提速）。这次勘误说明<b>硬件路径并非总可靠</b>：一旦失效失败，就可能出现「读到陈旧内存」这类极难复现、却又直接破坏正确性的错误。<br>对内核对未刷微码机器的兜底，直接决定了<b>大规模虚拟化与内存密集负载下能否放心使用这条快路径</b>。凡是在 Zen 平台跑数据库、虚拟机或大内存作业，都值得同时确认微码与内核版本是否已含该规避。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/MS-Paravirt-Hyper-V-IOMMU" target="_blank">微软为 Linux 贡献 Hyper-V 半虚拟化 IOMMU 驱动（目标 Linux 7.4）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">微软为 <b>Linux 7.4</b> 提交了新的 <code>hv-iommu-guest</code> 半虚拟化 IOMMU 驱动，已进入 <b>IOMMU 子系统的 next 分支</b>，由新增的 <code>HYPERV_PVIOMMU</code> 内核配置项启用。<br>它让 <b>Hyper-V 上的 Linux 客户机</b>获得内核对已分配设备的 <b>DMA 保护</b>，并支持把设备直通到客户机用户态（例如经由 <b>VFIO</b>）。<br>该驱动<b>同时适用于 Intel VT-d 与 AMD IOMMU 平台</b>：微软已用直通 NVMe 设备完成验证，Intel 侧还把 <b>DSA 加速器</b>直通到 Linux 客户机做了测试。<br>这套补丁的 RFC 最早可追溯到 <b>2023 年 12 月</b>，到 7.4 稳定版（预计 2026 年底）时刚好接近三年。代码将留在 next 分支，等待本月晚些时候 <b>7.4 合并窗口</b>开启。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>传统上 Linux 跑在 Hyper-V 上做设备直通时，DMA 保护与安全隔离一直是短板。</b>这个驱动把 IOMMU 语义虚拟化后交还给客户机内核，使 Hyper-V 上的 Linux 虚拟机在安全属性上更接近裸机——对<b>云端多租户与机密计算场景尤为重要</b>，也让「Windows 宿主 + Linux 客户机」这一常见开发/计算组合更可信。<br>与此同时，IOMMU 子系统在 7.4 周期还收下了 <b>AMD PerfOpt</b>，两件事叠加说明 <b>IOMMU 正在从「能用」走向「既安全又不拖性能」</b>。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Auto-Vectorize-RISC-V-Kernel" target="_blank">自动向量化 RISC-V Linux 内核初见成效：LZ4 最高 +15%，Btrfs +8.4%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">RISC-V 内核构建目前并未使用该 ISA 的 <b>Vector 扩展</b>。<b>Andy Chiu</b> 在 <b>LPC 2026</b> 上展示了借<b>编译器自动向量化</b>的实验结果：对 crypto、RAID、XOR、user-copy 这类内核用例，Vector 能力可带来可观提速——<br>· <b>LZ4 最高 +15%</b><br>· <b>Btrfs 最高 +8.4%</b><br>· <b>XFS 最高 +5%</b><br>· Nginx 负载最高 +2%<br><b>代价同样明确</b>：内核自此<b>依赖 Vector 单元，构建的可移植性下降</b>；启用 Vector 需要额外的上下文管理开销与更多内存；内核态使用 FPU / 向量本就属于「禁区」；而要拿到最佳收益，还需<b>按 CPU 逐个做编译器定向（per-CPU tuning）</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>这与 x86 侧当年「内核要不要启用 AVX-512」的取舍几乎同构</b>——收益真实，但可移植性、上下文切换与功耗的代价同样真实。RISC-V 正从「能启动」走向「性能可竞争」，而压缩、校验和、拷贝这些热路径拿到两位数提升，会直接影响发行版是否愿意推出向量优化内核。<br>关注这场讨论，有助于判断 <b>RISC-V 在服务器与边缘设备上的实际可用性拐点</b>何时到来。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/KNOD-2026-GPU-Network-Process" target="_blank">KNOD 推进：用 GPU 承担内核网络包处理，XDP 已达约 7000 万包/秒</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">KNOD 项目在 <b>LPC 2026（布拉格）</b>介绍了最新进展。其思路是把 <b>XDP 程序 JIT 编译成 GPU 机器码</b>，网卡把数据包<b>直接投递到 GPU 可访问内存</b>，再由 GPU 处理——<b>用通用显卡替代专用网络加速硬件</b>，成本更低且能效更好。近期还新增了 <b>RX IPsec</b> 能力。<br><b>实测数据</b>：在消费级显卡上，XDP 负载可达 <b>约 7000 万包/秒</b>，RX IPsec 达 <b>80 Gbit/s</b>；开发者认为其成本效益优于纯 CPU 处理，且更省电。<br><b>路线图</b>：此前主攻 AMD 独显，接下来将探索 <b>Intel Arc 显卡</b>支持，同时确认可配合 <b>Broadcom 与 Intel 网卡</b>，并把 <b>AMD 核显</b>（而非仅独显）纳入探索范围。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>GPU 直连网络是近年内核数据面最激进的方向之一</b>：把包处理搬到与显存同侧，绕开 CPU 与 PCIe 的往返开销。它对高性能网关、IPsec 卸载、AI 训练集群的东西向流量都有想象空间，而「<b>消费级显卡即可达到 7000 万包/秒</b>」意味着门槛远低于专用 DPU。<br>从只支持 AMD 独显扩展到 Intel Arc 与核显，说明项目正从原型走向通用化，值得跟踪它<b>是否会以及如何被上游接纳</b>——这类「把 GPU 当协处理器做数据面」的尝试往往先在实验项目里跑通，再逐步反哺内核。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/KDE-Plasma-6.8-Next-Week" target="_blank">KDE Plasma 6.8 下周发布：最后一刻修好 NVIDIA 专有驱动下的平铺卡顿</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body"><b>Plasma 6.8 定于 10 月 14 日正式发布</b>，恰逢 <b>KDE 项目成立 30 周年</b>。<br>本周收尾修复中最值得关注的一条针对 <b>NVIDIA 专有驱动</b>：此前在特定 NVIDIA GPU 上<b>平铺窗口会出现卡顿与掉帧</b>，根因是<b>每次打开 Qt Quick 特效都会重新创建 OpenGL 上下文</b>，从而短暂阻塞主线程。修复方式是让 <b>Qt 使用单一持久的 OpenGL 上下文</b>。该问题 <b>6 月</b>上报（Bugzilla #522424），影响所有近期 Plasma 版本，并与 2024 年初的另一份报告（#479250）相关。<br><b>其余收尾项</b>：KRunner 方向键键盘导航改进；Discover 对 Flatpak 应用的自动更新现在总能正确工作；修复 Slow Keys 辅助功能的按键重复问题。<br><b>Frameworks 6.32</b> 还修了「输入时工具提示消失导致使用模糊效果的 Qt 程序崩溃」。<b>Plasma 6.9</b> 方面，KWin Overview 的虚拟桌面缩略图更协调美观，并支持控制登录后接入的键盘背光亮度。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>NVIDIA 专有驱动在 Wayland 合成器下的卡顿长期是 Linux 桌面的痛点</b>，而这次是<b>合成器侧用「持久 OpenGL 上下文」绕开驱动缺陷</b>——属于务实且低风险的修法：不依赖 NVIDIA 改驱动，而是避免每次创建上下文带来的主线程阻塞。<br>考虑到 6.8 已是稳定前夜、并会随各滚动发行版进入用户机器，这类「最后一刻的多 GPU / 渲染修复」对日常体验的影响最直接——尤其对手上就是 NVIDIA 显卡、又用 Wayland 的开发者。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Laptops-Handhelds" target="_blank">Linux 7.4 将带来大批笔记本与游戏掌机支持改进</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">x86 平台驱动的 <b>for-next 分支</b>已积累大量设备适配，将在 <b>Linux 7.4 合并窗口</b>中进入主线，覆盖笔记本与游戏掌机的多种外设与电源行为：<br>· <b>ASUS</b>：ASUS-NB-WMI 为 ROG Flow X13（GV302X*, 2023）加<b>平板模式 quirk</b>；Armoury 驱动为 ProArt（如 H7606 系列）等新机型增加<b>独显开关的回退路径</b><br>· <b>MSI</b>：MSI EC 驱动为新固件的 <b>Katana 15 B13VFK</b> 与 <b>GL65 Leopard 9SCXK</b> 增加<b>电池充电阈值控制</b><br>· <b>HP</b>：HP WMI 驱动为 <b>OMEN 17-ck1xxx</b>（板号 8A17）加<b>温度档位</b>支持，并新增 <b>Victus 15-fb3xxx</b>（8DD0）支持<br>· <b>TUXEDO</b>：Uniwill 驱动启用<b>键盘背光与灯条控制</b><br>· <b>Acer</b>：Acer WMI 为 <b>Nitro ANV15-51</b> 加温度档位、硬件监控与风扇控制<br>· <b>掌机</b>：OXPEC 驱动为 Intel 版 <b>OneXPlayer 3</b> 加电池旁路、容量限制、风扇曲线/转速、turbo 键覆盖等；AYANEO EC 驱动为 <b>AYANEO 2S</b> 加电池充电控制<br><b>时间线</b>：7.4 合并窗口本月晚些时候开启，稳定版预计 <b>2026 年底</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这类「设备 quirk + 电源行为」补丁不像驱动重写那样引人注目，却<b>直接决定一台笔记本在 Linux 上「能不能顺手用」</b>——翻转屏能否正确进入平板模式、风扇曲线是否可调、掌机能否限制充电以保护电池、键盘背光开机后接入还能不能控制。<br>从中也能看出<b>厂商态度</b>：华硕、惠普、微星、宏碁，以及 OneXPlayer、AYANEO 这些掌机品牌，都在持续往上游送补丁。Linux 笔记本与掌机生态的适配速度明显加快，这对做 Linux 桌面/外设方向的人是一条值得留意的趋势线。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Drgn-0.3-Released" target="_blank">Meta 的可编程调试器 drgn 发布 0.3：加固不可信调试信息，支持 Linux 7.2/7.3</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Meta 开源的可编程调试器 <b>drgn</b> 发布 <b>0.3</b>，仍由内核开发者 <b>Omar Sandoval</b> 主导。其定位是「<i>让脚本编写尽可能自然，使调试像写代码一样</i>」。<br><b>本次重点</b>：<br>· <b>加固代码库以应对不可信的调试信息与 core dump</b>；<br>· 优化 <b>QEMU 客户机调试</b>——尽可能直接从 QEMU 进程读取内存，而非走慢路径；<br>· 新增若干便利函数（例如轻松读取系统 <b>IRQ 数量</b>）、新的 <b>crash BPF 命令选项</b>、<b>crash net 命令的部分实现</b>；<br>· 支持 <b>Linux 7.2 / 7.3</b> 的新内核特性；<br>· 正确识别 <b>LoongArch64</b> 架构，另含数十项修复与文档改进。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>内核崩溃现场调试长期依赖 crash 等老工具，脚本化能力弱、对非 x86 架构支持参差不齐。</b>drgn 把「<b>脚本化调试</b>」做成主线能力，并持续跟进最新内核数据结构与 <b>LoongArch64</b>，对做驱动开发、稳定性排查与生产环境 core dump 分析的工程师是实打实的效率工具。<br>而「<b>加固不可信调试信息</b>」这一项尤其值得注意——它说明 drgn 已开始被用于<b>更具对抗性的场景</b>：当崩场来自外部、core dump 可能被构造时，调试器本身也成了攻击面。这在内核与安全团队协作中是个现实需求。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.3-rc7-Networking" target="_blank">Linux 7.3-rc7 网络子系统：转移 50+ 修复到 7.4，仍被 AI 引发的补丁洪流冲击</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">在 <b>Linux 7.3-rc7</b> 发布前，本周网络修复批次已完成合并。由于 7.3 周期接近尾声而补丁活动仍在高位，不紧急的修复被转入 net-next 供 <b>7.4</b> 使用——本次明确<b>转移了 50 多个补丁</b>，并要求各子树大幅裁剪。网络维护者 <b>Jakub Kicinski</b> 在拉取请求中直言：<br>「<i>我很确定你不会对这个 PR 的体量感到满意，但这已经是我们砍掉 50 个修复、并要求子树显著裁剪之后的结果了。情况就是这样。</i>」<br>本批仍含若干<b>以太网驱动回归修复</b>、<b>联发科 MT76 Wi-Fi 驱动修复</b>，以及不少「<b>LLM 味</b>」的修复。网络维护者此前已多次表示被 AI 活动「<b>彻底淹没</b>」，并遭遇 <b>AI slop 补丁</b>的困扰。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>这是「AI 新常态」在网络子系统最直观的一张切片</b>：维护者不得不用「把补丁推迟到下一个内核」来换取评审带宽。对下游而言，这意味着<b>大量非紧急修复的落地时点被整体后移</b>，发行版回移的清单也随之变长；对团队而言，则提醒我们：<b>把 AI 生成/发现的问题纳入内核或大型项目工作流时，必须同步规划评审容量</b>，否则新增的「发现问题」能力会被流程瓶颈吃掉，甚至因低质补丁而反向拖慢主线。<br>这与此前内核「AI 金丝雀」「agents/ 资源目录」等动作是同一趋势的不同侧面。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-12.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-10.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-12</p>
+    <p>覆盖范围：2026-10-10 ~ 10-11（EDT，周末合并版）· Linus Torvalds 用 Claude Code 推进内核改进（分支 noref-filemap-read-with-llm，目标是 page cache 读取不再持有 folio 引用，以缓解多线程小读同一文件的引用计数争用；Linus 在补丁说明中公开承认代码/测试/评审与初稿由 LLM 助手完成，是否进 7.4 待定）· Linux 合入 AMD TLBI Erratum #1718 内核规避（INVLPGB/TLBSYNC 指令对在旧微码上可能失效失败，软件强制补一次 TLBSYNC；随 7.3-rc7 的 x86 修复进线并回移近两年受支持分支）· 微软贡献 Hyper-V 半虚拟化 IOMMU 驱动（hv-iommu-guest，HYPERV_PVIOMMU 配置项，为 Hyper-V 上的 Linux 客户机带来内核 DMA 保护与 VFIO 设备直通，兼容 Intel VT-d 与 AMD IOMMU，RFC 可追溯至 2023 年 12 月，进入 Linux 7.4）· 自动向量化 RISC-V 内核初见成效（LPC 2026：LZ4 最高 +15%、Btrfs +8.4%、XFS +5%、Nginx +2%；代价是内核依赖 Vector 单元、可移植性下降、需 per-CPU 编译器定向）· KNOD 推进 GPU 内核网络包处理（XDP JIT 成 GPU 机器码、网卡直投 GPU 内存，消费级显卡 XDP 约 7000 万包/秒、RX IPsec 80 Gbit/s；后续将探索 Intel Arc 与 AMD 核显，兼容 Broadcom / Intel 网卡）· KDE Plasma 6.8 定于 10 月 14 日发布（恰逢 KDE 30 周年；最后一刻修复 NVIDIA 专有驱动下平铺窗口卡顿，让 Qt 使用单一持久 OpenGL 上下文；另有 KRunner 方向键导航与 Flatpak 自动更新修复）· Linux 7.4 大批笔记本与掌机支持改进（华硕 ROG Flow X13 平板模式、ProArt 独显开关回退；MSI 电池阈值；HP OMEN 17 / Victus 温度档位；TUXEDO 键盘背光与灯条；Acer Nitro ANV15-51；OneXPlayer 3 与 AYANEO 2S 掌机电源/风扇控制）· Meta 的可编程调试器 drgn 0.3（加固不可信调试信息与 core dump、优化 QEMU 客户机调试、新增 IRQ 读取与 crash BPF/net 命令、支持 Linux 7.2/7.3 特性、识别 LoongArch64）· Linux 7.3-rc7 网络子系统（转移 50+ 修复到 7.4 仍体量庞大，维护者直言被 AI 引发的补丁洪流与 AI slop 冲击）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
