@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-13</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 13 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-13.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-12.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-GPU-D-Series" target="_blank">Intel 正式发布面向 Crescent Island 的 GPU D 系列：旗舰 D270 单卡 480GB LPDDR5X</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Intel 正式把此前以「<b>Crescent Island</b>」代称的<b>面向企业、推理优化的 GPU 加速器</b>命名为 <b>GPU D 系列</b>，旗舰型号为 <b>Intel GPU D270</b>。<br>首批规格：<b>单卡 480GB LPDDR5X</b>（为 agentic AI 的大上下文/长会话场景准备）、<b>350W 风冷</b>、<b>PCIe 5.0</b>、<b>32 个 Xe3P 核心</b>与 <b>256 个 XMX Xe3P 矩阵引擎</b>。<br>Intel 强调 <b>Crescent Island 的上游 Linux 驱动进展顺利</b>，到这批加速器规模化出货时会有良好的开源上游支持。更完整的产品页已挂在 intel.com 的数据中心 GPU D 系列页面。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>定位直接对上 NVIDIA 的推理卡细分市场</b>，而「单卡 480GB 大内存 + 风冷」是很鲜明的差异点——大显存容量正是 agent 类负载长上下文与多模型共驻的硬需求。<br>对 Linux 侧更重要的是：<b>这是 Intel 明确押注「上游开源驱动先行」的数据中心 GPU 产品线</b>，Xe3P 驱动栈（Xe 内核驱动 + Mesa）的成熟度会在未来一两个合并窗口里持续兑现，值得跟踪其 Xe 驱动提交节奏。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/rocm-10-opencl-rusticl" target="_blank">Phoronix 实测：Strix Halo 上 ROCm 10 OpenCL 领先 Mesa 26.3 Rusticl 约 50%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Mesa 的 Rust 语言 OpenCL 驱动 <b>Rusticl</b> 近期进展很快，本篇实测把它与 <b>AMD 官方 ROCm 10 的 OpenCL 驱动</b>放在同一台 <b>Framework Desktop（Ryzen AI Max+ 395「Strix Halo」）</b>上对比。<br>API 层面 <b>Rusticl 已支持最新的 OpenCL 3.1</b>，而 ROCm 驱动目前是 <b>OpenCL 2.1 合规</b>。<br>结论：<b>clpeak 里 Rusticl 大体有来有回，但内核启动延迟（kernel latency）明显更高</b>；汇总全部 OpenCL 基准，<b>Rusticl 约为 ROCm 10 OpenCL 性能的 66%</b>。<br>作者的选型建议：<b>追求 OpenCL 性能选 ROCm 驱动栈</b>；看重易用性、OpenCL 3.1 与「Mesa 全家桶统一驱动」的，Rusticl 已经相当可用。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>Rusticl 是 Mesa 生态里「一个 Rust 通用 OpenCL 驱动横跨所有 Gallium3D 硬件」的押注</b>，66% 的差距对一年前还几乎不可用的它来说已经是巨大进步，但同时也说明<b>专用驱动仍有明显性能护城河</b>。<br>对 RDNA APU 上的本地 AI/计算工作负载（llama.cpp 的 OpenCL 路径、blender/图像处理等），在性能敏感场景仍应走 ROCm/HIP；Rusticl 的价值在于<b>发行版开箱即用、无需装 ROCm 全家桶</b>，值得持续跟踪它的 kernel latency 优化。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-HDMI-2.1-FRL-Linux-v2" target="_blank">Intel 提交 HDMI 2.1 FRL 驱动补丁 v2：Panther Lake 已跑通 4K@120</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">继 AMD 为开源 AMDGPU 完整落地 HDMI 2.1 后，Intel 的开源驱动团队跟进：<b>8 月首次贴出 Meteor Lake 及更新核显的 HDMI 2.1 FRL（Fixed Rate Link）补丁</b>，沉寂两个月后由 Intel 工程师 <b>Ankit Nautiyal</b> 发布 <b>v2</b>。<br>v2 处理了此前评审意见，新增 <b>pipe joiner 对 HDMI 的支持</b>、HDMI FRL 使用场景下的<b>音频 prune</b> 等调整；已在 <b>Panther Lake</b> 硬件上轻度测试，<b>4K@120 等模式已可工作</b>——但 8K 输出还差 <b>DSC（显示流压缩）尚未接上</b>。<br>补丁仍标记为 <b>「work in progress」</b>、设计还在定稿评审，<b>大概率要到 2027 年才可能进主线内核</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>HDMI 2.1 FRL 是高端显示器上高分辨率/高刷新率（4K120+、8K）的前提</b>，AMD 侧（AMDGPU HDMI 2.1）已随 Linux 7.4 收尾，Intel 侧的节奏明显更慢——从补丁状态看，<b>现代 Intel 平台用满 HDMI 2.1 带宽还要等一阵子</b>。<br>对做显示通路/输出能力评估的同学，这是<b> Intel 平台 HDMI 能力短板的明确时间表信号</b>：过渡期内高刷大屏仍建议走 DP。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/FreeType-2.15-Released" target="_blank">FreeType 2.15 发布：ISO 开放字体格式第 5 版 + Apple HVF 实验驱动</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">广泛使用的字体渲染库 <b>FreeType 2.15</b> 正式发布，两大主线：<br>① 支持 <b>ISO Open Font Format 第 5 版</b>（2026 年 7 月发布）：新增 <b>VARC 表</b>（CJK 变体字体<b>体积最高缩减 90%</b>）、OpenType 字体支持<b>超过 65536 个字形</b>、新的 <b>GLYF 表</b>（轮廓可混用三次与二次曲线段）。这部分由 Behdad Esfahbod 贡献，<b>明确说明用多个 LLM 从 HarfBuzz 等实现推导基础代码、再人工微调提速</b>；<br>② <b>Apple 贡献的实验性 HVF 驱动</b>（暂仅 macOS）：用于新版 iOS/macOS 的 <b>Hierarchical Variable Font</b>——把复杂字形组织成嵌套树结构的可变字体方案。<br>另有：抗锯齿光栅器对大字号（超过 40 ppem）字形改用动态堆内存、性能改善；TrueType v40 解释器若干 ClearType 渲染改进。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>FreeType 是<b>从桌面到嵌入式几乎所有 Linux 图形栈的字体渲染底座</b>，CJK 字体体积最高 -90% 对中文字体分发（Web 内嵌、固件打包）是实打实的收益。<br>另一个值得注意的信号：<b>又一个核心开源基础库公开承认 LLM 参与了主线路径开发</b>，与本周 Linus 在内核侧的做法相互印证——「AI 起草 + 人工把关」正从个案变成上游社区的常规操作。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Firefox-158-Released" target="_blank">Firefox 158 发布：JPEG-XL 终于默认启用</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Mozilla 双周节奏的 <b>Firefox 158</b> 发布，最具标志性的是 <b>JPEG-XL 图像格式支持终于默认开启</b>：此前版本里 JPEG-XL 一直被实验性选项门控，本次起图像请求的默认 HTTP Accept 头也加入了 <code>image/jxl</code>。<br>作为 WebP/JPEG/PNG/GIF 之外的候选格式，JPEG-XL 在同画质下压缩率明显占优。<br>其他变化：Smart Window 表单填写提速、开发者侧支持 CSS typed arithmetic（calc() 可对同类型不同单位做除法等）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>JPEG-XL 的默认启用是<b>一场持续数年的浏览器格式之争的节点性事件</b>（Chrome 2023 年移除后，Mozilla 重新实现并转正）。对 Linux 发行版与图像工具链（ImageMagick、libjxl 生态）意味着<b>JXL 内容将开始真实出现在 Web 上</b>，解码性能与内存占用会被重新审视；对做图像管线/显示侧的同学，这是一个<b>开始评估 JXL 在交付链路里位置</b>的合理时点。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.3-rc7-Released" target="_blank">Linux 7.3-rc7 发布：7.3 正式版瞄准下周日（10 月 18 日）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linus 发布了 <b>Linux 7.3 最后一个候选版本 rc7</b>——迟了六个小时，他自嘲「不是因为问题，纯粹是无能」：参加内核维护者峰会与 LPC 的旅途时差让他<b>一整天都以为是周六</b>，晚饭时才惊觉当天是周日。<br>rc7 的 diffstat 略为奇特：<b>一半补丁是 selftests</b>——多数因为几个 mount 相关缺陷的修复本身很小、但配套自测用例不少；忽略 tools/testing/ 目录后，构成正常：<b>一半是驱动（DRM 与网络）</b>，其余分散各处，VFS 因 mount 修复略突出。<br>Linus 表示没有需要推迟最终版的因素，<b>7.3 正式版仍定于下周日（10 月 18 日）</b>，希望不需要 rc8。本周后期改动包括 AMD TLBI 勘误规避、大量网络修复、XPad 新增两个手柄，以及 AI 编码代理遍布内核源码树的小修小补。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>7.3 的最终落地时间表明确了</b>：下周日发版意味着 <b>7.4 合并窗口将随即打开</b>——本周已经积压的 AMDGPU HDMI 2.1 收尾、EXT4 iomap 缓冲 I/O、Hyper-V 半虚拟化 IOMMU、Xe 驱动 vRAM 健康检查等都会在窗口里进来，下一版内核的图形/显示/计算特性清单基本成型。<br>另外「AI 补丁潮推高周期后段的补丁活跃度」已是 Linus 口中的「new normal」，<b>评审容量问题会持续存在</b>。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linus-Torvalds-Assoc-Array" target="_blank">Linus 再秀 AI 用法：用 LLM 看懂晦涩代码，顺带挖出潜藏十余年的 3 个新缺陷</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">继上周用 Claude Code 推进 page cache 改进后，Linus Torvalds 周末继续实践他的 AI 主张，树里出现了 <b>assoc-array-fixes</b> 标签。<br>起因：<b>Nils Ollrogge 报告了内核 assoc_array 库的一个缺陷并附了补丁</b>，但 Linus 表示「这段代码晦涩到我难以跟上，所以我做了我一直宣扬的事：<b>用现代 LLM 工具把它看懂</b>」。<br>这个 LLM 辅助分支<b>把一些大而难读的函数拆分以提高可读性</b>，随后在用户态跑测试套件——不仅<b>确认了报告的那个缺陷</b>，还<b>额外发现 3 个缺陷，全部可以追溯到 2013 年该库的最初提交</b>。<br>补丁尚未合入 master，预计将转入即将到来的 <b>Linux 7.4 合并窗口</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是 Linus 一周内第二次公开示范 AI 用法，而且这次的重点不同：<b>不是让 AI 写代码，而是用 AI 降低既有晦涩代码的理解成本，并让「理解」直接转化为质量收益</b>——13 年没人碰出来的 3 个缺陷就是证明。<br>对维护大量历史遗留代码的团队，这是一种可直接复制的模式：<b>AI 做代码可读性重构 + 用户态测试套件兜底</b>，比起直接让 AI「修 bug」更可控、验证边界也更清晰。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-13.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-12.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-13</p>
+    <p>覆盖范围：2026-10-12（EDT）· Intel 正式发布面向 Crescent Island 的 GPU D 系列（旗舰 D270：单卡 480GB LPDDR5X、350W 风冷、PCIe 5.0、32 个 Xe3P 核心、256 个 XMX 矩阵引擎，定位 agentic AI 推理；上游 Linux 驱动进展顺利）· Phoronix 实测 Strix Halo 上 ROCm 10 OpenCL vs Mesa 26.3 Rusticl（Rusticl 已支持 OpenCL 3.1、ROCm 为 2.1；Rusticl 约为 ROCm 性能的 66%，kernel latency 仍明显更高；性能选 ROCm、易用与统一选 Rusticl）· Intel 提交 HDMI 2.1 FRL 补丁 v2（Meteor Lake 及更新核显；Panther Lake 已跑通 4K@120，8K 还差 DSC 未接上；仍为 WIP，大概率 2027 年才进主线）· FreeType 2.15 发布（ISO 开放字体格式第 5 版：VARC 表使 CJK 变体字体体积最高 -90%、支持超 65536 字形；Apple 贡献实验性 HVF 驱动（暂仅 macOS）；大字形光栅化性能改善）· Firefox 158 发布（JPEG-XL 终于默认启用，HTTP Accept 头加入 image/jxl；此前一直实验性门控）· Linux 7.3-rc7 发布（diffstat 一半是 selftests；7.3 正式版瞄准下周日 10 月 18 日，随后 7.4 合并窗口打开；AI 补丁潮推高周期后段活跃度已是「new normal」）· Linus 用 LLM 看懂晦涩的 assoc_array 代码并拆函数提升可读性（用户态测试套件确认报告缺陷、还挖出 3 个可追溯到 2013 年的缺陷；补丁预计进 7.4 合并窗口）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
