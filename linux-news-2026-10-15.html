@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-15</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 15 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-15.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-14.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/KDE-Plasma-6.8-Released" target="_blank">KDE Plasma 6.8 正式发布：恰逢 KDE 项目 30 周年，Wayland 打磨成为主线</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body"><b>KDE Plasma 6.8</b> 正式发布，与 <b>KDE 项目 30 周年</b>重合（1996 年 10 月项目启动）。这是一个特性密集且打磨充分的版本：<br>① <b>vRAM 占用优化</b>（Breeze 主题引擎省显存）；<br>② <b>KWin 支持 Wayland commit-timing 协议</b>——视频播放与 Adaptive-Sync/FreeSync 场景的呈现时序可控；<br>③ <b>多 GPU 处理改进</b>与<b>多显示器改进</b>，新增 <b>kscreenctl</b> 显示配置工具；<br>④ <b>服务端投影阴影（server-side drop shadow）</b>支持、Wayland 下 <b>dwell clicker</b>（悬停点击）支持；<br>⑤ <b>远程桌面支持增强</b>（KRDP 低延迟方向延续）；<b>Union 主题引擎</b>改进。<br>值得一提的是，发布前最后一刻还修掉了 <b>NVIDIA 专有驱动下窗口平铺卡顿</b>的问题（Qt 改用单一持久 OpenGL 上下文）。Wayland 角度的微调与打磨贯穿整个 6.8 周期。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Plasma 6.8 是<b> Wayland 桌面成熟度的又一个里程碑</b>：commit-timing 协议、多 GPU/多屏改进、服务端阴影——这些正是过去半年里 KWin 逐个合入的特性在正式版的汇总。<br>30 周年节点 + 这批图形栈改进，值得作为<b>评估 Plasma 6.8 升级与 Wayland 迁移</b>的参考版本；对做显示/合成器方向的同学，<b>KWin 的 commit-timing 与多 GPU 路径</b>尤其值得过一遍代码。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Easy-Anti-Cheat-Better-Linux" target="_blank">Epic Games 改进 Linux 反作弊：EAC Linux v2 走 systemd 服务 + eBPF，弃内核模块</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Epic Games 宣布 <b>Easy Anti-Cheat（EAC）Linux v2</b>——对 Linux 反作弊方案的彻底重构，同时官宣 <b>Epic Games Launcher 预览版（含 Linux 支持）</b>与<b>《堡垒之夜》官方 Linux 支持的推进</b>。<br>EAC Linux v2 的技术路线很克制：<b>不再依赖 Linux 内核模块</b>，而是：<br>① <b>反作弊 systemd 服务</b>——运行受保护游戏时启动，游戏结束后可卸载；<br>② <b>eBPF 内核程序</b>承担安全功能；<br>③ 依赖 <b>UEFI Secure Boot</b>，信任链由 <b>Canonical、Fedora、Universal Blue、Debian、SUSE、Rocky Linux 或 Microsoft UEFI CA</b> 签发的密钥保证。<br>注意：<b>Steam Deck 暂不支持 EAC Linux v2 所需的功能</b>，Epic 正在与 Valve 合作解决。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是<b>主流游戏厂商在 Linux 上第一次放弃内核模块路线、转向 eBPF + systemd 的官方反作弊</b>——对「Linux 桌面游戏生态」是标志性事件：EAC v2 + Epic 启动器 + 堡垒之夜，等于把 Linux 挡在门外的最后几个大作之一拉了回来。<br>技术上看，<b>eBPF 承载安全策略 + Secure Boot 建立信任链</b>的组合，对内核安全、容器/沙箱方案也有参照意义；Steam Deck 的兼容缺口则是后续值得跟踪的点。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/ubuntu-2610-amd64v3-epyc" target="_blank">Ubuntu 26.10 amd64v3 包在 AMD EPYC 上实测：平均小幅领先，特定负载收益可观</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Phoronix 用 <b>Gigabyte MZ33-AR1 + EPYC 9555P（64 核）</b>实测 Ubuntu 26.10 的<b>非官方 amd64v3 软件包仓库</b>（按 x86_64-v3 微架构特性级别编译），200+ 项基准：<br>① <b>几何平均仅「略微更快」</b>，但<b>特定性能敏感负载收益明显</b>：GNU Radio、部分 Python 操作、SPECFEM3D、Incompact3D 等科学计算代码优势可观；<br>② PostgreSQL 各配置略有改善，ClickHouse 官方包在 amd64v3 上也略有利好；<br>③ <b>CPU 功耗无可测量差异</b>——纯赚不亏。<br>Ubuntu 26.10 已开始构建 <b>amd64v3 ISO</b> 方便安装，但 Canonical 尚未正式把 amd64v3 作为通用 amd64 的替代品 endorsing；值得观察 Ubuntu <b>28.04 LTS</b> 时是否正式支持甚至替换。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>x86_64-v3（AVX2 基线）编译是<b>发行版层面最廉价的「免费性能」来源</b>：不改代码、不加功耗，服务器平均小幅提升、HPC/信号处理等向量化敏感负载大幅受益。<br>对部署 EPYC 服务器跑计算负载的场景，<b>amd64v3 仓库已到可评估阶段</b>（注意其仍非官方支持）；若 Ubuntu 28.04 LTS 转正，这一选择将影响几乎所有企业部署基线。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-Answering-RVA23-Question" target="_blank">Linux 内核将一键回答「这台 RISC-V 机器支持 RVA23 吗」</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">RISC-V 的 <b>RVA23 配置档</b>对减少生态碎片化至关重要（现代 Ubuntu 已强制要求 RVA23），但用户此前想确认自己的系统是否合规，只能<b>对每个强制扩展逐一发起 hwprobe / prctl 查询</b>——一直没有一次性判定的方法。<br>高通工程师 <b>Guodong Xu</b> 的补丁系列正在补上这个缺口：<b>通过 hwprobe 直接暴露 RVA23U64 基线行为</b>，并同步体现在 <b>/proc/cpuinfo</b> 与 hwprobe 接口，用户态一条查询即可判定。<br>该工作在布拉格 <b>LPC 2026</b> 上进一步讨论；补丁系列的大部分<b>已排队进 RISC-V 的 for-next 分支、目标 Linux 7.4</b>，RVA23U64 位上报部分还在返工、至少还需一轮评审。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>RVA23 是 RISC-V 软件分发的「x86_64-v3 时刻」：<b>只有硬件基线可一键检测，二进制分发才能落地</b>。这条补丁把「逐扩展拼凑判定」变成「一条 hwprobe」，对 RISC-V 发行版（Ubuntu RISC-V 桌面镜像已落地）、容器与二进制分发工具链都是基础设施级改进。<br>对关注 RISC-V 服务器/加速卡生态的同学，7.4 的 RISC-V for-next 分支值得跟一下。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Apple-Clang-SSAF-Driver" target="_blank">Apple 向 LLVM/Clang 上游贡献 SSAF 驱动：全程序分析与源到源转换</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Apple 编译器工程师向上游 LLVM/Clang 贡献了 <b>clang-ssaf-driver</b>（<b>Scalable Static Analysis Framework</b> 驱动），用于<b>全程序（whole-program）分析</b>与<b>源到源（source-to-source）代码转换</b>，已合并进 LLVM Git。<br>工作方式：在<b>项目构建过程中</b>对整个工程运行源转换，最终<b>产出补丁文件</b>（冲突的编辑不进补丁）与转换报告（按编译器诊断风格打印，也可输出 <b>SARIF</b>）；支持 <b>--apply</b> 直接用 clang-apply-replacements 应用编辑并校验。<br>首个转换规则是 <b>cpp-bounded-buffers</b>：把需要边界检查的 <b>C++ 裸指针与数组重写为 bounded_ptr / bounded_array</b>。项目经 make 构建的可用 clang-ssaf-orchestrator-make 驱动。<br>作者 Apple 的 Jan Korous 说明这是此前提出的 <b>clang-reforge</b> 的泛化——目标是做一个<b>与具体转换解耦的通用分析/转换驱动</b>。预计随 <b>LLVM 24</b>（明年春季）发布。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>大规模 C/C++ 代码库的<b>机械化安全改造</b>（如裸指针 → 有界类型）一直缺趁手工具；SSAF 把「构建过程 + 全程序分析 + 自动补丁」做成通用驱动，思路类似 Rust 生态的迁移工具（cargo fix / 后续 edition 迁移器）。<br>对内部有大型 C/C++ 遗留代码、想做内存安全加固的团队，<b>LLVM 24 的 SSAF 值得提前关注</b>——这也是继 Apple 持续投入 Swift/工具链后，又一次把内部基础设施开源上游的案例。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Framework-More-CachyOS" target="_blank">Framework 对 CachyOS 的月度资助增至三倍（约 $850/月）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">桌面</span>
+      </div>
+      <div class="news-body">Framework Computers 宣布把对 <b>CachyOS</b>（基于 Arch Linux、以开箱即用性能调优见长的独立发行版）的<b>月度捐赠从 $250 提高到约 $850</b>——增至三倍。<br>此前 Framework 已向 CachyOS 提供硬件设备用于优化支持；新增资金将用于<b>构建服务器、镜像与基础设施</b>，并投入更多时间做性能优化。<br>背景：CachyOS 在最新 Steam 硬件调查中是<b>占比最高的 Linux 发行版（约 18% 的 Linux 游戏系统）</b>，凭借面向性能的默认配置在 Linux 游戏玩家中广受欢迎。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>硬件厂商持续资助性能导向发行版（此前 Framework 也资助过发行版生态）是<b>「Linux 游戏市场已被认真对待」</b>的又一个信号——Steam 调查里 18% 的份额说明性能调优版 Arch 已成 Linux 游戏的事实选择之一。<br>对普通用户：若在选 Linux 游戏桌面，<b>CachyOS 的构建优化（x86-64-v3/v4 软件包、调度器调优）与 Ubuntu amd64v3 的方向一致</b>，与本条 amd64v3 评测可对照阅读。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-15.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-14.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-15</p>
+    <p>覆盖范围：2026-10-14（EDT）· KDE Plasma 6.8 正式发布（KDE 项目 30 周年：vRAM 占用优化、KWin 支持 Wayland commit-timing 协议、多 GPU/多显示器改进 + kscreenctl、服务端投影阴影、Wayland dwell clicker、远程桌面增强、Union 主题引擎改进；发布前最后一刻修复 NVIDIA 专有驱动平铺卡顿）· Epic Games EAC Linux v2（弃内核模块，改走反作弊 systemd 服务 + eBPF 内核程序；依赖 UEFI Secure Boot（Canonical/Fedora/Debian/SUSE 等签发密钥）；Steam Deck 暂不支持所需功能、正与 Valve 合作；同批官宣 Epic 启动器 Linux 预览与堡垒之夜官方 Linux 支持推进）· Ubuntu 26.10 amd64v3 包 EPYC 实测（EPYC 9555P / Gigabyte MZ33-AR1，200+ 基准几何平均仅小幅领先，但 GNU Radio、SPECFEM3D、Incompact3D 等负载收益可观，功耗无可测量差异；amd64v3 ISO 已开建，Canonical 尚未正式背书）· Linux 将一键回答「RISC-V 系统是否 RVA23 合规」（高通 Guodong Xu：hwprobe 暴露 RVA23U64 基线 + /proc/cpuinfo；LPC 2026 讨论，大部分已排队 RISC-V for-next、目标 Linux 7.4）· Apple 向 LLVM/Clang 上游贡献 clang-ssaf-driver（全程序分析 + 源到源转换，产出补丁与 SARIF 报告；首个规则 cpp-bounded-buffers 把裸指针/数组重写为 bounded_ptr/bounded_array；clang-reforge 的泛化，随 LLVM 24 发布）· Framework 对 CachyOS 月度资助增至三倍（$250 → 约 $850，用于构建服务器/镜像/性能优化；CachyOS 占最新 Steam 调查约 18% 的 Linux 游戏系统、为占比最高发行版）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
