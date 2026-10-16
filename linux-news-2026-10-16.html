@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-16</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 16 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-16.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-15.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mutter-2nd-GPU-Damage-Track" target="_blank">GNOME Mutter 改进次级 GPU 拷贝缓冲的 damage 跟踪，多 GPU 体验受益</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Red Hat 的 <b>Ray Strode</b> 在 <b>Mutter</b> 合入了对<b>次级 GPU 拷贝缓冲（secondary GPU copy buffers）的 damage 跟踪</b>改进（MR !5300），将随 <b>GNOME 51.2</b> 首次出现，也作为 GNOME 52 的早期改进。<br>背景：当显示器连接在与渲染 GPU 不同的另一块 GPU 上（典型如<b>混合 GPU 笔记本</b>），native backend 需要把渲染好的帧拷贝过去——按拷贝模式不同，使用两个 GPU 可访问缓冲或三个 CPU 可访问缓冲作为目标。<br>此前的缺陷：主 GPU 拷贝轮换使用三个目标缓冲，复用的缓冲可能是几帧之前的旧内容，只拷贝「最新一帧的 damage」会把旧像素留在屏幕上；序列化次级 GPU 拷贝的两帧假设在拷贝失败后也会与缓冲内容脱节；CPU 回退路径在读取失败后仍返回缓冲。<br>新方案引入 <b>MetaSecondaryGpuCopyState</b>：记录每个目标缓冲「最后一次成功拷贝的源帧」，保留近期帧的 damage 区域；未知或过旧的缓冲、以及 damage 矩形超过 16 个的区域，直接整帧拷贝；缓冲只有在拷贝成功后才前移，零拷贝导入成功则使回退状态失效。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是<b>多 GPU 桌面显示路径的基础设施级修复</b>：混合 GPU 笔本与多显卡工作站的「外接屏花屏/残影」类问题，大多出在跨 GPU 拷贝的 damage 计算上。<br>对做显示/合成器方向的同学，这份 MR 是<b>「跨 GPU 拷贝缓冲生命周期 + damage 状态机」</b>的现成参考实现；顺带一提，作者是在做 <b>castkms</b>（虚拟显示 DRM/KMS 实验驱动）与 <b>Pronk</b>（把 Google Cast 设备变成 Linux 桌面显示器）时顺带打磨的。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-Nova-Lake-SR-IOV-Xe" target="_blank">Intel 确认 Nova Lake S/P 核显支持 SR-IOV，Xe 驱动 VFIO 设备表补上 PCI ID</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Intel 工程师在内核邮件列表贴出补丁，确认 <b>Nova Lake S（NVL-S）与 Nova Lake P（NVL-P）的集成显卡</b>将在 <b>Xe 内核图形驱动</b>下支持 <b>SR-IOV（Single Root I/O Virtualization）</b>；同批补丁也把 <b>Crescent Island（现名 Intel GPU D 系列）</b>的 SR-IOV 支持加进 Xe 的 VFIO 代码。<br>补丁内容：把 CRI / NVL-S / NVL-P 的 <b>PCI ID 加入 xe-vfio-pci 设备表</b>，让生成的 vfio_pci 模块别名允许用户态为虚拟功能（VF）选择该变体驱动。<br>时序上：补丁正在评审，而 <b>Linux 7.4 合并窗口下周才开、DRM-Next 截止已过</b>——大概率要等 <b>Linux 7.5 周期</b>，除非作为 7.4 的早期「fix」提前提交。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>SR-IOV 意味着<b>一块核显可以切成多个虚拟功能分给多台虚拟机</b>——这是 Intel 消费级/商用 SoC 图形虚拟化走向实用的关键一步（此前只有独显/数据中心卡明确支持）。<br>对云端 Windows/Linux 虚拟桌面、GPU 分享型容器与 VFIO 直通方案，Nova Lake 的核显 SR-IOV 值得提前规划；Xe VFIO 代码路径（xe-vfio-pci 变体驱动）也是研究<b>现代 GPU 半虚拟化栈</b>的好样本。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Steam-Linux-Beta-64-bit" target="_blank">Steam Linux 客户端终于转正 64 位，并整体迁入 Steam Runtime 容器运行</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Valve 发布新版 <b>Steam 客户端 Beta</b>：Linux 版 <b>Steam 客户端主程序正式改为 64 位应用</b>——Linux 玩家社区多年呼吁的「最后一根 i686 独苗」终于移除，用户系统不再需要为 Steam 客户端本身保留 32 位库。<br>同时，Steam 客户端现在<b>运行在 Steam Runtime 容器内</b>：客户端与游戏共用同一套 Steam Runtime，目标是让客户端在<b>不同发行版上获得一致的运行体验</b>。<br>这是对今年早些时候 <b>SteamRT 3 Beta</b>（开始为 64 位与容器化做准备）的延续；完整变更列表见 SteamCommunity 公告。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Steam 客户端曾是 Linux 桌面<b>强制保留 multilib/32 位库</b>的最大理由；转 64 位后，<b>纯 64 位发行版与最小化容器镜像</b>少了一个主要障碍（Steam 客户端层面——游戏仍可能需要 32 位运行时，但那已被容器封装）。<br>对发行版维护者是实打实的依赖树减负；对做桌面标准化/镜像裁剪的同学，这也是评估「去 32 位」节奏的参考事件。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AI-Reverse-Engineer-Linux-HW" target="_blank">Claude Code 实战逆向工程硬件：Red Hat 工程师用它写出扫描仪 SANE 驱动并修好 IPU7 摄像头</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Red Hat 的 <b>Christian Schaller</b> 发博文展示用 <b>Claude Code</b> 逆向工程硬件、为 Linux 补驱动的实践：<br>① 他的 <b>Pustek 8200i 底片扫描仪</b>在 Linux 上不工作——借助 Claude Code，通过<b>带厂商驱动的 Windows 虚拟机抓取并分析 USB 活动</b>，成功写出可用的 <b>SANE 扫描仪驱动</b>；随后还用 Claude Code 开发了 <b>Rust 编写的 GNOME 底片扫描应用</b>（Negative Vibes）。<br>② 接着又让 Claude Code 修复 <b>ThinkPad X1 Carbon Gen 14 Aura Edition</b> 上的 <b>MIPI 摄像头</b>问题——该机 <b>Intel IPU7</b> 背后的 Sony 传感器出黑图等故障，AI 同样解决了这些驱动缺陷。<br>完整过程见其 GNOME 博客。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>「<b>AI 逆向工程硬件 → Linux 驱动</b>」正在从概念变成可复现的工作流：抓 USB 流量 + 厂商驱动行为 → 生成协议实现，恰好命中驱动开发里最枯燥、最适合自动化的部分。<br>结合近期内核社区的动态（Linus 用 Claude Code 推进内核分支、Google Sashiko 19 万次评审、AI 辅助逆向），<b>驱动/固件方向的 AI 辅助开发已是明确趋势</b>；对团队而言，「用 AI 补齐冷门硬件支持、减少逆向人力」的工作流值得内部试点。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Ubuntu-26.10-Released" target="_blank">Ubuntu 26.10 正式发布：Linux 7.3 + GNOME 51 + Mesa 26.2，Rust Coreutils 迁移完成</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Ubuntu <b>26.10「Stonking Stingray」</b>正式发布（半年期非 LTS 版本），主要更新：<br>① <b>Linux 7.3 内核</b>（接近最终状态）；<br>② <b>GNOME 51</b> 桌面及其他桌面选项更新；<br>③ 图形驱动更新至 <b>Mesa 26.2</b>；<br>④ <b>Rust Coreutils 迁移全部完成</b>；<br>⑤ 改进的 <b>TPM 全盘加密</b>与企业认证支持；<br>⑥ 首次提供 <b>RISC-V 桌面镜像</b>与优化的 <b>amd64v3 安装镜像</b>；<br>⑦ 新的 <b>Myna 语音转文字</b>技术预览（Canonical 情境感知桌面方向）。<br>Kubuntu、Xubuntu 等 10 个官派分支同日发布。Phoronix 此前的实测显示 26.10 相对 26.04 LTS 有可观性能提升（新内核 + 组件更新）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>作为 27.04 / 28.04 LTS 之前的过渡版，26.10 把 <b>Linux 7.3 + GNOME 51 + Mesa 26.2</b> 这套组合推给了大量桌面用户，也等于把本周刚发布的 Plasma 6.8 / GNOME 51 的图形栈改进（commit-timing、Mutter damage 改进等）送到更广的测试面。<br><b>RISC-V 桌面镜像</b>与 <b>amd64v3 ISO</b> 两个「第一次」尤其值得注意——分别对应两条硬件基线演进路线的落地。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Huawei-Proposes-Boost-Default" target="_blank">Huawei 提议 ACPI CPPC 驱动默认开启 CPU boost 模式</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">通用 <b>ACPI CPPC CPUFreq 驱动</b>（大量 <b>ARM64 Linux 服务器平台</b>使用）目前对「最高性能级别高于标称性能级别」的 CPU，<b>boost 模式默认关闭</b>、需要经 sysfs 手动打开。Huawei 工程师的补丁提议<b>默认启用 boost</b>，免去用户态配置。<br>理由：对服务器平台而言，峰值性能通常是期望的默认行为，现在的默认值并不友好。<br>ARM 工程师 <b>Christian Loehle</b> 回应提出了更根本的疑问：现代芯片的功耗/热设计包络复杂，boost 开关「既不保证不降频、也不保证拿到请求的性能」，或许应该<b>干脆重新审视 boost 机制本身</b>——懂硅特性的用户可用 scaling_max_freq 自行设上限；并顺带质疑 NOMINAL_PERF != HIGHEST_PERF 平台在 Linux 上是否只是额外的麻烦。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>表面是一个默认值之争，实质是 <b>ARM64 服务器性能管理接口的清理方向之争</b>：boost 语义在异构/复杂温控时代是否还有存在价值。<br>对在 ARM64 服务器（含国产平台）上跑计算负载的场景，<b>CPPC boost 默认值直接影响开箱性能基线</b>，这条补丁与后续讨论值得跟踪。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-16.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-15.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-16</p>
+    <p>覆盖范围：2026-10-15（EDT）· GNOME Mutter 改进次级 GPU 拷贝缓冲 damage 跟踪（Ray Strode / Red Hat，MR !5300；新增 MetaSecondaryGpuCopyState 记录每个目标缓冲最后成功拷贝的源帧，修复混合 GPU 笔记本跨 GPU 拷贝的旧像素残留，随 GNOME 51.2 首次出现）· Intel 确认 Nova Lake S/P 核显支持 SR-IOV（Xe 驱动 xe-vfio-pci 设备表补 PCI ID；同批加入 Crescent Island / GPU D 系列；预计 Linux 7.5 周期）· Steam Linux 客户端 Beta 转 64 位（移除最后一个 i686 独苗）并整体迁入 Steam Runtime 容器运行（SteamRT 3 方向延续）· Claude Code 实战逆向工程硬件（Red Hat Christian Schaller：抓 Windows VM USB 流量写出 Pustek 8200i 的 SANE 驱动、修复 ThinkPad X1C Gen14 IPU7 MIPI 摄像头缺陷，并开发 Rust 版 GNOME 底片扫描应用）· Ubuntu 26.10「Stonking Stingray」正式发布（Linux 7.3 + GNOME 51 + Mesa 26.2、Rust Coreutils 迁移完成、TPM 全盘加密增强、首次提供 RISC-V 桌面镜像与 amd64v3 ISO、Myna 语音转文字技术预览）· Huawei 提议 ACPI CPPC 驱动默认开启 CPU boost（ARM64 服务器常用；Arm 工程师反问是否应重审 boost 机制本身）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
