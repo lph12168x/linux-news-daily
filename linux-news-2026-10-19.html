@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-19</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 19 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-19.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-16.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.3-Released" target="_blank">Linux 7.3 正式发布：I/O 提速、AMD Zen 6 准备、Valve 贡献满满，7.4 合并窗口随即打开</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linus Torvalds 按期发布 <b>Linux 7.3 稳定版内核</b>（10-18 周日）。本期亮点：<br>① <b>现代系统 I/O 性能提升</b>（NVMe/IO_uring 路径多处优化）；<br>② <b>AMD Zen 6 平台准备</b>（BTB 上下文隔离等一系列使能工作）；<br>③ <b>Steam Controller 2026 内核驱动支持</b>等来自 Valve 的大量贡献；<br>④ 老款 AMD GPU 改进、<b>小显存系统的 vRAM 管理改进</b>；<br>⑤ 发布前收尾修复：2024 年以来的<b>偶发 SMP 启动挂死</b>、三星 990 PRO / 990 EVO Plus SSD 固件虚报能力的 workaround，以及 XFS 维护者 Darrick Wong 服务 23 年后宣布暂退。<br>7.3 发布即开启 <b>Linux 7.4 合并窗口</b>；若 7.4 仍按期在 12 月底发布，它有望成为今年的 LTS，否则 Greg KH 可能保守地钦点 7.3 为年度 LTS。完整特性清单见 Phoronix 的 7.3 features 汇总页。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>内核版本例行大事件</b>：7.3 正是过去两周大量 AMD/Intel 图形、调度与 I/O 优化的载体，各发行版（如 Ubuntu 26.10）也刚以它为基线出货。<br>「7.3 还是 7.4 当 LTS」的悬念值得跟踪——影响未来一年生产环境内核选型；对关注 RDMA/存储 I/O 的场景，7.3 的 I/O 提速点与 7.4 合并窗口里的 <b>do_open() +39%</b>、sheaf 预填充等改动都在同一条性能主线上。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Features-Preview" target="_blank">Linux 7.4 特性预览：Radeon HDMI 2.1 默认启用、AMD PerfOpt 默认开、Apple M4 设备树进入主线</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">7.3 发布后 <b>7.4 合并窗口</b>打开，Phoronix 汇总已排队/已合入的重磅特性：<br><b>AMD 方向</b>：AMDGPU <b>HDMI 2.1 默认启用</b>（VRR/ALLM 到位，FRL 补齐）；<b>AMD PerfOpt IOMMU 默认开启</b>——核显 AI/LLM 推理实测最高 18~23% 提升，且前代 Ryzen APU 同样受益；Zen 6 继续加码（BTB CTX 隔离、RMPOPT、P-State 调优）；Ryzen AI Max 400 的 <b>Gorgon Halo NPU</b> 补上 AMDXDNA 设备 ID。<br><b>Intel 方向</b>：Battlemage <b>CPU binds + 迁移队列 ULLS</b>、<b>Xe 驱动 vRAM 健康检查与坏页降级处理</b>、Rugged Panther Lake 准备、BFF 驱动合入；Nova 驱动持续扩建。<br><b>Apple/其他</b>：Apple <b>M4 与 A18 Pro 首批设备树</b>进主线（可启动但尚不可用）、Apple Silicon 音频上游化、Google Tensor G5/Pixel 10 主线支持、树莓派 10 英寸 Touch Display 2、Snapdragon X2 笔电使能。<br><b>性能/其他</b>：EXT4 iomap 缓冲 I/O 路径、FUSE 大 folio、Intel Instruction Timeout 防 TDX VM DoS、steal governor、AVX-512 优化 xor_gen、内核构建提速补丁、C 版 Binder 驱动移除（转 Rust）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>7.4 就是「下一个该盯的内核」</b>：AMDGPU HDMI 2.1 默认开 + PerfOpt 默认开，是 Radeon 用户体感最强的两个开关；Xe vRAM 健康检查则是 Intel 独显可靠性的基础设施级改进。<br>预计 12 月底发布且有望成为年度 LTS——对生产内核升级规划直接相关。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-Zink-VA-API-On-Vulkan" target="_blank">Mesa Zink 在 Vulkan Video 之上实现 VA-API 视频加速，随 Mesa 27.0 落地</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Mesa 合入 <b>通用 Zink Gallium3D 驱动的视频加速支持</b>：在 <b>Vulkan Video</b> 接口之上实现 <b>VA-API</b>，让面向通用 Linux VA-API 接口的应用最终能借 Vulkan Video 获得视频硬解加速。<br>这是 <b>Valve 的 Mike Blumenkrantz 与 Red Hat 的 David Airlie</b> 持续数年的项目（MR !31517），代码已合入，将出现在 <b>Mesa 27.0（明年 Q1）</b>。<br>现状：<b>目前仅支持 H.264 解码</b>，尚无其他格式；测试主要在 <b>RADV（Radeon Vulkan）</b>驱动上进行；H.265 与 AV1 的视频加速代码在开发中、尚未合入。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>「<b>VA-API on Vulkan Video</b>」一旦成熟，意味着视频硬解不再依赖每家驱动的独立 UVD/VCN 后端——<b>一个 Vulkan 驱动即可同时承载图形与视频解码</b>，对 Zink 生态（Steam Frame 的 OpenGL、NVK、Asahi 等）是拼图式补全。<br>对做显示/多媒体管线的同学，这是观察<b>视频栈向 Vulkan 统一</b>趋势的关键落点；H.265/AV1 合入节奏值得持续跟踪。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/LLVMpipe-AVX-512-MR" target="_blank">AI 复活 Mesa LLVMpipe 的 AVX-512 支持：David Airlie 借大模型补完多年未竟的 512 位着色器路径</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Red Hat 工程师 <b>David Airlie</b> 提交 draft MR（!45279）：为 <b>LLVMpipe</b>（CPU 软渲染 Gallium3D/OpenGL 驱动）的<b>片元着色器添加 512 位宽向量支持</b>，即 AVX-512 路径。<br>背景：Airlie 几年前曾尝试为 LLVMpipe 做 AVX-512 但未能完成；近日借助 <b>GPT Terra 与 Astra AI 模型</b>，用 AI 补齐代码最后的缺口并顺带揪出若干 bug，最终成稿。<br>注意点：Airlie 自己<b>没有 AVX-512 硬件</b>，因此尚未实测；代码正确性仍待社区验证（这也是 draft 状态的原因）。细节见其博客「Jetlag Diversions: llvmpipe 512-wide」。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>又一个「<b>AI 补完驱动/编译器底层代码</b>」的标志性案例——与前日 Claude Code 逆向硬件写驱动、内核 agents/ 目录等动态同一趋势线。<br>LLVMpipe 是无 GPU 环境（云桌面、CI、虚拟化）的兜底渲染路径，AVX-512 落地将直接抬高软件渲染基线；等有 AVX-512 机器的社区跑出实测数据后，值得回头核对收益幅度。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/17-Vulnerabilities-Xorg-Libs" target="_blank">X.Org 客户端库再曝 17 个安全漏洞：libX11 / libXi / libXpm / libXrender / libXtst 均发修复版</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">距上次 <b>X.Org Server / XWayland 12 个漏洞</b>披露不到两周，X.Org 客户端库再公开 <b>17 个安全漏洞</b>，影响：<br>① <b>libX11</b>（核心 X11 库）→ 修复版 <b>1.8.14</b>；<br>② <b>libXi</b>（X Input 扩展）→ <b>1.8.4</b>；<br>③ <b>libXpm</b>（X Pixmap 格式）→ <b>3.5.20</b>；<br>④ <b>libXrender</b>（RENDER 扩展）→ <b>0.9.13</b>；<br>⑤ <b>libXtst</b>（TEST 扩展）→ <b>1.2.6</b>。<br>漏洞类型以<b>越界读写、堆缓冲区溢出</b>为主，部分可致拒绝服务；由多位研究员分别发现，细节见 X.Org 邮件列表。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>X.Org 生态两周内连爆 <b>29 个漏洞</b>（12 服务端 + 17 客户端库），暴露出这批上古 C 代码库的维护短板；对仍在跑 X11 会话/远程转发的环境，<b>五个库都建议尽快升到修复版</b>。<br>结合上期 X.Org Server 26.1 RC、XWayland 移除 EGLStream 等动态，X11 栈「修修补补维持存量」的现状愈发明显——迁移 Wayland 的长期路线不变。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-LLM-Scaler-vLLM-PV-1.5" target="_blank">Intel LLM-Scaler-vLLM PV 1.5 发布：vLLM 0.14 直跳 0.26，Arc 独显跑大模型体验大幅改善</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Intel 发布 <b>LLM-Scaler-vLLM PV 1.5</b>——面向 <b>Arc 独显</b>的容器化 vLLM 推理栈（源自 Project Battlematrix），为即将到来的 <b>Crescent Island / GPU D 系列</b>铺路。主要更新：<br>① <b>vLLM 0.14 → 0.26</b> 大版本跨越（上游现为 0.31，仍在追赶）；PyTorch 2.10 → 2.12；<br>② 模型覆盖扩大：Qwen3.6-27B / Qwen3.8-27B / <b>Qwen3.6-35B-A3B</b>、gemma-4-26B-A4B-it / gemma-4-31B-it；<br>③ 支持<b>在线 FP8 与对称 INT4 量化</b>、<b>FP8 KV cache</b>；<br>④ Qwen/Gemma 4 的<b>首 token 延迟（TTFT）改善</b>、MTP 解码性能提升、LoRA 服务与 FP8 KV cache 性能优化；<br>⑤ 一批 bug 修复。发布页见 GitHub intel/llm-scaler vllm-1.5。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Intel 在 <b>GPU D 系列（agentic AI 推理定位）上市前</b>把软件栈追平到 vLLM 0.26 + FP8/INT4 量化，补齐了 Arc 独显跑大模型的最大短板（软件生态滞后）。<br>对做 Intel GPU 推理选型的场景，现在 Arc Pro B60/B70 + LLM-Scaler 是可评估的低成本路线；D 系列发布后的软件成熟度可据此预判。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.3-Threadripper-9995WX" target="_blank">实测：Linux 7.3 再为 96 核 Threadripper PRO 9995WX 榨出更多性能</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Phoronix 在 <b>96 核 / 192 线程的 AMD Ryzen Threadripper PRO 9995WX</b>（Zen 5，TRX50 平台）上，对比 <b>Linux 7.2 vs 7.3 Git</b> 跑了一轮基准：7.3 在多数项目上继续小幅领先。<br>亮点：<b>Flexible I/O Tester</b>（IO_uring 随机读，Direct 与 buffered 两种模式均最快）；<b>PostgreSQL</b>（500/800 客户端读写，吞吐与平均延迟均优）；<b>MariaDB</b> oltp_read_only；金融数据库 <b>TigerBeetle</b>；网络基准（TCP/QUIC/UDP）；内核微基准（fork、IO_uring、mutex）；内核与 Godot 编译持续小幅变快；CPU 侧 AI 负载（Lemonade MiniCPM4-8B）也有小幅收益。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>与 7.3 正式发布同日发出的性能佐证：<b>I/O 与调度优化对高核数 HEDT/工作站平台是普惠的</b>，尤其是 NVMe + IO_uring 与数据库负载。<br>对 Threadripper/EPYC 工作站用户，7.3 值得列入近期升级计划；Phoronix 后续还会有 EPYC 侧的 7.3 对照实测可跟踪。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Servo-0.6-Changes" target="_blank">Servo 0.6 落地 CSS Grid 支持，实验性 Threadboost 让 Speedometer 提分 50%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Rust 编写的开源浏览器引擎 <b>Servo</b> 公布 8 月进展报告（随 <b>Servo 0.6</b> 与 Servoshell 演示浏览器）：<br>① <b>CSS Grid 支持</b>落地——大量网站布局自此能在 Servo 上正确渲染，是兼容性的分水岭；<br>② 其他 CSS：color-scheme、animation-composition、full-width、text-transform 等，另有一批新 DOM API；<br>③ JS 引擎更新到 <b>SpiderMonkey 153</b>（安全与崩溃修复）；<br>④ 可选的<b>磁盘 HTTP 缓存</b>（暂无清理入口）；无障碍与 AudioWorklet 预备工作推进；<br>⑤ 实验性 <b>Threadboost</b> 调度特性使 <b>Speedometer 基准提升约 50%</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>CSS Grid + Threadboost 两项一起看：<b>Servo 正从「技术演示」走向「可用引擎」</b>——布局兼容性补齐后，剩下的是性能与生态。<br>对做嵌入式 GUI / 轻量 WebView（如用 Servo 替代 Chromium 的场景）的同学，0.6 是值得重新评估的节点；Threadboost 的线程调度思路（把渲染管线任务优先级化）也有借鉴价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-TDX-Less-Cache-Flushing" target="_blank">Intel TDX 其实不需要那么多缓存刷新：内核将移除多余的软件 flush 路径</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Intel 机密计算 <b>TDX（Trust Domain Extensions）</b> 的内核实现中，长期以来在 <b>MKTME 不同 KeyID（AES 密钥）之间迁移内存</b>时执行软件驱动的<b>缓存刷新</b>——这是早期 TDX 架构假设硬件需要 VMM 协助而留下的遗产。<br>Intel 工程师 <b>Rick Edgecombe</b> 的补丁系列「Drop unneeded cache flushing」指出：<b>所有已定稿的 TDX 硬件（Sapphire Rapids 起，Emerald Rapids 起全系 Xeon 支持）实际都能自行处理 KeyID 迁移的缓存一致性问题</b>，只是 Intel 文档从未更新；TDX 架构文档将在下一版修订更正，Linux 内核随之<b>删除多余的软件 flush 代码</b>。<br>结果：内核代码更简单；补丁说明未声称明确的性能收益（减少 flush 理论上对 VM 生命周期操作有正贡献）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>机密计算（SEV-SNP / TDX）是云上 GPU/NPU 资源隔离的基石方向；这类「<b>清掉历史包袱</b>」的补丁能简化 TDX 内核路径，对理解 TDX 的内存加密生命周期（KeyID 迁移语义）是很好的参考材料。<br>顺带跟踪：7.4 还在合入 <b>Intel Instruction Timeout（Notify VM Exit）</b>防 TDX VM DoS，两件事同属 TDX 硬化主线。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">10</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Wine-11.20-Released" target="_blank">Wine 11.20 发布：CD-ROM 支持迁入 Mount Manager，ARM64EC 支持回放调试</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body"><b>Wine 11.20</b> 双周开发版发布（向 2027 年初的 <b>Wine 12.0</b> 稳定版冲刺）：<br>① <b>CD-ROM 支持代码迁入 Mount Manager</b>——NTDLL 重构的一部分，不再直接打开 Unix 设备，改走 mountmgr；<br>② <b>ARM64EC</b> 支持继续推进，新增<b>回放调试（replay debugging）</b>能力；<br>③ XML 校验改进；<br>④ 24 个 bug 修复，覆盖 QuickBooks 到 Battlefield 1942、Pure Pinball 等应用与游戏。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Wine/Proton 是 Linux 游戏与 Windows 应用的地基，双周版里 <b>ARM64EC 回放调试</b>对 Windows-on-ARM 兼容层开发是实打实的工具链改进；设备访问全面走 Mount Manager 也是底层架构清理的一步。<br>对 Steam Deck / Steam Frame 生态，Wine 12.0（明年年初）的进展决定了下一轮 Proton 底座的时间表。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-19.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-16.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-19</p>
+    <p>覆盖范围：2026-10-16 ~ 10-18（EDT，周五~周日合并）· Linux 7.3 正式发布（I/O 提速、AMD Zen 6 准备、Steam Controller 2026 驱动、Valve 贡献；7.4 合并窗口随即打开，7.4 有望成年度 LTS）· Linux 7.4 特性预览（AMDGPU HDMI 2.1 默认启用、AMD PerfOpt 默认开、Apple M4/A18 Pro 设备树、Xe vRAM 健康检查、Battlemage CPU binds+ULLS、EXT4 iomap 等）· Mesa Zink 在 Vulkan Video 之上实现 VA-API（Valve Blumenkrantz + Red Hat Airlie，随 Mesa 27.0 Q1；暂仅 H.264 解码，RADV 为主测试驱动）· AI 复活 LLVMpipe AVX-512（Airlie 借 GPT Terra/Astra 补完 512 位片元着色器路径，draft MR !45279，尚无硬件实测）· X.Org 客户端库 17 个漏洞（libX11 1.8.14 / libXi 1.8.4 / libXpm 3.5.20 / libXrender 0.9.13 / libXtst 1.2.6 修复版齐发）· Intel LLM-Scaler-vLLM PV 1.5（vLLM 0.14→0.26、PyTorch 2.12、FP8/INT4 量化与 FP8 KV cache，为 GPU D 系列铺路）· Linux 7.3 实测 Threadripper PRO 9995WX（96 核 Zen 5：FIO IO_uring / PostgreSQL / MariaDB / TigerBeetle 均更快）· Servo 0.6（CSS Grid 落地、SpiderMonkey 153、实验 Threadboost 使 Speedometer +50%）· Intel TDX 移除多余软件缓存刷新（所有已定稿 TDX 硬件均可自行处理 KeyID 迁移，文档从未更新）· Wine 11.20（CD-ROM 迁入 Mount Manager、ARM64EC 回放调试，冲刺 2027 年初 Wine 12.0）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
