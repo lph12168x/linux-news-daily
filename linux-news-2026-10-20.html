@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-20</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 20 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-20.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-19.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-XeSS-Steam-Play-Proton" target="_blank">Intel 为 Steam Play (Proton) 推进 XMX 加速的 XeSS：Intel 显卡上的超分走专用矩阵引擎</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Intel 工程师为 Valve 的 <b>Proton (Steam Play)</b> 提交了引入 <b>XeSS 支持</b>的 PR，并附带 <b>VKD3D-Proton 与 DXVK</b> 的配套改动。<br>方案：在 Proton 内置 <b>libxess.dll</b>，把游戏的 <b>XeSS Direct3D 12 调用转发给 Linux 侧 XeSS 库</b>，从而在 Intel 图形硬件上启用 <b>XMX 矩阵引擎加速路径</b>，而不是回退到更慢的通用 DP4a 路径。<br>配套改动：VKD3D-Proton 侧启用 XeSS 所需的 <b>Vulkan 扩展与特性</b>（借助其互操作接口把 D3D12 对象转成 Vulkan）；DXVK 侧则是在 XeSS 由 Proton 提供时不再隐藏 Intel GPU 的品牌标识（XeSS 依赖厂商识别选择路径）。<br>目前尚未合并，详见 <a href="https://github.com/ValveSoftware/wine/pull/369" target="_blank">ValveSoftware/wine PR #369</a>；参照 AMD FSR / NVIDIA DLSS 在 Proton 的同类工作，预计会适时合入。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>Intel 独显/核显跑 Windows 游戏的画质-性能短板正在被补齐</b>：此前 XeSS 在 Proton 下走不到 XMX，超分效果与 AMD/NVIDIA 阵营不对等。<br>这也是「厂商超分 API → Proton 转发层」模式的又一实例（继 FSR、DLSS 之后），对关注游戏图形栈、D3D12-on-Vulkan 转换层的同学是现成参考；Intel GPU D 系列（Crescent Island）主打 AI 推理，XMX 路径的打通对其游戏侧卖点同样关键。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Reading-Page-Cache-WO-Folio-Ref" target="_blank">Linus 的 AI 内核代码被 Meta 工程师重做：page cache 无 folio 引用读取实测性能大涨</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">上周报道过 <b>Linus Torvalds 用 Claude Code</b> 推进的内核优化分支（noref-filemap-read：从 page cache 读取时不持有 folio 引用，缓解多线程小读同一文件的引用计数争用）。本周 <b>Meta 工程师 Kiryl Shutsemau</b> 把这套代码<b>重做并正式发到 LKML</b>。<br>原理：多 CPU 线程对同一文件做小读取时，filemap_read() 都要取/放同一个 folio 的引用，refcount 在 CPU 间反复弹跳；新方案让 <b>filemap_read() 与 shmem 直接从 page cache 拷贝而不取引用</b>，此类 folio 改为<b>经一个 RCU 宽限期后才释放</b>。<br>实测：在 Threadripper 上以 64 线程对比 <b>EXT4 / TMPFS / XFS 与裸块设备</b>、开关默认 CPU 安全缓解各测一轮，成绩「相当可观」（Phoronix 称 fabulous improvement）。补丁仍为 RFC，尚有设计问题待解决，补丁系列见 <a href="https://lore.kernel.org/lkml/20261019154913.1765974-1-kas@kernel.org/" target="_blank">LKML</a>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是 10-12 期「Linus 用 AI 推进内核改进」故事的<b>实质性续集</b>：RFC 代码被资深 MM 工程师接手重写成正式补丁系列，「AI 起点 + 人类专家收尾」的协作模式越来越清晰。<br>技术上，<b>无引用 page cache 读取 + RCU 延迟释放</b>是 MM 子系统少有的读取路径结构性优化；对高并发小 I/O 读场景（数据库、对象存储元数据、AI 数据加载）都有潜在收益，值得跟踪其转正进度。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/GNOME-Power-Savings-GPU" target="_blank">GNOME Mutter 合入省电模式 GPU 负载修复：显示器休眠时客户端不再空转渲染</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">一个月前 GNOME 51 收到缺陷报告：<b>显示器休眠期间 GPU 占用居高不下</b>——客户端仍在持续渲染。Red Hat 的 <b>Jonas Ådahl</b> 定位到根因：省电模式下 <b>CRTC 后端 stage view 的重绘未被节流</b>。<br><b>17 个补丁</b>今日合入 Mutter（MR !5363）：渲染器在省电状态且 stage view 面向 CRTC 时<b>主动抑制绘制</b>；vkgears / glxgears / es2gears 在省电时仍正常上报约 60 fps，但 frame clock 无需感知省电状态；同时处理被丢弃帧的 <b>presentation feedback 迁移</b>，让客户端正确收到 .discarded 事件。<br>代码已进 Mutter 主线，将随 <b>GNOME 51.2</b> 发布。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>笔记本「合盖/息屏后风扇狂转、电量偷跑」的常见元凶之一就是合成器未节流的空渲染，这是一个<b>面向功耗的显示栈修复</b>，对 OLED/高端屏的烧屏防护与整机续航都有意义。<br>对做合成器/显示方向的同学，补丁展示了「presentation feedback 与省电路径协同」的正确姿势；这类「CRTC 状态 → 渲染抑制 → 反馈事件」的联动逻辑也可对照 zeus 平台的显示低功耗设计。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/RADV-GFX10-Host-Image-Copy" target="_blank">RADV 对 RDNA1 (GFX10) 默认启用 VK_EXT_host_image_copy，GFX9 获实验支持</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">AMD 开源 Vulkan 驱动 <b>RADV</b> 的 <b>VK_EXT_host_image_copy</b> 支持再扩面（MR !42475，Wei Zhao，进 <b>Mesa 27.0</b>）：<br>① <b>GFX10（RDNA1，Navi 1x）默认启用</b>该扩展——此前默认启用范围是 GFX10.3（RDNA2）及更新；此前阻碍 Navi 1x 默认开启的回归已解决；<br>② 同一 MR 还为 <b>GFX9（RX Vega / Radeon VII 一代）</b>带来实验性支持（沿用环境变量开启）。<br>背景：host image copy 允许<b>主机内存与 Vulkan 图像之间直接拷贝</b>，减少中转开销，对核显（iGPU）尤其有利；RADV 的实验性 HIC 支持始于 2025 年 7 月。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>对老卡用户是实打实的收益：RDNA1 默认可走 host image copy，上传纹理类工作负载开销更低；GFX9 实验支持则把这份红利试探性下探到 Vega 世代。<br>对做驱动/图形栈的同学，这也提示 <b>host image copy 在 UMA/iGPU 场景的价值</b>——与 zeus 这类集成平台「CPU/GPU 共享内存零拷贝」的设计思路相通，可以研究 RADV 在不同显存类型下的 HIC 实现。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/SpacemiT-V100" target="_blank">SpacemiT 发布服务器级 RISC-V 处理器 V100：46 核混合架构，宣称首款完整符合 RISC-V 服务器规范</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">继面向桌面/开发的 <b>K3</b>（RVA23）之后，<b>SpacemiT（进迭时空）发布 V100 服务器级 RISC-V 处理器</b>，宣称是<b>首款完整符合 RISC-V 服务器规范的芯片</b>（含 UEFI、ACPI、SMBIOS 等）。<br>规格：46 核<b>混合微架构</b>——6 个 <b>香山（XiangShan）昆明湖 V2R2</b> 核心 + 40 个 SpacemiT <b>X100</b> 核心；频率 2.2~2.4GHz；<b>12nm</b> 工艺；TDP 120W；<b>八通道 DDR5-4800</b>；<b>PCIe 5.0 共 52 lanes</b>；单服务器支持双路（合计 92 核）。<br>客观看：2026 年的 12nm / 52-lane PCIe 5.0 服务器 CPU 与 Xeon / EPYC 甚至 Arm 服务器平台存在代差，但其「借 AI 热点入场 + 完整服务器规范兼容」的路线值得关注。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>RISC-V 服务器路线的标志性事件：<b>UEFI/ACPI/SMBIOS 全兼容</b>意味着现有 Linux 发行版与系统软件栈（含 Edk2、ACPI 表解析、固件启动链）可以直接对齐，而不是各玩各的。<br>「香山大核 + 自研小核」的混合架构也值得留意——与 Arm big.LITTLE 类似的异构组合出现在服务器 RISC-V 上，后续内核调度（EAS/EPP）如何适配是看点；Ubuntu 26.10 刚首次提供 RISC-V 桌面镜像，生态在快速补位。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-GAIA-0.25-Released" target="_blank">AMD GAIA 0.25 发布：Ryzen AI 本地 AI Agent 工具链多项改进</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-npu">NPU</span>
+      </div>
+      <div class="news-body">AMD 开源项目 <b>GAIA</b>（现定位「AMD 的开源 agent 工厂」）发布 <b>0.25 版</b>，面向在 <b>Ryzen AI 硬件（含 NPU）</b>上构建/运行本地 AI Agent：<br>① <b>gaia chat</b> 默认改用旗舰 GAIA agent（替代已退役的 ChatAgent）；<br>② <b>gaia talk</b> 语音转录与合成改走 AMD <b>Lemonade 本地 AI 服务器</b>（后端 Whisper + kokoro-v1）；<br>③ Windows 下 Python 环境从约 <b>0.9GB 瘦身到约 0.1GB</b>（移除不必要依赖）；<br>④ 修复 16GB 内存笔记本首次启动即 OOM 被内核杀掉的老问题——现在<b>加载模型前先检查可用内存、动态收缩上下文窗口</b>；<br>⑤ 一批针对 <b>Strix Halo</b> 的优化与 agent/模型改进。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>AMD 在「<b>本地 AI Agent 运行时</b>」这一层的开源投入在加速：GAIA + Lemonade（推理服务）+ Ryzen AI NPU 构成端侧 agent 的完整栈，与 Intel 的 OpenVINO/NPU 驱动路线对标。<br>对我们关注的 NPU 软件栈，「模型加载前按可用内存收缩上下文」这类<b>资源感知的 agent 调度细节</b>，以及 Strix Halo（大 GTT 池 APU）的优化取向，都可作为端侧 NPU 部署的参考实践。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-20.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-19.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-20</p>
+    <p>覆盖范围：2026-10-19（EDT）· Intel 为 Steam Play (Proton) 推进 XMX 加速的 XeSS（内置 libxess.dll 转发 D3D12 调用到 Linux XeSS，VKD3D-Proton 启用所需 Vulkan 扩展、DXVK 不再隐藏 Intel GPU 品牌标识；Wine PR #369 评审中）· Linus 的 AI 内核代码被 Meta 工程师 Kiryl Shutsemau 重做并发到 LKML（page cache 无 folio 引用读取 + RCU 宽限期延迟释放，Threadripper 64 线程实测 EXT4/TMPFS/XFS/裸块设备性能大涨，仍为 RFC）· GNOME Mutter 合入 17 补丁修复省电模式 GPU 空转（省电且 stage view 面向 CRTC 时渲染器主动抑制绘制、处理被丢弃帧的 presentation feedback，随 GNOME 51.2 发布）· RADV 对 RDNA1 (GFX10) 默认启用 VK_EXT_host_image_copy（MR !42475，进 Mesa 27.0；同 MR 为 GFX9 加实验支持）· SpacemiT 发布服务器级 RISC-V 处理器 V100（46 核混合架构：6× 香山昆明湖 V2R2 + 40× X100，2.2~2.4GHz，12nm，120W，八通道 DDR5-4800，PCIe 5.0 52 lanes，双路 92 核；宣称首款完整符合 RISC-V 服务器规范：UEFI/ACPI/SMBIOS）· AMD GAIA 0.25 发布（gaia chat 默认旗舰 agent、gaia talk 走 Lemonade+Whisper+kokoro、Python 环境 0.9GB→0.1GB、修 16GB 内存首启 OOM：按可用内存收缩上下文窗口、Strix Halo 优化）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
