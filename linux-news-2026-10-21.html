@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-21</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 21 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-21.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-20.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-AMD-oneDNN-Optimize" target="_blank">Intel 与 AMD 联合宣布围绕 PyTorch/oneDNN 展开软件优化协作：ZenDNN 改进合入上游</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Intel 长期为自家硬件调优 <b>oneDNN</b> 神经网络库（已被 PyTorch 等 AI 框架采用）；AMD 则维护 oneDNN API 兼容的下游分支 <b>ZenDNN</b>，针对 Zen 处理器设计做优化。10-20 两家联合宣布：将<b>围绕 oneDNN for PyTorch 展开协作</b>，把 AMD Zen 侧的改进<b>推进上游 oneDNN</b>。<br>换言之，AMD 从「自己养分支」转向「与 Intel 共建同一个上游」，x86 阵营在 PyTorch CPU 路径上的优化将收敛到一条主线。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>两大 CPU 厂商在 AI 软件栈上从「各养分支」走向「共同上游」是少见的一幕：碎片化减少后，PyTorch 在 x86 服务器上的 CPU 推理/训练优化将同时吃到 Intel 与 AMD 的红利，用户无需在 ZenDNN 与 oneDNN 之间做选择题。<br>对关注 AI 推理软件栈的同学，这也是观察「竞合模式」的样本——竞争关系不妨碍共享基础库；后续值得跟踪 ZenDNN 的核心优化（如 AMX/AVX-512 路径）以什么形式落进上游。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Dynamic-PAMT" target="_blank">Dynamic PAMT 合入 Linux 7.4：显著削减 Intel TDX 服务器的内存开销</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">在 Linux 7.4 合并窗口开启后的首批 PR 中，<b>Dynamic PAMT</b> 正式合入。<br>背景：Intel <b>TDX（Trust Domain Extensions）</b>机密计算引入了 <b>PAMT（Physical Address Metadata Table）</b>——按 4KB 粒度为客户机物理内存维护页元数据，代价是服务器需预留一笔不小的内存；但现实中很多 TDX 服务器上<b>并发虚拟机并不多、大部分内存并未真正被 TDX 使用</b>，全量 PAMT 变成纯浪费。<br>Dynamic PAMT 的思路：仅在实际需要时才为对应区域分配/填充 PAMT 页，把静态的「全量预付」变成<b>按需付费</b>，在 VM 数量少的 TDX 服务器上大幅降低内存开销。报道特别指出，在当下<b>内存价格高企、供货紧张</b>的背景下，这笔节省对现代 Intel Xeon 服务器相当可观。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>机密计算的「内存税」是 TDX 落地的主要阻力之一，Dynamic PAMT 把这笔税从固定成本变成可变成本，<b>云厂商按需启停 TDX 虚拟机的经济性明显改善</b>——这与 10-18 期「Intel TDX 不需要那么多缓存刷新」一起构成 TDX 减负的两条线（运行时开销 + 常驻内存）。<br>对关注服务器平台与虚拟化安全的同学，Linux 7.4 值得作为 TDX 特性版本的观察点。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/COSMIC-Epoch-1.11" target="_blank">COSMIC Epoch 1.11 发布：xdg-dialog-v1 Wayland 协议 + 混合图形 GPU 选择修复</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">System76 发布 Rust 编写的桌面环境 <b>COSMIC Epoch 1.11</b>（距 1.10 约两周）：COSMIC 合成器新增 <b>xdg-dialog-v1</b> Wayland 协议支持——<b>模态对话框不再被其他窗口遮挡</b>，并包含一批合成器修复。<br>混合图形：<b>COSMIC 应用库与 pop-launcher 现在会在混合显卡系统上确保使用正确的 GPU</b>（游戏不再误跑核显/独显）。<br>其他：触控板新增 <b>tap-and-drag 与 drag lock</b> 选项；libcosmic 修滚动条 padding、文本输入不再吞 Escape 键；COSMIC Edit 支持 JSON 的 MIME 关联；合成器在无显示器连接时清理遗留窗口、屏幕键盘改走私有 D-Bus 信号（修复与其他输入法配合时的虚拟键盘问题）。1.11 属维护性质发布（meta 仓库仅 3 个 commit，重指向约 15 个子项目）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>两条值得显示栈同学留意：<b>xdg-dialog-v1</b> 是较新的 Wayland 模态对话框协议，COSMIC 成为又一落地实现（合成器侧参考实现多了一个）；<b>混合图形的 GPU 选择</b>（游戏走 dGPU、常驻应用走 iGPU）则是 PRIME/offload 场景的老大难，COSMIC 把它做进应用库与 launcher 层而非只靠环境变量，思路可对照 zeus 平台的多 GPU 调度设计。<br>Rust 桌面第三极保持约两周一个点的快节奏迭代，稳定性补齐速度可观。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/KDE-Plasma-6.8.1-Released" target="_blank">KDE Plasma 6.8.1 发布：数十项修复，6.8 进入稳定化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">继上周 <b>Plasma 6.8</b> 正式发布（KDE 30 周年版本）后，<b>Plasma 6.8.1</b> 点版本今日发布，带来<b>数十项缺陷修复</b>，覆盖 6.8 新引入特性（commit-timing、多 GPU/多屏改进等）的稳定化收尾。<br>另据 Phoronix 报道，KDE 开发者已开始向 <b>Plasma 6.9</b> 推进新特性：包括新的<b>天气小部件</b>与<b>屏幕键盘</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>6.8 是近年在图形/显示侧动作最大的一版（KWin commit-timing 协议、vRAM 优化、多 GPU/多屏增强、发布前最后一刻修 NVIDIA 专有驱动平铺卡顿），<b>6.8.1 的修复清单可以看作这批新路径的「踩坑实录」</b>——对在做 Wayland 合成器/显示路径验证的同学是现成的回归点参考。<br>跟踪 Plasma 6.8 部署的发行版（如即将跟进的各发行版滚动更新）也可据此判断升级窗口。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-Foundation-25p-AI-Slop" target="_blank">Linux Foundation 研究估计：约 25% 的新开源 PR 是低质量 AI slop</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linux Foundation 发布关于<b>生成式 AI 对开源软件开发影响</b>的新研究，核心结论之一：<b>约 25% 的新开源软件 pull request 属于 AI slop（低质量 AI 生成内容）</b>。<br>这与内核社区近期的多条线索互相印证：Linux 7.4 引入 <b>TAINT_FORCED_BIND</b> 应对 AI agent/bot 对不现实驱动/硬件组合的大规模 fuzzing「攻击」；EDAC 子系统因 <b>AI 生成修复的噪音泛滥</b>而弃用一批旧驱动；维护者峰会后内核一度讨论强制 AI「Assisted-by」标签、后取消强制。<br>负面之外另一面：Linus 用 Claude Code 的内核优化、Google Sashiko 的 19 万次评审等，AI 在内核开发中的有效贡献同样在快速增加。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是<b>AI 对开源生态冲击的首批系统性量化数据</b>：1/4 的新 PR 是噪音，意味着维护者审阅负担显著加重，也解释了内核近期一系列「防 AI 噪音」机制（taint 标记、子系统收缩、标签讨论）为何密集出现。<br>对团队代码质量把控有直接借鉴：AI 辅助编码在提效的同时，<b>评审带宽是新的稀缺资源</b>——我们自己的 RDMA 代码评审流程也值得提前设防（如 AI 生成代码的标注与重点审查清单）。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-More-Rust-Code" target="_blank">17k 行新 Rust 内核代码进入 Linux 7.4：Zerocopy 库 vendored 更新领衔</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Rust for Linux 负责人 <b>Miguel Ojeda</b> 发出面向 Linux 7.4 的 Rust PR，本轮规模较大：约 <b>1.7 万行新 Rust 代码</b>进入内核。<br>体量主因：<b>更新 vendored 的 Zerocopy 库</b>，以及更新内核中的其他 Rust crates。Zerocopy 提供「在字节缓冲与结构体之间安全零拷贝转换」的抽象，是 Rust 驱动与协议解析的地基组件之一。连同 7.4 里 Nova 驱动的大幅扩建（DRM Rust 变更、VRAM 管理、TLB 刷新等），Rust 侧在 7.4 周期的存在感明显上升。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Rust for Linux 的代码量增长曲线值得关注：<b>vendor 第三方 crate（如 Zerocopy）</b>标志着内核 Rust 生态从「手写基础设施」转向「复用 crates.io 成熟库」的阶段，这对后续 Nova（NVIDIA）、Tyr（Arm Mali）等 Rust GPU 驱动的开发效率是实质利好。<br>对做 NPU/RDMA 驱动的同学，Rust 驱动栈的可复用组件（零拷贝转换、设备抽象）未来可能同样适用于加速器驱动开发，值得持续跟踪。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-21.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-20.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-21</p>
+    <p>覆盖范围：2026-10-20（EDT）· Intel 与 AMD 联合宣布围绕 PyTorch/oneDNN 展开软件优化协作（AMD ZenDNN 的 Zen 改进推进上游 oneDNN，x86 CPU 推理优化收敛到一条主线）· Dynamic PAMT 合入 Linux 7.4（Intel TDX 服务器按需分配 PAMT 页元数据，VM 少的场景大幅削减常驻内存开销）· COSMIC Epoch 1.11 发布（合成器支持 xdg-dialog-v1 Wayland 协议、模态对话框不再被遮挡；混合图形确保游戏/应用用正确 GPU；触控板 tap-and-drag/drag lock 等一批修复）· KDE Plasma 6.8.1 发布（6.8 后首个点版本，数十项修复；Plasma 6.9 已开始推进天气小部件与屏幕键盘）· Linux Foundation 研究估计约 25% 的新开源 PR 为低质量 AI slop（与 TAINT_FORCED_BIND、EDAC 弃用旧驱动等「防 AI 噪音」动向互相印证）· 17k 行新 Rust 内核代码进入 Linux 7.4（Miguel Ojeda PR：更新 vendored Zerocopy 库及其他 Rust crates）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
