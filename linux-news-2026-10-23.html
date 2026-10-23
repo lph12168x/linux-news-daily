@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-23</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 23 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-23.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-21.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-RADV-GFX8-FP16-Gaming" target="_blank">RADV 为 GFX8 默认启用 Vulkan FP16：让更多新游戏在 Polaris 等老卡上跑通 Steam Play</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">Valve 工程师 Georg Lehmann 向 Mesa 合入一行补丁（Mesa 27.0，并将回移当前稳定系列）：<b>RADV 在 GFX8 硬件上默认暴露 Vulkan FP16 支持</b>，场景限定为 <b>VKD3D-Proton（D3D12）</b>。<br>背景：GCN 3/4 代（Tonga 到 Polaris RX 400/500）的 RADV 虽早有 radv_enable_float16_gfx8 选项，但一直默认关闭——这些老卡上 FP16 通常没有性能收益、有时反而更慢。而<b>新发布的 Windows 游戏开始把 FP16 当作必需项</b>，不开就出问题：该补丁直接修复了《巫师 3》近期更新后的 <b>SSAO 异常</b>。<br>对原生 Vulkan 应用仍不默认暴露，避免老卡为用不上的 FP16 付出代价。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是「老硬件长尾维护」的典型样本：<b>一行改动决定一批 RX 580 级别设备能否继续跑新游戏</b>，Steam Deck 之外的低端 Steam Play 硬件（Steam Survey 里 Polaris 仍有可观份额）直接受益。补丁的取舍也值得借鉴——按调用方（D3D12/VKD3D-Proton）而非全局限定暴露扩展，兼顾兼容性与性能，与 10-20 期「Intel 为 Proton 推进 XMX 加速 XeSS」同属 Proton 兼容性补链。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Workqueue" target="_blank">Linux 7.4 Workqueue 优化：大机器上空闲 flush 快 10~100 倍</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Tejun Heo 的 workqueue PR 合入 Linux 7.4，带来一个少见量级的优化：<b>flush workqueue 时只遍历自上次 flush 以来实际用过的队列，而非每个可能 CPU 各一遍</b>。<br>数据（来自提交说明）：192 核 2 路机器上，空闲 per-cpu workqueue 的 flush 吞吐从 <b>4 万/秒提升到 420 万/秒</b>，空闲 unbound 从 45 万/秒到 430 万/秒；16 线程排队+flush 混合负载也有 3 倍左右提升。动机来自华为工程师 Yao Kai 的报告：128 核机器上 XFS CIL workqueue 每次日志强制的 flush 在遍历上要花最多 64μs。<br>XFS 每次日志强制都会触发该路径，文件系统重负载下这是高频热路径；全部队列都活跃时的密集 flush 在 per-cpu 类型上不变、unbound 略慢 15~20%。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>「10 到 100 倍」级别的内核基础层优化极其罕见，而且改的是<b>所有大核数服务器都吃到的公共路径</b>——XFS/文件系统日志、异步工作队列场景直接受益。亮点还有一点：这是一个<b>非 AI 参与的经典人类手艺活</b>（报道特别点名），在当下内核圈 AI 补丁洪流的语境里反成卖点。对关注服务器性能与文件系统的同学，7.4 的 workqueue PR 值得细读。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Modular-MAX-Complete-Open" target="_blank">Modular MAX 源码全面开放：图编译器与推理运行时公开，附新 MAX 许可证</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">继 8 月 <b>Mojo 语言开源</b>（Qualcomm 收购 Chris Lattner 的 Modular 之后）后，Modular 宣布 <b>MAX 全部源码开放</b>：<b>MAX 图编译器、MAX 运行时、设备扩展钩子</b>全部公开，随 MAX 26.7 版本发布。<br>许可是新的「source available」<b>MAX License</b>：允许免费构建和分发商业产品、无版税；但限制 <b>AI 辅助重实现 MAX</b>、<b>基于 MAX 的商业托管推理服务</b>、以及<b>修改版源码的发布分发</b>（官方称旨在防止碎片化为不兼容版本）。MAX 本体是兼容 OpenAI 端点的高性能 LLM 推理服务器。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>AI 推理栈又多一个开放的选择：MAX 以图编译器 + 多设备扩展为核心卖点，「设备扩展钩子」开源意味着第三方硬件（NPU/国产加速器等）可以对接 MAX 后端，与 IREE/Torx（10-14 期）这类 MLIR 系编译器的生态竞合值得跟踪。<br>许可证条款同样有信息量：<b>明确禁止「AI 辅助重实现」和商业托管转售</b>，是 source-available 许可针对 AI 时代新玩法的第一批探索，后续同类项目大概率跟进参考。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4" target="_blank">Linux 7.4 调度器更新：短时间片任务延迟最高降 55%，NVIDIA Vera 偏好 SMT</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Linux 7.4 的调度器 PR 合入，几项要点：<br>① EEVDF 调度器继续优化（Linaro 的 Vincent Guittot）：<b>短时间片任务的调度延迟实测最高降低 55%</b>，延续其在 7.3 里的同方向工作；<br>② 新合入面向虚拟机的 <b>steal governor</b>：按 steal time 动态管理 vCPU，降低 vCPU 被抢占的代价；<br>③ <b>NVIDIA Vera（Olympus 核心）偏好 SMT 兄弟线程调度</b>，官方数据该优化带 3~6% 性能收益；<br>④ 同等浅深的空闲核心改为<b>随机挑选</b>，利于高核数服务器/工作站负载摊匀；另含一处避免发布部分 LLC 利用率数据的 cache-aware 调度修复。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>调度器是「计算」方向的隐性基础设施：短任务延迟 55% 的改善对交互式负载与微服务 P99 都有意义；<b>steal governor</b> 让 Linux 客户机对「被宿主机偷走的时间」有了主动应对，云上虚拟化场景值得跟进；<b>Vera 偏好 SMT</b> 则与 10-13 期 Vera SMT 实测（+20%、功耗仅 +5%）互相印证——NVIDIA 进军服务器 CPU 后，内核侧的协同调优正在快速跟进。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-HIPRT-3.2" target="_blank">AMD HIPRT 3.2 发布：支持 Medusa APU（Zen 6 客户端），SRT 剪切与 CUDA 13 兼容</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">AMD 发布 <b>HIPRT 3.2</b>——HIP 光线追踪库（Blender 等跨平台软件使用）今年的首个更新：<br>① 支持即将到来的 <b>AMD Medusa APU</b>（Zen 6 客户端 CPU/APU 家族），图形 IP 覆盖 <b>GFX1170 / GFX1171 / GFX115E</b>；<br>② 性能优化如变换函数展开（unrolling transform functions）；<br>③ <b>SRT 帧支持剪切（shear）变换</b>；CUDA 13 兼容性增强；一批缺陷修复与代码库现代化改造。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>两条线索值得记录：其一，<b>Medusa 的图形 IP 型号首次在这类 SDK 层面得到公开确认</b>（GFX1171 之前已在 Mesa 点版本中出现过「RDNA 4m」workaround，GFX115E 是新面孔），Zen 6 APU 的图形代际轮廓渐清晰；其二，HIPRT 作为 Blender GPU 渲染的 AMD 光追路径，其更新节奏直接影响 Linux 上 Blender 渲染性能的跟进速度。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/snapdragon-x2-linux" target="_blank">Snapdragon X2 Linux 初步实测：超出预期，Adreno 开源驱动栈直接可用</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Phoronix 发布骁龙 <b>X2 Elite Extreme</b>（X2E96100，18 核，单核 5.0GHz）在 Linux 上的首批基准测试：华硕 Zenbook A16 上运行 <b>Ubuntu 26.10 X1E Concept ISO</b>（内核 7.3）。<br>关键状态：<b>Adreno 图形的开源 Qualcomm 驱动栈（Freedreno/Turnip）直接可用</b>——对比之下 X1 Elite 在同一镜像上图形还有问题、回退 LLVMpipe。WiFi/音频/摄像头尚未开箱支持，无功耗监控。<br>对比对象包括 Core Ultra 9 285H、Core Ultra X9 388H（Panther Lake）、Ryzen AI 9 365/HX 370 与上代 X1 Elite，结论是 X2 表现<b>超出预期</b>（为 10 页长评测，细节待后续补测功耗与更多场景）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>继 09-24 期「高通提交 Adreno 850 Hawi 补丁」、09-30 期「Ubuntu 26.10 Snapdragon Concept 镜像首度支持 X2」之后，这是 X2 在 Linux 上<b>第一份带数据的横评</b>：图形栈从「补丁评审中」到「实机可跑」的落地速度可观。对关注 ARM 笔电 Linux 生态的同学，X2 与 Panther Lake/Strix Point 的正面对比是 2027 年笔记本选型的重要参照，功耗数据（本轮缺失）是下一波补测重点。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Crypto-Library" target="_blank">Linux 7.4 crypto 库合入 x86/RISC-V 优化 AES 实现：ECB/CBC/CTR/XTS 等六大模式加速</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Google 的内核加密专家 Eric Biggers 持续推进 crypto 库整合：Linux 7.4 合入把 <b>x86/x86_64 与 RISC-V 上六大 AES 模式（ECB、CBC、CBC-CTS、CTR、XCTR、XTS）的优化实现迁入 lib/crypto</b>。<br>x86_64 上走 <b>AVX 优化代码 + AES-NI 指令</b>；迁移后库 API 与 crypto_skcipher 用法都能吃到加速，同时删掉大量冗余 glue 代码与重复实现。<br>同批还有 Stian Halseth 为 <b>SPARC64</b> 写的优化 AES-XTS 实现（使用 SPARC 加密操作码）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>磁盘加密（dm-crypt/XTS）、VPN（IPsec/CTR）等安全路径的吞吐都压在 AES 实现上，「优化实现进公共库」意味着这些路径自动受益且减少分叉维护成本。这与 7.4 里已合入的 AVX-512 xor_gen()（09-16 期）同属 Biggers 的 crypto lib 收敛工程，内核加密子系统的「架构优化实现下沉公共层」趋势值得持续跟踪。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-23.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-21.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-23</p>
+    <p>覆盖范围：2026-10-21 ~ 10-22（EDT）· RADV 为 GFX8 默认启用 Vulkan FP16（限定 VKD3D-Proton/D3D12，让 Polaris 等老卡跑通更多 Steam Play 新游戏，修复《巫师 3》SSAO；Mesa 27.0 并回移稳定系列）· Linux 7.4 Workqueue 优化（flush 只遍历实际用过的队列，大机器空闲 flush 快 10~100 倍，192 核机器 4 万→420 万次/秒，XFS 日志强制高频路径直接受益）· Modular MAX 源码全面开放（图编译器/运行时/设备扩展钩子公开，新 MAX 许可证禁 AI 辅助重实现与商业托管转售）· Linux 7.4 调度器更新（EEVDF 短时间片任务延迟最高 -55%、steal governor 合入、NVIDIA Vera 偏好 SMT 兄弟线程 +3~6%）· AMD HIPRT 3.2 发布（支持 Medusa/Zen 6 APU：GFX1170/GFX1171/GFX115E，SRT 剪切变换、CUDA 13 兼容）· Snapdragon X2 Elite Extreme Linux 初步实测（Ubuntu 26.10 X1E Concept ISO，Adreno 开源驱动栈直接可用，表现超出预期）· Linux 7.4 crypto 库合入 x86/RISC-V 六大 AES 模式优化实现（AVX+AES-NI，另含 SPARC64 AES-XTS）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
