@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-26</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 26 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-26.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-23.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Graphics-Drivers" target="_blank">Linux 7.4 DRM 图形驱动更新：AMDGPU HDMI 2.1 默认启用打头阵</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">Linux 7.4 合入全部 DRM 驱动更新。最受关注的是 AMDGPU 的 HDMI 2.1 Fixed Rate Link（FRL）正式默认启用，VRR/FreeSync 与 ALLM 也已就位、不再有回归风险——这项被 HDMI Forum 卡了多年的开源驱动工作在今年初解禁后终于全面落地。数据中心侧 AMDGPU 新增 UALink over Ethernet（UALoE）支持，并支持 Ryzen AI Max 400 系列（Gorgon Halo）的 NPU。Intel Xe 驱动在迁移队列上带来 CPU binds 与 ULLS（应可提升性能），加入 vRAM 健康检查与劣化显存处理，重心持续投向已定名 GPU D 系列的 Crescent Island 加速器。NVIDIA 侧为 Nova 驱动继续涌入大量 Rust 代码，Nouveau 常规修复。高通 MSM DRM 启用 Adreno A830、A845、A850 与 X2-85 GPU 支持，Rockchip DRM 则在推进 HDMI 2.0。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>HDMI 2.1 默认启用是 AMD 桌面/笔记本用户多年等待的功能落地；MSM 对 Adreno X2 系列的使能直接关系 Snapdragon X2 笔记本 Linux 支持进度，Xe 的 CPU binds/ULLS 与 vRAM 健康检查对 Intel 平台同样是实打实的改进。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Borealis-Vulkan-Driver" target="_blank">Borealis：Asahi 的 Apple Silicon Vulkan 驱动被 fork 出来「Vibe Coding」</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">Khronos Vulkan-Docs 收到一个注册 VK_DRIVER_ID_AURORA_BOREALIS（35）的 PR：新驱动 Borealis 由 Aurora Silicon 项目维护，从 Asahi Linux 的 HoneyKrisp Mesa Vulkan 驱动 fork 而来，覆盖 M1 到 M5 及 A18 Pro，但存活于自己的 Mesa fork 而非上游 Mesa（合并前暂时沿用 HoneyKrisp 的 driver ID）。Aurora Silicon 自称目标是从安装到日常使用的完整 Apple Silicon Linux 体验，还在移植 Windows 到 Apple Silicon。项目刚起步，其 Mesa fork 目前的主要动作是删掉 Mesa 的 AI agents 文档/政策、换成允许 AI 贡献的自有政策——该改动由 Claude Opus 5.5 共同署名，整条 fork 带有明显的 vibe coding 冒险色彩。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Mesa 社区刚在 10 月放宽 AI Agent 参与规则，随即出现整条 fork + 允许 AI 贡献的组合，是观察「AI 辅助驱动开发」走向的标志性样本；对 Apple Silicon GPU 栈的演进也值得跟踪。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Wayland-ext-transient-output" target="_blank">Wayland 新协议 ext-transient-output 提案：为 VNC/远程软件补齐动态输出</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">知名 Wayland 开发者 Simon Ser 发起 ext-transient-output 协议合并请求：允许特权客户端动态创建独立的虚拟输出（wl_output），客户端销毁对象时合成器即移除该输出，且不绑定任何硬件设备。它与已有的 ext-transient-seat（动态创建独立输入 seat）互补——虚拟 seat 配虚拟键盘/指针协议解决远程桌面的输入侧，ext-transient-output 补齐输出侧；虚拟输出再经 ext-image-copy-capture 捕获后送到远程客户端显示。wlroots 合成器库已有实验性 draft MR 实现。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>远程桌面/VNC 在 Wayland 世界长期缺一块拼图，输入（transient-seat）+ 输出（transient-output）+ 捕获（image-copy-capture）链路齐了之后，Wayland 远程方案将显著完善。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/KDE-Plasma-6.9-Wayland-PiP" target="_blank">KDE Plasma 6.9：KWin 的 Wayland 画中画支持转正并默认启用</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Plasma 6.8 发布刚过一周，KDE 开发者已转向 Plasma 6.9 新特性。本周最重要的变化是 KWin 合成器对 Wayland Picture-In-Picture（PiP）协议的支持宣告稳定并在 6.9 默认启用——浏览器等支持 Wayland PiP 的应用从此开箱即用，无需额外配置。其他进展：Plasma Browser Integration 新增 Brave 浏览器支持；即将发布的 Plasma 6.8.2 点版本在修复多显示器设置问题与一批回归。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>PiP 是高频日常场景，Wayland 协议级支持 + 合成器默认开启意味着多任务视频体验的实质性改善；6.8.2 的多显示器修复也值得等。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Vulkan-1.4.366" target="_blank">Vulkan 1.4.366 发布：swapchain 新增 SMPTE ST 2094-50 HDR 动态元数据</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Vulkan 1.4.366 收录过去两周的规范修复与澄清，外加一个新扩展：Google 工程师贡献的 VK_GOOGLE_hdr_SMPTE_ST_2094_50_metadata，为 Vulkan swapchain 加入 SMPTE ST 2094-50 动态元数据支持。该标准由 Google、Apple 与 NBC Universal 共同开发、今年 8 月定稿，主打改善 SDR 与 HDR 内容混合播放时的亮度突变与不一致问题。Google 正同步把 ST 2094-50 推进 Chrome 等软件以改善 HDR 视频体验。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>HDR/SDR 混播的亮度一致性是流媒体与桌面显示的真实痛点，swapchain 层面的标准元数据通道是 Linux 图形栈 HDR 成熟化的又一步。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/FFmpeg-9.1-Releasing" target="_blank">FFmpeg 9.1 准备发布：APV Vulkan 编码器 + NVIDIA 光流 FRUC 帧率上变换</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">FFmpeg 9.1 进入发布流程。新增 APV（Advanced Professional Video，免版税编码）的 Vulkan 编码器，使 APV 可经 shader 在 GPU 上加速；另一大亮点是 vf_fruc_vulkan 滤镜——NVIDIA Optical Flow 加速的 FRUC（Frame Rate Up-Conversion）插帧。Vulkan 侧还有 H.265 Vulkan 编码优化。其余要点：AAC 编码器大幅改进、H.264 data partitioning、libastcenc ASTC 图像编解码、LCEVC 载荷合并 bsf、D3D12 DirectML 零拷贝 ONNX Runtime 推理后端等。代码已在 release/9.1 分支。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>APV Vulkan 编码 + NVIDIA 光流插帧把视频转码/帧率上变换进一步推向 GPU 加速，对直播、补帧与云端转码管线都有直接价值。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AV2-Adoption-Plus-SVT-AV2" target="_blank">AOMedia 力推 AV2 早期采用：YouTube 2027 年初上线，Intel 开发 SVT-AV2</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">继 5 月 AV2 v1.0 规范发布后，AOMedia 本周发布新闻稿宣传 AV2 的「生态势头」：压缩效率较 AV1 约提升 30%，并改进 HDR 表现。Google 正在 YouTube 与 Chrome 中试验 AV2，YouTube 的 AV2 流预计 2027 年初上线；Meta 承诺在 Facebook 与 Instagram 视频中采用 AV2。编码器方面，Intel 正开发基于 CPU 的 SVT-AV2，延续其在 SVT-AV1 上的成功路线（此前还有 SVT-HEVC、SVT-VP9）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>AV1 之后下一代免版税编解码的产业布局已清晰，YouTube/Meta 的时间表直接牵动浏览器、硬件解码与显示管线的后续演进节奏。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/oneDNN-3.14-Released" target="_blank">oneDNN 3.14 发布：AMD Zen 优化首次进上游，初始支持 ACE 指令</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">UXL Foundation 发布 oneDNN 3.14，最值得注意的是 Intel/AMD 本周官宣围绕 PyTorch/oneDNN 协作后，AMD Zen CPU 优化首次进入 oneDNN 上游：改进 MATMUL 与 inner-product 原语在 Zen 处理器上的性能。该优化需 opt-in：以 ONEDNN_X64_USE_ZEN=ON 构建，且目前依赖 ZenDNN 代码位于 oneDNN 树内（可用 ONEDNN_ZENDNN_FETCH=ON 自动拉取）。3.14 还初始支持 AMD/Intel 未来处理器共用的 AI Compute Extensions（ACE）指令，改进 Diamond Rapids 的 AVX10.2 与 AMX 性能；GPU 侧优化了 Intel GPU D 系列（Crescent Island）与 Nova Lake P 的 Xe3P-LPG。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>AMD 把 ZenDNN 的 Zen 改进推进上游 oneDNN，x86 CPU 推理优化正式收敛一条主线；ACE 双厂商共建的指令集值得持续跟踪。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/OpenSSL-4.1-Released" target="_blank">OpenSSL 4.1 稳定版发布：DTLS 1.3 + 面向 ML-DSA 的 AVX-512 优化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">OpenSSL 4.1 稳定版发布。新特性包括：DTLS 1.3 支持（更快握手、前向保密、内建后量子密码支持、优化报头）；GREASE 机制（在 TLS 握手中发送随机无意义值以尽早发现对端对未知值的处理缺陷）；AVX-512 侧新增面向 ML-DSA 后量子签名的 SHAKE x4 优化实现，以及 AES-CBC 解密的 AVX-512 + AES 优化。同时正式退役 Windows Itanium 与 Windows CE 支持。Alpha 阶段的优化实测数据已在 OpenBenchmarking.org 公开。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>后量子密码（ML-DSA）+ AVX-512 的组合直接关系服务器 TLS/VPN 的未来性能基线，DTLS 1.3 对 QUIC 类工作负载也是关键底层依赖。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">10</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-memblock" target="_blank">Linux 启动期内存分配器提速约 5000 倍：KHO 内存检索 268 秒 → 50 毫秒</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linux 7.4 的 memblock 拉取请求中，Google 工程师 Tarun Sahu 发现 mm/memblock.c（页面分配器就绪前的早期物理内存分配器）在 memblock_add_range() 与 memblock_isolate_range() 中用线性扫描寻找候选区域，改为二分查找后最坏复杂度降为 O(N log N)（顺序追加为 O(N)）。在 KHO（Kernel Handover，服务于 Live Update Orchestrator 等内核实时交接机制）产生大量不相交 folio 的重碎片场景下，KHO 内存检索时间从约 268 秒降至约 50 毫秒。补丁评论惊讶这段线性搜索竟存活至今。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>一行数据结构选择的修复带来约 5000 倍提升，是内核「老代码挖宝」的典型案例；KHO/Live Update 是热升级与虚拟机快速重启的基础设施，其性能直接决定可用性。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-26.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-23.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-26</p>
+    <p>覆盖范围：2026-10-23 ~ 10-25（EDT，周五+周末合并）· Linux 7.4 DRM 图形驱动更新（AMDGPU HDMI 2.1 FRL 默认启用、UALoE、Gorgon Halo NPU；Intel Xe CPU binds/ULLS + vRAM 健康检查；MSM 启用 Adreno X2 系列 GPU）· Borealis：Aurora Silicon 从 Asahi HoneyKrisp fork 出允许 AI 贡献的 Apple Silicon Vulkan 驱动（M1~M5/A18 Pro）· Wayland ext-transient-output 协议提案（特权客户端动态虚拟输出，补齐 VNC/远程桌面输出侧）· KDE Plasma 6.9：KWin 的 Wayland 画中画转正并默认启用· Vulkan 1.4.366：swapchain 新增 SMPTE ST 2094-50 HDR 动态元数据扩展· FFmpeg 9.1：APV Vulkan 编码器 + NVIDIA 光流 FRUC 帧率上变换· AOMedia 力推 AV2 早期采用（较 AV1 约 +30%，YouTube 2027 年初上线，Intel 开发 SVT-AV2）· oneDNN 3.14：AMD Zen 优化首次进上游 + 初始 ACE 指令支持· OpenSSL 4.1：DTLS 1.3 + 面向 ML-DSA 的 AVX-512 优化· Linux 7.4 memblock 线性扫描改二分：KHO 内存检索 268 秒 → 50 毫秒</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
