@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-27</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 27 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-27.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-26.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-27.0-Goes-Kraid" target="_blank">Mesa 27.0 将默认启用 Kraid 着色编译器：Arm Mali GPU 换新引擎</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">开发数月的 Kraid 是面向近期 Arm Mali GPU 的现代化图形编译器，今年 6 月已随 Mesa 26.2 合入主线。Mesa 27.0（预计明年一季度发布）将把 Mali 驱动的默认着色编译器切换为 Kraid，取代旧的编译器路径。这是 Arm Mali 开源图形栈近年最大的架构级切换之一，从 Iris Gallium 时代延续下来的旧编译前端将逐步退场。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>编译器是 GPU 驱动性能的咽喉；Kraid 默认化意味着 Mali（Chromebook、RK3588、Snapdragon 等设备的主力 GPU）的开源驱动进入新阶段，值得在 Mesa 27.0 发布后实测验证。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Steam-Frame-FR-Linux-7.4" target="_blank">Steam Frame VR 头显获 Linux 主线内核支持：Deckard 设备树上游合入</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Steam Frame VR 头显（代号 Deckard，基于高通骁龙 8 Gen 3 / SM8650 SoC）的初始设备树已随 Linux 7.4 的 SoC 变更合入主线，作者为 Linaro 工程师 Neil Armstrong。初始支持覆盖：系统保留内存、regulator、GPIO 按键、PMIC 功能与 ADC 通道、UFS 存储、USB Gadget、WCN7850 WiFi 7 + 蓝牙、I2C 基础外设与 SD 卡槽。引导器以 EL2 启动 Linux，因此需移除一批 EL1 与 DSP 相关节点。最完善的支持仍在下游 SteamOS 内核，但主线上游化将为其他发行版支持 Steam Frame 铺路（头显 9 月开售，起价 1059 美元）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>消费级 VR 头显进主线内核很少见；设备树上游化意味着 Debian/Fedora 等通用发行版可自行构建支持，Steam Frame 的 Linux 生态不再被 SteamOS 独占。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-SoCs" target="_blank">Linux 7.4 SoC 更新合入：Apple M4 与 A18 Pro 初始支持，Tensor 5 主线化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linux 7.4 合入大批 SoC 变更，为数十块新开发板与多款新 SoC 提供支持：Apple M4 与 iPhone 17 所用的 A18 Pro（MacBook Neo）获得初始支持；Google Tensor 5 终于主线化，Pixel 10 设备同步进场；另有尚未正式发布的 Qualcomm SoC 支持先行铺垫。此前 block 子系统也已为 Apple M4 启用 NVMe 存储，输入子系统覆盖其外设。M 系列与 A 系列芯片的 Linux 支持版图进一步扩展。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Apple Silicon 上跑 Linux 的硬件基础持续完善，M4 初始支持意味着 Asahi 之外的主线内核路径开始铺设；Tensor 5 / Pixel 10 主线化对 ARM SoC 生态也是重要节点。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-CAS-Regression-AMD-HX-370" target="_blank">Cache Aware Scheduling 拖慢 Ryzen AI 9 HX 370 编译的回归已修复</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">今年 8 月起报告的调度器回归：AMD Ryzen AI 9 HX 370（Strix Point，4×Zen 5 + 8×Zen 5C）上运行 Clang 全量 LTO 链接等缓存密集型负载时，从能效小核启动的进程不会迁移到性能大核，任务被钉在低频小核上（Zen 5C 主频 3.3GHz vs 大核约 5.1GHz，L3 仅 8MB vs 16MB），LTO 编译性能明显差于关闭 Cache Aware Scheduling 的内核。修复来自 Intel 的 Tim Chen：在混合架构系统上让非对称打包（asym packing）优先于 LLC 负载均衡——当 asym packing 尝试把任务迁往优先级更高的空闲核时让它胜出，因为迁到更强核心的收益大于缓存亲和。补丁已合入 Linux 7.4 并标记回移 7.2/7.3 稳定版。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>CAS 是近两年调度器最重要的新机制之一，与混合架构的冲突是其实战首度碰壁；该修复对 Zen 5/5C 混合核的其他 Ryzen SoC 同样适用，编译与 CI 场景用户应尽快跟进稳定版更新。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-EXT4" target="_blank">EXT4 合入可选 buffered IOmap：大写入场景性能显著提升</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">EXT4 为 Linux 7.4 合入 opt-in 的 buffered IOmap 支持（挂载选项 buffered_iomap），用 IOmap 框架取代文件系统驱动里的 buffer head 用法，大写入场景带来「显著」性能提升（读取端改善较温和）。该模式暂不支持在线碎片整理、inline data、fsverify、fscrypt、非 extent inode 与 data=journal，必要时会自动回退原 I/O 路径。工作由华为的 Zhang Yi 主导，基准数据显示大块写入收益相当可观。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>buffer head 向 IOmap 的迁移是 EXT4 多年技术债的偿还；大写入提速对数据库、编译输出、大文件落盘等场景直接受益，升级 7.4 后可针对 WAL/临时目录所在分区评估启用。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-CXL" target="_blank">Linux 7.4 为 CXL 动态容量设备（DCD）铺路：内存容量按需弹性伸缩</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">CXL 子系统的 Linux 7.4 变更已合入，本周期核心工作是 Dynamic Capacity Devices（DCD）的第一部分支持：在 mailbox 中标记 DCD 能力、从设备读取动态容量配置、为 DCD 分区收集 DSMAS 数据、配置动态容量中断，外加文档更新与分区顺序约束清理——DCD 尚未正式启用，其余代码仍在评审。DCD 是 Type-3 CXL 内存扩展硬件，可在不重启、不重新配置硬件的前提下动态扩缩服务器内存容量，支持跨机架多主机内存池化共享与按负载弹性供给，同时还有零尺寸 HDM 解码器、交换芯片解码器枚举加固、时延计算修正与 GPF 超时编程重构等改进。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>内存池化与弹性供给是 CXL 区别于传统 DIMM 的核心价值，数据中心「按需买内存」的运营模式将以此为前提；第一批基础设施进主线意味着商用 DCD 硬件的 Linux 支持进入倒计时。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-27.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-26.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-27</p>
+    <p>覆盖范围：2026-10-26（EDT）· Mesa 27.0 将默认启用 Kraid 着色编译器（Arm Mali GPU）· Steam Frame VR 头显获主线内核支持（Deckard 设备树上游合入）· Linux 7.4 SoC 更新：Apple M4 与 A18 Pro 初始支持、Tensor 5 主线化· Cache Aware Scheduling 拖慢 Ryzen AI 9 HX 370 编译的回归已修复· EXT4 合入可选 buffered IOmap（大写入显著提速）· Linux 7.4 为 CXL 动态容量设备（DCD）铺路</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
