@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-28</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 28 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-28.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-27.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Wine-Mesa-Map-Buffer-Client-Ptr" target="_blank">Wine 合入 MESA_map_buffer_client_pointer：WoW64 32 位 OpenGL 提速</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">CodeWeavers 今年主导的 OpenGL WoW64 改进计划落地：Wine 已合入基于 MESA_map_buffer_client_pointer 扩展的 32 位 OpenGL 缓冲区映射支持（MR !12444），用于改善 64 位系统库运行 32 位 Windows 应用/游戏的场景。此前 Wine 需为缓冲区建立 CPU 侧存储并在 glUnmapBuffer 时拷贝内容，或依赖 Vulkan 资源共享做持久映射；新扩展允许 Wine 直接向驱动提供 32 位地址范围映射缓冲对象，让依赖应用侧缓冲上传管理的遗留应用以高效速度走 legacy 映射路径。该扩展 2 月提出、3 月合入 OpenGL-Registry；驱动侧 Zink 已实现，RadeonSI 的 MR !40750 评审中。Wine 侧支持将随周五发布的 Wine 11.21 亮相。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>WoW64 是 Wine/Proton 32 位游戏的长期软肋；OpenGL 缓冲映射绕开拷贝是真实性能收益，Steam Play 上大量老 D3D/OpenGL 游戏会受益，值得在 Wine 11.21 发布后实测。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/DMA-BUF-IO-uring-Linux-7.4" target="_blank">Linux 7.4 为 IO_uring 引入 DMA-BUF 支持：I/O 路径零拷贝时代开启</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">Linux 7.4 合入 IO_uring I/O 路径的 DMA-BUF 支持基础设施，由 Meta 的 Pavel Begunkov 主导、历经 11 轮评审。DMA-BUF 是 GPU 驱动间免 CPU 拷贝共享硬件缓冲的框架，此次把它带进通用 I/O 路径：以 opt-in 文件操作实现，用户 API 构建在 IO_uring 注册缓冲区之上（dmabuf 以特殊方式注册后即可像普通注册缓冲一样用于 IORING_OP_READ/WRITE_FIXED 请求），配套请求计数、生命周期管理与失效机制。当前仅支持 NVMe 裸块设备，单块 DMA-BUF 最大 4GB；补丁封面信中的基准数据相当亮眼。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>DMA-BUF 与 IO_uring 是 Linux 近十年最重要的两条零拷贝基础设施，二者打通意味着 GPU 显存与 NVMe 存储间可绕过 CPU 直接读写——AI 推理权重加载、GPU 直接落盘等场景的空间被打开，后续支持更多设备类型的扩展值得跟踪。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Firefox-159-Released" target="_blank">Firefox 159 发布：修复 AMD Linux 图形内存暴涨问题</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">Firefox 159 双周更发布。Linux + AMD 图形用户的重要修复：在查看地图/地点结果（如 ChatGPT 网页内嵌地图）时 Firefox 会发生过度内存使用，内存占用飙升的问题已解决。另一项 Linux 相关修复是 Wayland 下标签页被误分离为独立窗口的缺陷（159 Beta 引入）。其他变化包括 AI 集成改进、已保存密码默认进侧栏、Web 开发者侧默认启用 scroll-driven animations 等。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Radeon 用户浏览器内存暴涨是近期常见抱怨，该修复直接相关；Wayland 标签页误分离也是 159 Beta 引入的恼人回归，桌面 Linux 用户建议尽快更新。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/KDE-Plasma-6.8.2" target="_blank">KDE Plasma 6.8.2 发布：数十项修复继续打磨</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">继两周前的 Plasma 6.8（KDE 30 周年版）与上周的 6.8.1 之后，Plasma 6.8.2 带来又一批数十项修复：KWin 的 Wayland 修复、平铺壁纸代码修复动画图片不再播放的回归、KPipeWire 现在向 libx264 传递流的实际帧率、Plasma Big Screen 行列布局重做、桌面图标消失问题修复、大量 Plasma Workspace 修复，以及 Union 主题引擎更新。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>6.8 系列处于密集打磨期，6.8.2 已是两周内第二个点版本；KPipeWire 帧率传递对录屏/串流画质有直接影响，Wayland 修复对日常桌面稳定性重要，升级无脑跟。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Beeper-In-Kernel-Parsing-eBPF" target="_blank">Beeper：内核 eBPF 做应用层解析，Web 服务器吞吐最高 4.5 倍</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">来自 ETH Zurich、NYU 与 NVIDIA 研究人员的开源项目 Beeper，把 L7 应用层解析搬进内核 eBPF：用 Rust 在 eBPF 中实现 HTTP 解析器并配备内核态 HTTP 缓存，高负载下 Web 服务器吞吐提升 3 倍（实测最高 3.4 倍）；其衍生的 hyper-fast-path 项目作为 Hyper Rust HTTP 库的 eBPF 快速路径，最大吞吐提升达 4.5 倍。该项目在本月 Linux Plumbers Conference 2026 上发表，代码已在 GitHub 开源，用例包括应用层流量监控、缓存与基于载荷的重定向等。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>eBPF 的能力边界再次被推到应用层协议解析，这是「内核旁路」之外的另一条加速路线；若后续有生产级实现（尤其配合内核 HTTP 缓存），对高并发 Web 基础设施有实际价值。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Raspberry-Pi-Zero-3-W-Pi-4-A" target="_blank">树莓派 Zero 3 W 与 Pi 4 Model A 设备树现身内核树：新一代 Zero 临近</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">官方树莓派 Linux 内核树合入两份新设备树：树莓派 Zero 3 W 与树莓派 4 Model A。Zero 3 W 是时隔五年对 Zero 2 W 的继任（期间用户一直猜测是否会有后继机型），其设备树显示沿用树莓派 4 的 Broadcom BCM2711 SoC（四核 Cortex-A72），其余规格尚未披露；Pi 4 Model A 则是 Model A 系列传统——更小、功耗更低、砍掉以太网与部分 I/O 换取更低价格。在内存与元器件涨价的当下，低成本老平台型号重新出现颇有意味。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Zero 3 W 若沿用 BCM2711 则意味着图形（VideoCore VI）与计算能力与 Pi 4 持平但体积/价格更接近 Zero 系列，对嵌入式显示方案与边缘部署是低成本新选项；设备树合入通常是正式发布的前兆。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-28.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-27.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-28</p>
+    <p>覆盖范围：2026-10-27（EDT）· Wine 合入 MESA_map_buffer_client_pointer（WoW64 32 位 OpenGL 提速）· Linux 7.4 为 IO_uring 引入 DMA-BUF 支持（I/O 路径零拷贝）· Firefox 159 发布（修复 AMD Linux 图形内存暴涨 + Wayland 标签页回归）· KDE Plasma 6.8.2 发布（数十项修复）· Beeper 内核 eBPF 应用层解析（Web 吞吐最高 4.5 倍）· 树莓派 Zero 3 W 与 Pi 4 Model A 设备树合入</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
