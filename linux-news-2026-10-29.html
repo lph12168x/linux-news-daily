@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-29</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 29 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-29.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-28.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/GXVK-Glide-Vulkan" target="_blank">GXVK：3Dfx Glide API 在 Vulkan 上重生，D7VK 2.4 同步发布</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">D7VK（Direct3D 7/6/5/3 on Vulkan）在一个月前宣布进入维护模式后意外发布 2.4 版，更大的惊喜是随之亮相的 GXVK 项目：把 1990 年代 3Dfx Voodoo 卡的 Glide API 实现在 Vulkan 之上。GXVK 由 D7VK 贡献者 CkNoSFeRaTU 开发，通过 fork DXVK（D7VK 亦 fork 自 DXVK）实现，目标是将 3Dfx 发布的全部三个 32 位 Glide 变体补齐，开发以 Wine/Linux 为重点；目前为早期 alpha（v0.1），已可跑通《Pandemonium 2》《Incubation: Time Is Running Out》等 Glide 独占游戏。D7VK 2.4 本体则 rebase 到最新上游 DXVK（带入 present timing）、默认禁用后缓冲拉伸并支持保持宽高比（利好 Wayland）、改进 present interval 与 VSync 状态传播（修 Re-Volt、3DMark 2000 显示问题）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Glide 是 OpenGL/D3D 普及前的传奇图形 API，一批 Glide 独占游戏此前没有开源现代化路径；DXVK 系「老 API → Vulkan」的实现思路对理解兼容层架构与游戏 Preservation 都有参考价值。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/VKD3D-Proton-3.1" target="_blank">VKD3D-Proton 3.1 发布：3.2 大改版前最后一个稳定点</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">Valve 的 Hans-Kristian Arntzen 标签发布 VKD3D-Proton 3.1：DX12→Vulkan 转换层（Proton 与 Steam Deck 的核心组件）进入 3.2 大版本前最后的「稳定」检查点。新特性：VK_EXT_descriptor_heap 描述符堆支持（因驱动质量顾虑暂未默认启用，master 分支即将切换，3.2 计划默认开启）；KHR_opacity_micromap 支持并暴露 DXR 1.2 光追；Shader Model 6.9（Shader Execution Reordering + long vector，当前仅 NVIDIA 点亮）；更多 NVAPI intrinsics、AgilitySDK 619 特性、view instancing 默认启用。性能侧：ClearUAV 走 vkCmdClearColorImage/FillBuffer 快路径、优化病态 COPY→RESOURCE→COPY 屏障模式、减少 Present() 遮挡检查的合成器往返、RTAS 构建命令批量提交（部分场景光追性能大幅提升）。修复侧：Steam Frame 成受支持平台（含 aarch64 构建）、AMD_anti_lag 实现简化并修帧归因问题、low_latency2 对齐规范第 3 版。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>descriptor heap 是 DX12 绑定模型的现代化改造，默认启用后将显著降低 CPU 绑定开销，是 3.2 的架构级变化，值得提前在多驱动上压测；Steam Frame/aarch64 支持也说明 Valve 在为 ARM VR 设备铺路。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Hyprland-0.57" target="_blank">Hyprland 0.57 发布：Compiz 式摇晃窗口回归 Wayland</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Wayland 合成器 Hyprland 0.57 发布，带来致敬二十年前 Compiz/Beryl 时代的 wobbly windows（摇晃窗口）效果——以窗口变换器（window transformer）实现，可用 no_wobble 窗口/工作区规则关闭。其他亮点：可切换的模糊变体（blur variants）、工作区共享（Hyprland 与 XDPH 同时实现，浏览器/会议软件共享屏幕时可直接选择某个工作区作为源）、scene composition 渲染管线、硬件支持时默认启用 FP16 渲染（削减模糊等特效的内存带宽）、新增 xx-hotkey-v1 全局快捷键协议、OpenBSD 构建支持推进中；旧版 .conf 配置彻底弃用、全面转向 Lua 配置。修复超百项，按 PR 数计是 Hyprland 史上最大版本之一；Omacom 基金会（Omarchy 背后）成为其独家赞助方。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>FP16 渲染与 scene composition 是实打实的渲染效率改进；升级前必须先完成 Lua 配置迁移，否则无法启动；独家赞助模式对独立桌面项目的可持续性也是个值得关注的新样本。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="http://phoronix.com/news/System76-Thelio-Prime-Mini-PC" target="_blank">System76 发布 Thelio Prime：11 升 AMD 迷你 Linux 工作站</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">System76 预告新款 Thelio Prime 迷你台式机：11 升体积（288×148.9×281.9mm），11 月 18 日上市、起价 1599 美元。CPU 为 AMD Ryzen 9000 系列（最高 Ryzen 9 9950X / 9850X3D），显卡可选 Radeon 核显或 AMD/NVIDIA 独显（最高 RTX 5070）；内存最高 96GB DDR5，双 M.2 槽最高 8TB NVMe（一条 PCIe 5.0 + 一条 PCIe 4.0）。CPU 与 GPU 采用独立散热腔设计，机箱为铣削不锈钢 + 铝合金、免工具磁吸侧板；整机在科罗拉多丹佛工厂制造组装。预装 Pop!_OS 24.04 LTS（COSMIC 桌面）或 Ubuntu 24.04 LTS，前置 USB-C、后置 2.5GbE / Wi-Fi 6E / HDMI 2.1。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>介于 Thelio Major/Mira 与传统 mini PC 之间的新形态，双散热腔让小机箱也能装 RTX 5070 级独显；对需要预装 Linux、兼顾体积与可维护性的工作站场景是新的选型项，后续可关注 Phoronix 实测。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Jamey-Sharp-Praises-Wayland" target="_blank">XCB 联合作者首写 Wayland 客户端，盛赞协议设计</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">X.Org 老牌开发者、X 协议 C 语言绑定 XCB 的联合作者 Jamey Sharp，近日首次编写 Wayland 客户端后在 Mastodon 上盛赞其设计：「我能看到 Wayland 设计者从 X、乃至从 XCB 吸取的每一课的影响，真心对 Wayland 协议的设计印象深刻」。他写了 300 多行 Rust（刻意不用 wayland-client crate 的 helper，体验原始协议），实现开窗口 + 黑白闪烁并测量时序统计。针对「Wayland 打开个窗口要写太多代码」的常见抱怨，他的回应是：Wayland 是「为把难事做成而设计的协议，不是把易事变简单」——想做简单的事请用 GTK/Qt/SDL 等工具包；低层协议保持最大灵活性，易用性属于上层抽象，这个复杂度取舍是正确的，因为「砍掉任何一步，就砍掉了处理更复杂场景的能力」。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>来自 X11 阵营核心开发者的背书，是对 Wayland 协议设计哲学（低层灵活 + 上层封装）最有分量的注解之一；「协议为难点而生、易用性交给工具链」的分层思路对任何协议/接口设计都有借鉴意义。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-29.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-28.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-29</p>
+    <p>覆盖范围：2026-10-28（EDT）· GXVK：3Dfx Glide API 实现在 Vulkan 之上（D7VK 2.4 同步发布）· VKD3D-Proton 3.1 发布（3.2 大改版前最后稳定点）· Hyprland 0.57（Compiz 式摇晃窗口 + FP16 渲染）· System76 Thelio Prime（11 升 AMD 迷你工作站）· XCB 联合作者盛赞 Wayland 协议设计</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
