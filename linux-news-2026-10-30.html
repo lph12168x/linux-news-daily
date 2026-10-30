@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-30.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-29.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.5-drm-misc-next" target="_blank">Linux 7.5 图形/NPU 驱动开始排队：AMDXDNA 持续加码、Panfrost 支持 Mali G68</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">Linux 7.4 合并窗口刚开几天，drm-misc-next 的第一批 pull request 就已发往 DRM-Next，开始为年底启动的 Linux 7.5 周期储备特性代码，本周又提交了第二批。第一批包括：AMDXDNA（Ryzen AI NPU）驱动经 DRM fdinfo 接口上报 busy time；Panfrost 新增 Arm Mali G68 支持，并改进 GPU reset 处理与初始化；rockchip/dw-hdmi-qp 增加 HDMI 2.0 支持；多个桥接芯片驱动获得新的 HDMI 1.x 能力；VirtIO 主平面支持 ARGB8888 格式；另有多款新面板。第二批聚焦 AMDXDNA：驱动修复、BOE NE140WUM-N41 面板支持、新固件版本适配，以及更多 AMD AIE4 特性——包括电源模式读写、内核队列生命周期与内存布局、suspend/resume 等。AIE4 是 AMD 下一代 Ryzen AI NPU，近几个月驱动活动密集，预计随 Ryzen AI Zen 6 平台首发。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>7.5 周期刚拉开帷幕就能看到清晰的图形/NPU 主线：AMDXDNA/AIE4 是 AMD NPU 开源栈的主战场，Panfrost 扩大 Mali 覆盖、HDMI 能力补齐也直接影响显示链路；提前跟踪 drm-misc-next 排队内容可预判下个内核的功能边界。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-ROCm-HRX-Loom-0.1" target="_blank">AMD 发布 ROCm HRX Loom v0.1：一套编译栈同时面向 CPU、GPU 与 NPU</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">AMD 在 Advancing AI 大会上发布 Hyperloom（面向 agentic 工作负载优化）之后，其落地组件 Loom SDK v0.1 随即标签发布——这是 Loom 作为 ROCm HRX（HIP Runtime Extended）一部分开源后的首个正式版本。Loom 是专用编译器与 IR 栈，官方描述为：编译 kernel 与异步设备程序、链接模型程序，并针对 CPU、AMD GPU、AMD NPU 三类目标做特化，同一套创作与执行路径贯穿源码事实、目标事实、配置、正确性用例与编译报告。hrx-loom SDK 打包了编译器、运行时、Python API 与命令行工具：loom-fetch 安装模型程序与资产，loom-serve 加载产物卡片并通过 HTTP 提供服务。目标后端方面，支持 AMDGPU HSA 产物用于 GPU 执行、SPIR-V/Vulkan 用于可移植执行，x86 与 WebAssembly 后端仍在完善。可从 GitHub（ROCm/hrx-system）获取 v0.1，也可 pip 安装 hrx-loom。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>「一套 IR 特化到 CPU/GPU/NPU」直指异构算力编程的碎片化痛点，与 NPU 驱动生态演进方向高度相关；这是 ROCm 软件栈里值得长期跟踪的新变量，v0.1 已可动手实验。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/nvidia-vera-1p-2p" target="_blank">NVIDIA Vera 单路 vs 双路实测：172 核扩展顺畅、单卡约 430W</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Phoronix 补充发布 NVIDIA Vera 单路（1P）与双路（2P）对比测试：每颗 Vera 提供 88 个 Olympus 核心、开 SMT 后 176 线程，双路合计 172 核 / 352 线程。测试选用可扩展到高核数且对多路 NUMA 友好的负载，环境为 Ubuntu 24.04 LTS + Linux 6.17 64K 内核。结论「符合预期、没有意外」：1P 到 2P 在数十项基准的几何平均上扩展顺畅，未遇到可扩展性或 NUMA 问题；两档配置下 CPU 峰值频率保持一致（平均 3.2GHz、峰值 3.3GHz）；每颗 Vera 在该负载组合下平均功耗约 430~440W、峰值 535W。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>NVIDIA 以独立 CPU 直接切入数据中心 CPU 市场，双路扩展无坑对其 2P 服务器形态至关重要；~430W/颗的功耗数字也为数据中心容量规划提供了第一手参考。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-RISC-V" target="_blank">RISC-V 用户拷贝优化改为运行时检测，随 Linux 7.4 合并</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">RISC-V 架构变更已合并进 Linux 7.4，其中最亮眼的是把「跳过软件对齐」的优化从编译期改为运行时检测。该优化由 Tenstorrent 在 7.3 引入：对原生支持快速非对齐内存访问的硬件，跳过 user copy 中的软件对齐步骤，实测带宽提升最高 11%。但 7.3 要求编译期内联该支持，无法在混合硬件环境的发行版通用内核中启用。7.4 将 HAVE_EFFICIENT_UNALIGNED_ACCESS 的检测移到运行时——内核启动时探测硬件能力，动态决定是否跳过软件对齐，发行版通用 RISC-V 内核从此也能吃到这波优化。同期合并的还有：crash hot-plug 支持、页表函数路径优化、上下文切换优化，以及「B」位操作扩展与 Zic64b 扩展加入 hwcap/hwprobe 上报。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>「编译期特化 → 运行时探测」是通用内核发行版化的经典套路，11% 的拷贝带宽提升对 memcpy 密集型工作负载是实打实的收益；hwprobe 扩展上报也值得 RISC-V 应用生态关注。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Networking" target="_blank">Linux 7.4 网络子系统：硬件 Pacing Offload 落地，BIG TCP 混合路径提速 70%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linux 7.4 网络改动随合并窗口就位。核心侧新增硬件 pacing offload：网络设备引入 pacing_offload 属性，将出向包的定时与间隔控制下放到 NIC/SmartNIC，IDPF 驱动率先接入。性能方面，BIG TCP 与非 BIG TCP 混合路径的吞吐改进带来最高 70% 的提升，另有 TCP/IP 缓存效率与争用削减优化；无线侧也有时延改进，WiFi Aware 与 WiFi 8 相关工作继续推进。驱动侧：Nebula Matrix NIX 驱动首发、Meta 第二代 NIC「MPNIC」合入，FBNIC（Meta 一代卡）支持大块 IO_uring 零拷贝接收缓冲；另有 Qualcomm PPE 支持 IPQ5424、STMMAC 支持多个新平台、Realtek RTW88 以完整驱动替换 staging 中的 rtl8723bs、蓝牙侧新增 MT7928 与 QCC2072 支持。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>硬件 pacing offload 与 RDMA/高性能网络方向直接相关——把发包节奏交给 NIC 是拥塞控制卸载的又一格拼图，IDPF 只是起点，后续主流数据中心网卡跟进值得盯；BIG TCP 混合路径 70% 的吞吐收益对大流量场景同样关键。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Fedora-45-Ships-Next-Week" target="_blank">Fedora 45 定档 11 月 3 日：Go/No-Go 通过，GNOME 51 + DRM Panic 上车</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Fedora 45 在今日 Go/No-Go 会议上正式宣布 GO，定于 11 月 3 日（下周二）发布；此前两次因 RC 组装不及与 blocker bug 推迟，问题均已在过去一周修复。RC 1.4 安装镜像已被宣布为稳定版，与下周镜像一致，现在即可下载。功能亮点：引入 KMSCON 替代内核控制台、Anaconda 安装器支持 Stratis 存储、改进 Qualcomm Snapdragon X 笔记本支持、默认限制 ptrace、默认强制签名校验、包构建要求可复现，以及新增 DRM Panic 前端——内核出问题时能给出更友好的画面。软件版本：GNOME 51、Go 1.27、Python 3.15、GCC 16.2、Glibc 2.44、LLVM 23、RPM 6.1。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>DRM Panic 与 KMSCON 都是图形栈用户可感知的体验升级，ptrace 限制与签名强制则改变桌面安全基线；作为 GNOME 51 / LLVM 23 / GCC 16.2 的首发载体，Fedora 45 是下个月值得第一时间升级的发行版。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-10-30.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-29.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-10-30</p>
+    <p>覆盖范围：2026-10-29（EDT）· Linux 7.5 drm-misc-next 图形/NPU 驱动开排队（AMDXDNA/AIE4、Panfrost Mali G68、HDMI 2.0）· AMD ROCm HRX Loom v0.1 首发（一套编译栈面向 CPU/GPU/NPU）· NVIDIA Vera 单路 vs 双路实测（172 核扩展顺畅、单卡约 430W）· RISC-V 用户拷贝优化改运行时检测（最高 11% 带宽提升）· Linux 7.4 网络：硬件 Pacing Offload + BIG TCP 混合路径提速 70%· Fedora 45 定档 11-3（GNOME 51 + DRM Panic）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
