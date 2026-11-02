@@ -319,6 +319,31 @@
         <strong>关注理由：</strong>数据库方向对用户是重点领域：PostgreSQL 的 AI 负担困境与内核案例互为印证——当提交成本趋零，审核成为瓶颈；对团队代码评审流程与 AI 辅助开发治理都有直接借鉴意义。</div>
     </div>
 
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">11</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Steam-Survey-October-2026" target="_blank">Valve 10 月 Steam 硬件调查：Linux 份额 3.95%（9 月数据上修至 3.9%），CachyOS 16.3% 超越 SteamOS 成最受 Linux 玩家欢迎的发行版</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Valve 发布 <b>2026 年 10 月 Steam 硬件与软件调查</b>，Linux 整体份额 <b>3.95%</b>（环比 +0.05%）；macOS <b>2.35%</b>、Windows <b>93.7%</b>。<br>
+        <b>关键背景：9 月数据被大幅上修</b><br>
+        · 9 月原始数据曾显示 Linux <b>暴跌至 3.05%</b>（环比 -0.85%），但 Phoronix 当时即指出该波动与<b>简体中文用户占比激增</b>高度相关——简中样本大幅摆动时，Windows 通常对 Linux 出现同步大摆动；<br>
+        · Valve 此后把 <b>9 月数字上修为 3.9%</b>，因此 <b>10 月的 3.95% 实际是平稳微增</b>，而非从暴跌中恢复；<br>
+        · 对照去年同期：<b>2025 年 10 月 Linux 才首次突破 3%</b>，一年同比上升约 1 个百分点，距 4% 仅一步之遥。<br>
+        <b>发行版与硬件结构</b><br>
+        · 发行版榜：<b>Arch 系的 CachyOS 以 16.3% 居首</b>，超过 <b>SteamOS 的 13.89%</b>（第二）；<br>
+        · <b>AMD CPU 在 Linux 玩家中占比接近 70%</b>，Steam Deck 与 Steam Machine 的定制 AMD SoC 是主要推手；<br>
+        · 另据调查表，<b>Steam Frame 头显首次进入 VR 榜单</b>，占 VR 用户 <b>0.41%</b>（9 月底开售 $1059 起）。完整数据见 SteamPowered.com。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong><b>① 月度采样数据的「暴涨暴跌」要先看修正值再下结论。</b>9 月「-0.85% 暴跌」如今被上修为 3.9%，10 月 3.95% 实为 +0.05% 的平稳微增——<b>Steam 调查是自愿参与的月度采样，语言结构（尤其简中样本）的大幅摆动会系统性扭曲平台份额对比</b>。对任何做数据跟踪的团队，这都是现成的方法论案例：引用月度调查时必须以最新修正值为准，单月剧烈波动若与已知样本结构变化相关，优先怀疑采样而非真实趋势。<br>
+        <b>② CachyOS 登顶发行版榜是个信号：Linux 游戏人口的「默认选择」正在从 SteamOS 向性能优化发行版外溢。</b>CachyOS 是 Arch 滚动发行版 + 面向 x86-64-v3/v4 的优化编译仓库，<b>它超过 Valve 自家 SteamOS，说明硬核玩家在 Deck 之外愿意为「更快的包、更新的内核/Mesa」自己选系统</b>——这与本期第 3 条 AMD PerfOpt、第 6 条 Plasma 6.9 性能优化是同一条主线：Linux 游戏生态的竞争焦点已经从「能不能跑」转到「跑得更快」。<br>
+        <b>③ AMD CPU 近 70% 的占比是结构性而非风格性数据。</b>Steam Deck / Steam Machine 用定制 AMD APU，等于<b>Valve 用硬件出货直接为 AMD 的 Linux 栈（AMDGPU/RADV/PerfOpt）输送用户基数</b>；本期第 3 条 PerfOpt 对 Strix Halo 本地大模型 +18~23% 的收益，正是建立在这个基数之上。看 Linux 图形/计算生态，AMD 开源栈是当前确定性最高的一条主线。<br>
+        <b>④ 两个可跟踪的后续：</b>Steam Frame 首次入榜（0.41%），作为 Valve 自研 VR 硬件（骁龙 8 SoC + 主线内核支持已进 7.4），后续几个月的份额曲线值得跟；Linux 份额 3.95% 距 4% 仅一步之遥，若 Steam Machine 铺货放量，年内破 4% 是大概率事件。
+      </div>
+    </div>
+
   </div>
 <!--PAGE-NAV-BOTTOM-START-->
   <nav class="page-nav bottom" aria-label="日报导航">
@@ -330,7 +355,7 @@
   <!--PAGE-NAV-BOTTOM-END-->
 <div class="footer">
     <p>数据来源：Phoronix | 生成时间：2026-11-02</p>
-    <p>覆盖范围：2026-10-30 ~ 11-01（EDT，周末合并期）· Linux 7.4-rc1 发布（史上最大合并窗口 ~20k commits、AMDGPU 默认启用 HDMI 2.1 FRL）· TAINT_FORCED_BIND 因 VFIO 被 revert · AMD PerfOpt 进入 7.4（Strix Halo 本地大模型 +18~23%）· AMD Zen 6 底层驱动三线就位 · KDE 新终端 Kwi（Ghostty 库，3x~35x）· Plasma 6.9 性能优化 · CUDA Oxide 0.3 改进 Rust CUDA · Wine 11.21 WoW64 OpenGL 提速 · Vulkan 1.4.367 · PostgreSQL 19 因 AI/LLM 负担延期</p>
+    <p>覆盖范围：2026-10-30 ~ 11-01（EDT，周末合并期）· Linux 7.4-rc1 发布（史上最大合并窗口 ~20k commits、AMDGPU 默认启用 HDMI 2.1 FRL）· TAINT_FORCED_BIND 因 VFIO 被 revert · AMD PerfOpt 进入 7.4（Strix Halo 本地大模型 +18~23%）· AMD Zen 6 底层驱动三线就位 · KDE 新终端 Kwi（Ghostty 库，3x~35x）· Plasma 6.9 性能优化 · CUDA Oxide 0.3 改进 Rust CUDA · Wine 11.21 WoW64 OpenGL 提速 · Vulkan 1.4.367 · PostgreSQL 19 因 AI/LLM 负担延期· Steam 10 月硬件调查：Linux 份额 3.95%（9 月数据上修至 3.9%），CachyOS 16.3% 超越 SteamOS 成最受 Linux 玩家欢迎发行版</p>
     <p>关注领域：Linux 图形 · 显示 · 计算</p>
   </div>
 <script>
