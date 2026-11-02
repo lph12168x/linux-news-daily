@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-02.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-30.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-rc1" target="_blank">Linux 7.4-rc1 发布：史上最大合并窗口收官，AMDGPU 默认启用 HDMI 2.1</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linus Torvalds 度假期间 Linux 7.4-rc1 仍如期发布，为内核历史上最大的合并窗口画上句号：整个合并窗口接近 2 万个 commit，源码树从 Linux 7.3 的 41,019,555 行逼近 4200 万行，Phoronix 统计认为 AI/LLM 参与开发是近期提交量上升的重要因素。图形侧最受关注的变化是 AMDGPU 驱动默认启用 HDMI 2.1 FRL——该特性 7.2 就已合入但一直默认关闭，等待 VRR/FreeSync/ALLM 等配套功能完备，如今 4K 120Hz/8K 输出能力正式解锁；另有多项性能改进与 Ryzen Zen 6 准备工作。稳定版预计 12 月底发布。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>rc1 意味着 7.4 特性集基本定型：HDMI 2.1 默认启用是显示方向多年欠账的补齐，而“史上最大合并窗口 + AI 驱动提交量激增”则直接反映内核开发模式的转变，值得持续观察其质量影响。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Drops-Taint-Bind" target="_blank">Linux 7.4 应对 AI 噪音的 TAINT_FORCED_BIND 上线不到两周即被 revert</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">上周才合入 Linux 7.4 的 TAINT_FORCED_BIND 污染标志已被撤回，原因是 VFIO 子系统中的行为被开发者称为 a crazy beast。该特性初衷是应对 syzbot 等 fuzzing 工具/AI bot 的“重大攻击”：通过 sysfs bind/unbind 接口把任意驱动随机绑定到任意设备，产生大量无意义 bug 报告和无用补丁——一旦使用 bind/unbind 即给内核打上污染标志，让维护者一眼识别报告来源。Greg KH 当时表示这是“AI 驱动世界里减少骚扰”的手段，但 VFIO 的合法使用场景与其发生了冲突，最终整个 revert。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是 AI 时代内核治理的典型拉锯案例：想给 fuzzing 噪音贴标签，却误伤了 VFIO 直通等正当用法（对 RDMA/设备直通场景是核心依赖）；revert 的理由与权衡过程对理解内核社区如何平衡自动化与可用性很有参考价值。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-PerfOpt-Merged-Linux-7.4" target="_blank">AMD PerfOpt 进入 Linux 7.4：iGPU 直通 IOMMU，本地大模型性能提升 18%~23%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">如预期所料，AMD PerfOpt 特性被 Linux 7.4 收入。其原理是允许集成 GPU 直接访问系统内存时绕过 IOMMU 的地址转换——IOMMU 仅执行权限位检查，不再做 GPA 到 SPA 的完整地址翻译，从而显著降低 iGPU 访存开销。Phoronix 实测显示，在 Strix Halo APU 上本地大模型推理性能最高可提升 18%~23%，对图形/AI 负载均有收益；该特性由驱动默认启用，也可通过模块参数强制禁用，且前几代 AMD iGPU 同样受益。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>不换硬件白拿性能：对锐龙 AI / APU 平台的本地推理是实打实的免费提速；IOMMU 直通思路与设备直通（VFIO/DMAR）路径密切相关，做 NPU/GPU 内存路径优化时值得对照研究。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-Zen-6-Linux-7.4-Shape" target="_blank">AMD Zen 6 在 Linux 7.4 状态良好：HSMP/PMC/PMF 底层通道全部就位</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">赶在合并窗口关闭前，Linux 7.4 的 x86 平台驱动更新完成合并，Zen 6 客户端平台的支持提前就位：主机系统管理端口 HSMP 驱动已扩展支持 Zen 6，平台管理控制器 PMC 加入 Zen 6 系统支持，锐龙笔记本/桌面平台管理框架 PMF 新增 AMDI0112 设备 ID 亦指向 Zen 6。此前 P-State/EPP 补丁也已针对 Zen 6 的三种核心类型（性能核、密度/能效核、低功耗核）分别调优。笔记本生态同步跟进：宏碁、微星、惠普 OMEN/Victus、华硕 Armoury、AYANEO 2S、OneXPlayer 3 等获得硬件监控/风扇/充电阈值支持；Intel 加固版 Panther Lake（Starfire）设备 ID 也一并进入。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>三条底层通道同周期铺好，说明 Zen 6 发布时 Linux 支持不会再拖后腿，Linux 7.4 大概率是其“甜点内核”；低功耗核（Zen 6 LP）进入 x86 客户端平台对调度器与功耗策略是新课题，值得关注后续调优进展。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Kwi-KDE-Terminal" target="_blank">KDE 打造新终端模拟器 Kwi：基于 Ghostty 库，宣称 3x~35x 性能</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">KDE 正在开发全新的终端模拟器 Kwi，作为 Konsole 的现代替代——没有继续重构 Konsole 这个背负数十年历史包袱的组件，而是基于 Ghostty 终端库（GPU 加速渲染 + 现代 I/O 核心）另起炉灶，外层套 KDE 原生界面与设置集成。开发者给出的性能数据为 3x~35x，跨度之大反映的是不同负载（大量输出、快速滚动等）下的差异，且来自开发者自测、未经独立验证；目前为早期开发预览版，功能尚不能与 Konsole 对等。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>libghostty 正被越来越多项目嵌入（IDE、编辑器、agentic 终端），KDE 入场进一步验证“可复用终端核心”路线；“并行替代而非原地重构”的决策模式对任何老牌桌面组件的现代化都有借鉴意义。数字先看方向、等独立复测。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/KDE-Plasma-6.9-More-Performance" target="_blank">KDE Plasma 6.9 落地多项性能优化：KWin Zoom 降开销、配置文件防膨胀</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Plasma 6.9 开发本周升温，一批性能优化合入：KWin Zoom 效果使用的图像升采样滤镜性能开销大幅降低（kwin MR #9992）；Plasma 现在会自动清理配置文件中已失效的桌面文件/文件夹位置条目，避免配置文件长期膨胀导致桌面整体变慢（修复存在多年的 #469445）；KRunner 书签搜索适配将配置存于 ~/.config 的新版 Firefox（非 Flatpak 打包）。同时 Plasma 6.8.2 修复了一个显著拖累游戏性能的回归（Xaver Hugl），KDE Frameworks 6.32 则让本地网络共享上的文件复制大幅提速，并修复了移动/复制到外接盘时进度指示不准的 15 年老 bug。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>配置文件膨胀是长期被忽视的桌面性能暗坑，自动清理属于治本；外接盘进度指示修复后，拷贝完成时间终于可信，日常使用体感改善明显。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/CUDA-Oxide-0.3" target="_blank">NVIDIA CUDA Oxide 0.3 发布：Rust 编写 CUDA 内核支持大幅改进</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">NVIDIA 软件工程师在 10 月底发布 CUDA Oxide 0.3，这是其面向 Rust 的实验性 CUDA 编译路径的最新版本，近期迭代非常活跃。CUDA Oxide 走传统 SIMT 路线：通过自定义 rustc 后端，经 Rust MIR/Pliron/LLVM 直接生成 PTX，主机与设备代码可写在同一文件，无需再走“nvcc 编译 C 内核 + cudarc 运行时加载”的迂回；配合 DisjointSlice 互斥切片与启动契约（launch_contract）把越界与数据竞争类错误前移到编译期。NVIDIA 同时还有更高层的 cutile-rs（CUDA Tile IR）路线。0.3 版本大幅改进了 Rust 支持完整度，但项目仍处实验阶段。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Rust 已进入驱动（Nova）与内核，如今连 GPU 内核编译链也在 Rust 化；对写 CUDA 生态工具、做 NPU/GPU 编程模型设计的人来说，这套“所有权系统 + 编译期安全契约”的设计值得跟踪。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Wine-11.21-Released" target="_blank">Wine 11.21 发布：WoW64 模式 OpenGL 性能提升，Wine 12.0 临近</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Wine 11.21 作为双周开发版发布，重点改进 WoW64 模式（32 位 Windows 应用跑在 64 位系统库上）下的 OpenGL 性能：借助 MESA_map_buffer_client_pointer 扩展，Wine 可向驱动直接提供 32 位地址范围做缓冲映射，替代此前 CPU 侧中转拷贝的笨拙方式，老 32 位 OpenGL 游戏/应用可明显受益——该扩展由 CodeWeavers 今年牵头推动，Zink 驱动已支持、RadeonSI 已有 MR。此外版本引入 Voice Capture DSP 库初版（语音识别/录音类应用兼容基础）、改进 Windows 用户账户支持，并修复 20 个 bug（《上古卷轴5》《生化奇兵2 重制版》等）。Wine 12.0 稳定版流程约一个月后启动，预计明年初发布。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>WoW64 是 Wine 12.0 的关键拼图（新 WoW64 模式将成默认），OpenGL 32 位路径的补齐对老游戏兼容层意义直接；MESA_map_buffer_client_pointer 的推广进度（RadeonSI 未合、其他驱动未动）值得留意。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Vulkan-1.4.367" target="_blank">Vulkan 1.4.367 发布：新增 VK_KHR_maintenance12</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 gpu</span>
+      </div>
+      <div class="news-body">Vulkan 1.4.367 作为最新规格修订发布，带来 VK_KHR_maintenance12 扩展。maintenance 系列扩展是 Vulkan 定期把散落的易用性/正确性改进打包成独立 KHR 扩展的机制，便于驱动与应用渐进式跟进，属于图形 API 持续演进的例行但必要的更新。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>对驱动开发者与引擎团队是例行跟进项；关注 Khronos 在 maintenance 系列里持续吸收的日常痛点修复，往往预示下一批默认行为调整。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">10</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/PostgreSQL-19-Late" target="_blank">PostgreSQL 19 因 AI/LLM 负担进度落后：年度大版本延期</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">PostgreSQL 通常每年 9~10 月发布年度特性版本，但今年的 PostgreSQL 19 将推迟到至少 11 月甚至更晚：开发者被 AI/LLM 带来的额外负担淹没——bug 报告与补丁提交量因 AI 参与而激增，审核压力远超以往，社区公开表示进度已落后于计划。这与内核社区遭遇的 AI 噪音问题（TAINT_FORCED_BIND、EDAC 老驱动退役）同源，是大型开源项目在 AI 时代维护成本上升的又一实证。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>数据库方向对用户是重点领域：PostgreSQL 的 AI 负担困境与内核案例互为印证——当提交成本趋零，审核成为瓶颈；对团队代码评审流程与 AI 辅助开发治理都有直接借鉴意义。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-02.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-10-30.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-02</p>
+    <p>覆盖范围：2026-10-30 ~ 11-01（EDT，周末合并期）· Linux 7.4-rc1 发布（史上最大合并窗口 ~20k commits、AMDGPU 默认启用 HDMI 2.1 FRL）· TAINT_FORCED_BIND 因 VFIO 被 revert · AMD PerfOpt 进入 7.4（Strix Halo 本地大模型 +18~23%）· AMD Zen 6 底层驱动三线就位 · KDE 新终端 Kwi（Ghostty 库，3x~35x）· Plasma 6.9 性能优化 · CUDA Oxide 0.3 改进 Rust CUDA · Wine 11.21 WoW64 OpenGL 提速 · Vulkan 1.4.367 · PostgreSQL 19 因 AI/LLM 负担延期</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
