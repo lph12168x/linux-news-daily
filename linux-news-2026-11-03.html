@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-03.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-02.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/RADV-Adopts-LLM-Policy" target="_blank">AMD RADV Vulkan 驱动采纳专属 LLM 政策：不禁止但明确劝阻，评审员可酌情关闭 AI 生成的 MR</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">继 Mesa 项目层面设有 AI/LLM 贡献政策之后，RADV 驱动现在有了自己的专属政策——由 Valve Linux 图形团队核心开发者、RADV 主要贡献者 Samuel Pitoiset 主动推动，已合入 Mesa Git（MR !45668）。政策要点：<br>· LLM 辅助的 MR 要求对代码库有充分理解，且评审它们有真实成本，评审员/维护者可自行酌情关闭此类 MR；<br>· 明确劝阻 LLM 撰写的 issue（往往冗长难读），要求用自己语言描述问题；<br>· LLM 生成的 bug 复现程序则被允许——前提是提交者本人审查过、且确实能复现该 bug。<br>Pitoiset 的动机：近来外部贡献者的 LLM MR 开始增多，「最好在被淹没之前把规矩立起来」。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>RADV 是 AMD GPU 在 Linux 上最主流的 Vulkan 驱动（Steam Deck/SteamOS 也依赖它），这份政策与 Linux 内核「AI/LLM Assisted-by 标签放松」、PostgreSQL 19 因 AI 负担延期等事件同属一条主线：上游项目正从被动承受 AI 补丁洪流转向主动立规。对自研驱动与内部代码评审流程均有直接参考价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/KDE-Linux-October-2026" target="_blank">KDE Linux 临近 Beta 里程碑（完成度约 85%），默认启用 NTSYNC 内核模块改善 Wine/Proton 游戏</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 Desktop</span>
+      </div>
+      <div class="news-body">KDE 开发者 Nate Graham 发布 10 月月报，披露 KDE 官方参考发行版 KDE Linux 的最新状态。开发已逾一年，截至 11 月初完成度约 85%，正在逼近 Beta 里程碑。10 月主要变化：<br>· 安装器新增基础幻灯片（与其他发行版安装器一致）；<br>· 内核默认启用 NTSYNC 模块——开箱即改善 Wine/Proton 下 Linux 游戏的体验与性能（NTSYNC 以更接近 Windows 的同步原语取代旧 wineserver 同步路径）；<br>· wayland-protocols 加入基础镜像，扩展对依赖它的 KDE 项目的支持。<br>剩余待办：swap 支持、Discover 内更新体验改进、KDE 基础设施变更、更好的双启动处理、Flatpak 崩溃的完善处理等。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>NTSYNC 默认启用是重要的桌面/游戏信号：它需要内核 6.14+ 的 ntsync 驱动配合，KDE Linux 将其作为默认配置，意味着「Windows 同步原语直通」路线已成为 Linux 游戏栈的既定方向，Wine/Proton 的性能与兼容性基线将被整体抬高。KDE Linux 作为 KDE 官方参考发行版，其 Beta 时点也值得跟踪。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/FreeRDP-3.33" target="_blank">FreeRDP 3.33 发布：WebAssembly 支持就绪可在浏览器中运行，AI 带来的 PR 洪流催生紧急补丁版计划</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 Remote</span>
+      </div>
+      <div class="news-body">开源 RDP（微软远程桌面协议）实现 FreeRDP 发布 3.33 版。多年打磨的 Emscripten/WebAssembly 支持就此就绪——编译为 WASM 后可直接在浏览器中运行 RDP 客户端。其他改进：<br>· SDL 客户端改进；<br>· 直连 RDP 新增实验性 UDP 支持；<br>· Unicode 键盘输入管道获得全部客户端支持；<br>· 实验性 Windows shadow server 支持；<br>· macOS 文件剪贴板不再依赖 FUSE；<br>· 消息翻译初始支持。<br>项目方同时表示：AI/LLM 带来的 PR 与 bug/回归反馈「洪流巨大」，将很快发布补丁版清理积压的 papercuts 与 bug；本版已含 13 个已知安全修复。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>远程桌面是显示方向的重要分支：WASM 化意味着 RDP 客户端可以零安装嵌入 Web 页面，对云端工作站、VDI 场景（含 GPU 加速远程渲染）有实际价值。同时它是又一个被 AI 活动「冲到需要紧急补丁版」的项目，与 RADV 立规、内核噪音治理互为印证。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-03.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-02.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-03</p>
+    <p>覆盖范围：2026-11-02（EDT）· RADV 采纳专属 LLM 政策（不禁止但劝阻，评审员可关闭 AI 生成的 MR）· KDE Linux 临近 Beta（完成度 ~85%，默认启用 NTSYNC 改善 Wine/Proton 游戏）· FreeRDP 3.33（WebAssembly 支持就绪可在浏览器运行、13 个安全修复、AI PR 洪流催生补丁版计划）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
