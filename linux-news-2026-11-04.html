@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-04.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-03.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/linux-74-features" target="_blank">Linux 7.4 特性总览：史上最大合并窗口，Steam Frame VR 头显初步支持、AMD Zen 6 就绪与 Apple M4 / A18 Pro 初始 bring-up</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linux 7.4 合并窗口为内核历史上最大，有望成为今年 LTS。图形/显示侧重点：<br>· AMDGPU 默认启用 HDMI 2.1——HDMI VRR/FreeSync 与 ALLM 已就绪，Radeon 用户高刷/高分 HDMI 显示器终于无需手动开启；<br>· AMD PerfOpt 默认启用，为 Radeon iGPU 的 AI/LLM 负载提供更好性能；<br>· Steam Frame VR 头显获得初始支持（基础 Device Tree）；<br>· Intel Xe 驱动新增 CPU binds 与迁移队列上的 ULLS，并加入 vRAM 健康检查与显存降级处理；<br>· Qualcomm MSM DRM 支持 Adreno A830/A845/A850/X2-85；NVIDIA Nova Rust 驱动继续推进。<br>CPU/平台侧：Zen 6 客户端支持就绪（含 BTB CTX 隔离降低安全缓解开销）、Apple M4/A18 Pro 初始支持（尚未可用）、Google Tensor G5 主线支持、内存侧 memblock 早期分配器从约 265 秒加速到约 50 毫秒。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>7.4 大概率是年度 LTS，本期特性将影响未来一两年的部署基线。对图形/显示/计算方向而言，AMDGPU HDMI 2.1 默认化与 Xe 驱动的 CPU binds/ULLS 是最直接的用户可感改进；Steam Frame VR 初始支持则标志 Valve 自家 VR 硬件正式进入主线内核轨道。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Fedora-45-Released" target="_blank">Fedora 45 正式发布：KMSCON 取代内核控制台、DRM Panic 前端上线，GNOME 51 + Linux 7.2</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">发行版 distro</span>
+      </div>
+      <div class="news-body">两度延期后 Fedora 45 正式发布。与显示栈直接相关的变化：<br>· 引入 KMSCON 取代内核自带控制台；<br>· 启用 DRM Panic 前端——内核出错时呈现更友好的画面（类似 Windows 蓝屏的 DRM 级图形化 panic 界面）；<br>· Anaconda 安装器支持 Stratis 存储；<br>· 默认限制 ptrace、默认强制签名校验、要求软件包构建可复现。<br>软件栈：GNOME 51、Python 3.15、GCC 16.2、LLVM 23、Glibc 2.44、RPM 6.1；出厂内核为 Linux 7.2，7.3 更新即将推送。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Fedora 是上游新特性落地最快的头部发行版，其选择往往预示技术风向：DRM Panic 与 KMSCON 表明「内核图形栈接管启动/故障显示」路线进一步巩固，ptrace 限制与可复现构建则是桌面安全与供应链方向的标志性默认值。对评估图形栈新特性落地节奏很有参考价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/RadeonSI-RADV-GFX8-D16" target="_blank">RadeonSI 与 RADV 为 GFX8 时代 GPU 启用 D16 支持：RX 470/480/570/580 老卡再获 DX12 性能优化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Valve Linux 图形团队工程师 Georg Lehmann 向 Mesa 提交 17 个补丁，为 AMD GFX8 架构显卡启用 D16 数据格式支持，已合入 Mesa 27.0 开发分支，同时惠及 RadeonSI（OpenGL）与 RADV（Vulkan）。要点：<br>· D16 是 16 位数据修饰符，可在加载/存储指令中用打包的 16 位数值替代 32 位，核心价值是降低显存带宽压力、提升寄存器利用效率；<br>· 此前开源驱动仅对 GFX9 及更新架构启用 D16，GFX8（GCN 火山岛到 Polaris 系列）一直无缘；<br>· 关键背景：GFX8 硬件已通过 VKD3D-Proton 获得全部 D3D12 内容的 FP16 支持，D16 补齐后老卡在 Linux 下运行 DX12 游戏可更高效处理 16 位深度与色彩数据。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>AMDVLK 官方 Vulkan 驱动早已停止支持 GFX8，开源社区却在持续为七年老硬件挖掘性能——这正是 Mesa 开源驱动相对闭源栈的长期价值所在。对关注驱动优化的团队亦有方法参考：利用硬件已有的打包修饰符做带宽优化，是低成本高收益的典型手段。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-Compute-26.40.40196.8" target="_blank">Intel Compute Runtime 26.40 发布：GPU D Series（Crescent Island）默认启用共享 USM，Nova Lake P 默认走 OpenCL LEO</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Intel Compute Runtime 26.40.40196.8 发布（Windows/Linux 双平台开源 GPU 计算栈）：<br>· Crescent Island AI 加速器（现名 Intel GPU D Series）支持继续就绪——共享系统统一内存 USM 默认启用，GPU kernel 可通过 C/C++ 指针直接访问普通 CPU 系统内存；Defer backing 亦默认启用；<br>· Standby 模式能力在搭配 Xe 内核驱动时对 Battlemage 与 Crescent Island 启用；<br>· 性能优化：改进多队列使用、增大可用的本地内存环形缓冲区容量；<br>· OpenCL LEO（Level Zero Executing OpenCL，即在 Level Zero API 之上重新实现 OpenCL）对 Nova Lake P 默认启用，不再维护专用 OpenCL 硬件驱动实现；<br>· 另有前端复制能力、实验性 event flags 扩展及 Level Zero 编译优化重构。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>USM 共享内存默认化显著降低 GPU 计算程序的开发门槛（无需显式管理 host/device 拷贝），而 OpenCL LEO 路线意味着 Intel 计算栈正在收敛到 Level Zero 单一硬件抽象层——维护面收窄、迭代加快。对 NPU/加速器方向的驱动与运行时设计均有借鉴意义。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Domicile-Desktop-Wayland" target="_blank">Domicile Desktop：用 Chromium 把 Wayland 原生窗口变成 DOM 元素，Web 开发者可用 HTML/CSS/JS 定制整个桌面</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 Wayland</span>
+      </div>
+      <div class="news-body">新项目 Domicile 是一个基于 Chromium 的 Wayland 合成器，让开发者用 HTML、CSS、JavaScript/TypeScript 构建 Linux 桌面：修改版 Chromium 引擎将原生 Wayland 窗口表示为 DOM 元素，开发者可像排版普通网页一样对窗口进行样式化、变换、动画与组织。合成器侧采用 Sway 风格、Rust 编写的 Maganese 平铺代码。项目官网 Domicile-Desktop.com，且确认是与 AI（Claude Code）协作开发。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Web 技术进桌面并非新话题（Electron 应用泛滥已久），但「合成器本身就是 Chromium、窗口即 DOM」是更激进的路线：窗口管理获得了 CSS 动画/变换的全部表达能力，定制门槛从 C/Rust 降到前端技能栈。观点必然两极分化（性能/内存开销 vs 定制亲和性），作为 Wayland 生态的实验性方向值得观察。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/GIMP-3.2.8-Released" target="_blank">GIMP 3.2.8 发布：多项 GUI 细节改进，因 AI 扫描工具带来的海量安全报告而修复一批安全问题</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 Desktop</span>
+      </div>
+      <div class="news-body">GIMP 3.2.8 稳定版发布：<br>· 取色显示 GUI 改进，编辑时可看到更细微的颜色变化；<br>· 更新 HEIF 加载代码，可加载更大的 HEIF 图像；<br>· 新增 GUI 自动化测试套件，用于开发期回归检查；<br>· 字体加载代码可提前取消，改善程序关闭速度；<br>· 主题文件补充更多定义，各平台外观一致；<br>· 改进 AppImage 兼容性。<br>安全方面：因「软件扫描与测试工具的最新进展」带来大量安全报告，本版包含多项安全修复。GIMP 团队说明：最常见的报告是旧图像插件与遗留滤镜过度信任图像文件提供的尺寸信息，恶意篡改可致插件（而非 GIMP 本体）崩溃，不涉及个人数据泄露。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>GIMP 是 Linux 桌面图形处理的旗手，本版值得关注的有两点：一是自动化 GUI 测试套件的引入（成熟桌面应用补测试基建的典型动作）；二是与 RADV 立规、内核 EDAC 退役、FreeRDP 补丁版同一条主线——AI 驱动的自动化扫描正在给上游项目制造真实的安全报告与维护压力，各项目应对策略开始分化。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-04.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-03.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-04</p>
+    <p>覆盖范围：2026-11-03（EDT）· Linux 7.4 特性总览（史上最大合并窗口，AMDGPU 默认 HDMI 2.1、Steam Frame VR 初支持）· Fedora 45 发布（KMSCON、DRM Panic、GNOME 51）· RadeonSI/RADV 为 GFX8 启用 D16（RX 470/480/570/580 获 DX12 性能优化）· Intel Compute Runtime 26.40（GPU D Series 默认共享 USM、Nova Lake P 默认 OpenCL LEO）· Domicile Desktop（Chromium 把 Wayland 窗口变 DOM 元素）· GIMP 3.2.8（因 AI 扫描报告修复一批安全问题）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
