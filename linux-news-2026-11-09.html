@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-09.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-04.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-rc2-Released" target="_blank">Linux 7.4-rc2 发布：FAT32 大幅优化（同步挂载最高 162 倍）、AMDGPU HDMI 2.2 FRL 修复、AMD PerfOpt 调整</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Linus Torvalds 发布 Linux 7.4 第二个每周候选版本，配合「史上最大 -rc1」的体量，rc2 同样偏大。本周合入的重点修复：<br>· FAT32 大优化——尤其针对同步挂载场景，官方实测最高带来 162 倍提升；<br>· AMDGPU HDMI 2.2 FRL 修复与 AMD PerfOpt（Radeon iGPU 性能特性）调整；<br>· 修复部分内核配置下 BHI 漏洞缓解选择错误的问题；<br>· 核心 MM 代码一批「长期遗留的棘手 bug」修复。<br>Linus 在公告中再次提到大量修复由 AI 生成，但指出 BPF 侧 Alexei 称修复速度已首次超过新报告速度——「潮水可能正在转向」。7.4 稳定版目标 12 月底左右发布，仍有望成为年度 LTS。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>7.4 大概率是年度 LTS，rc2 阶段的修复清单直接决定最终质量基线。对图形/显示方向而言，HDMI 2.2 FRL 与 PerfOpt 的 rc 阶段打磨值得跟进；「AI 补丁修复速度超过报告速度」这一信号对评估 AI 辅助内核开发的现状也很有参考价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMDGPU-HDMI-2.2-FRL-Fixes" target="_blank">AMDGPU 为 Linux 7.4 送上 HDMI 2.2 FRL 修复：补齐 16/20/24 Gbps 每通道速率解码，此前 HDMI 2.2 显示器会被误判为不支持 FRL</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Linux 7.4 已默认启用 AMDGPU 的 HDMI 2.1 FRL（Fixed Rate Link），配合 FreeSync/VRR 与 ALLM 支持高分高刷 HDMI 显示器。本周 AMD 工程师 Fangzhi Zuo 发出一批 HDMI 2.2 FRL 修复，随 DRM fixes 请求进入 7.4-rc2：<br>· HDMI 2.2 规范定义了三条新 FRL 速率——每通道 16/20/24 Gbps（4 通道，HF-SCDB 中 Max_FRL_Rate 值 7/8/9）；<br>· 此前代码止步于 HDMI 2.1 的每通道 12 Gbps 上限，宣称 HDMI 2.2 速率的显示器会被当成「完全不支持 FRL」，链路训练结果远低于显示器实际能力；<br>· 补丁 1 让 DRM EDID 解析器识别三条新速率，补丁 2 将其映射回 amdgpu_dm 中 DC 使用的 FRL rate index，并扩展 KUnit 测试覆盖。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>HDMI 2.2 FRL 每通道 24 Gbps 意味着 4 通道合计 96 Gbps 的链路能力，是未来 8K/高刷显示的基础。这次修复暴露的正是「新规范设备在旧解析逻辑下被静默降级」的典型兼容性坑——EDID 解析层的速率表维护对显示驱动团队是直接可借鉴的案例。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Vulkan-1.4.368" target="_blank">Vulkan 1.4.368 发布：Valve 与 NVIDIA 各贡献一个新扩展</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Vulkan 1.4.368 为本周例行 spec 更新（距上一版仅一周，修复 6 个内部问题），新增两个扩展：<br>· VK_EXT_vertex_address_binding_unrestricted——由 Valve Linux 图形团队的 Mike Blumenkrantz 起草：针对「draw 命令只读取更新后偏移」的顶点属性更新优化场景，允许把顶点数据拆到独立 buffer 并经 vkCmdBindVertexBuffers3KHR 绑定，只要求实际读取的有效偏移非负，从而减少内存占用；使用该扩展即关闭此场景下的地址校验；<br>· VK_NV_internal_handle——NVIDIA 厂商扩展，允许应用与游戏引擎获取特定 Vulkan 对象的不透明内部驱动句柄，并传给接受这些句柄的外部 API，服务 NVIDIA 专属用例。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Blumenkrantz 持续为 Zink/VALORANT 反作弊等场景铺路的低层优化扩展值得 Mesa/RADV 侧关注；VK_NV_internal_handle 则是驱动厂商把内部状态「半开放」给生态的信号，做跨 API 互操作（如 Vulkan 与 CUDA/OptiX 混合管线）时会用到。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Asahi-Linux-7.3-Report" target="_blank">Asahi Linux 发布 7.3 进度报告：M3 下游支持转 GA、M3 GPU 驱动渲出第一个三角形、Thunderbolt 支持进入内核评审</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">随 Linux 7.3 上游发布，Asahi Linux 项目发布新进度报告：<br>· M3 支持在下游 Asahi 代码中进入 GA（正式可用）状态，但暂无 GPU 加速——逆向工程的 M3 GPU 驱动已渲染出第一个三角形，距离可用仍有长路；<br>· Apple Silicon 的 Thunderbolt 支持已送上内核邮件列表评审；<br>· Apple M4 Pro/Max 与 M5 的初始 Device Tree 出现在邮件列表；<br>· 上游化持续推进，近期集中在音频等子系统；<br>· 游戏方面：M1/M2 搭配 EX 与 Wine 已能跑起不少游戏，且在推进脱离 muvm 运行（应对内核页长差异）的进展，但较新游戏性能仍被形容为「参差不齐」（patchy）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Apple GPU 逆向驱动从「黑屏」到「渲出三角形」是里程碑式的阶段信号，其分层推进方式（下游 GA + 上游逐子系统合入）对自研 GPU 驱动的 bring-up 路径有直接参考价值；Thunderbolt 与 M5 设备树进入主线流程也意味着 Apple Silicon Linux 生态在加速正规化。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.5-RK3568-AMD-AIE4" target="_blank">Linux 7.5 预备内容：AMD Ryzen AI NPU AIE4 支持大幅扩充（电源管理/命令提交/频率查询），RK3568 显示支持进主线</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 NPU</span>
+      </div>
+      <div class="news-body">Linux 7.4 合并窗口刚结束，本周第三批 drm-misc-next 特性拉取已瞄准 7.5：<br>· AMDXDNA 加速器驱动（Ryzen AI NPU）支持 6.0 新版固件，新增 NPU3 classic 设备支持，并为 AIE4 硬件补齐 get/set 电源模式、suspend/resume、时钟/DPM 频率与资源信息查询、AIE4 命令提交等关键能力——AIE4 是随 Zen 6 客户端平台明年上市的新一代 Ryzen AI NPU，目标让其在 7.5 时支持状况良好；<br>· Rockchip DRM 显示驱动新增 RK3568（四核 A55 + Mali-G52 + 小型 NPU/VPU，常见于工控/NAS/单板机）支持；<br>· 主线新增十多块显示面板支持（Tianma、AUO、三星 AMOLED 等）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>AIE4 的驱动完备度直接决定 Zen 6 平台 AI 负载在 Linux 上的开箱体验，电源模式 + 命令提交 + 频率查询这组能力正是 NPU 驱动从「能跑」到「可调度」的关键一步，对 NPU 方向的驱动设计是现成的对照样本。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-Zen-6-TEE-RISC-V-Based" target="_blank">AMD Zen 6 处理器出现基于 RISC-V 的 TEE：安全处理器从 Arm Cortex-A5 + TrustZone 转向 RISC-V</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">linux-firmware.git 的一条新提交披露：AMD Ryzen Zen 6 客户端处理器（Family 1Ah M80h）的 PMF 可信应用固件 v4 运行在「基于 RISC-V 的 TEE」上，使用更大的共享内存布局，支持扩展的策略条件（最多 20 个自定义 BIOS 输入）。此前 AMD 安全处理器/平台安全处理器（PSP）长期基于 Arm Cortex-A5 内核 + Arm TrustZone 技术，改用 RISC-V TEE 是一次重要的架构转向（也可能是此前未被广泛报道的既有变化）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>x86 平台的安全底座内核从 Arm 换成 RISC-V 是生态层面的风向标事件——RISC-V 在嵌入式/安全协处理领域的渗透又下一城。对关注可信执行环境、固件供应链的研究与产品团队，Zen 6 的 TEE 架构值得纳入跟踪清单。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/FEX-2611-Released" target="_blank">FEX 2611 发布：等待 Linux 内核对齐 TPIDRRO_EL0 寄存器语义，补齐 Wine 下 RDPID/RDTSCP 模拟</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">FEX 2611 发布（在 AArch64 Linux 上运行 x86/x86_64 的 Linux/Wine 游戏与应用），除大量 JIT 改进外，重点是等待内核对齐 ARM 系统寄存器语义：<br>· 按 ARM 规范，TPIDRRO_EL0（EL0 只读软件线程 ID 寄存器）应存放当前 CPU 核心索引——Windows on ARM 与 macOS 均如此实现，用户态可零开销得知自己跑在哪个核上；<br>· 但 Linux 15 年来一直把该寄存器硬编码为 0 并保留（因部分 ARM 厂商曾搞坏该寄存器），FEX 只能退而使用 getcpu 系统调用；<br>· 后果：Wine 环境下无法安全模拟 RDPID/RDTSCP 指令只能禁用，而新游戏开始强制要求这些指令；Igalia 8 月已发送把 TPIDRRO_EL0 设为核心索引的补丁，但 ARM 维护者 Will Deacon 担心占死后无法他用；<br>· FEX 已准备好在补丁合入主线后立即启用该寄存器，将同时带来正确性与性能收益。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>一个寄存器的 ABI 语义之争，牵动 ARM Linux 上整个 x86 模拟生态（FEX/Box64/Wine）的兼容性与性能——这是典型的「内核 ABI 决策影响用户态生态」案例，对做系统软件边界设计（尤其异构计算里 CPU 核心拓扑感知）的团队很有借鉴意义。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/OpenCV-5.1-Released" target="_blank">OpenCV 5.1 发布：更多 AVX-512/AVX-VNNI 优化、FP8 支持扩展、新增 RISC-V RVV 向量内核与 OpenGL 3D 可视化器</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">OpenCV 5.0 六月携重写的 DNN 引擎发布后，5.1 带来大量修复与增量改进：<br>· 新增 AVX-512 优化与其他 SIMD 优化，AVX-VNNI 亦有改进；<br>· FP8 支持在多个领域扩展；<br>· 经典 DNN 引擎移除，只保留 5.0 引入的新引擎；<br>· NVIDIA CUDA 与 cuDNN 在 DNN 模块及其他区域继续改进；<br>· 新增一批 RISC-V RVV 向量内核；<br>· 新增基于 OpenGL 的 3D 可视化器，支持网格、点云、RGB-D 帧与相机轨迹；<br>· Java/JavaScript/Python 绑定改进及数百项 bug 修复。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>OpenCV 是计算机视觉领域事实标准库：AVX-512/VNNI 与 FP8 扩展直接关系 x86 服务器上的推理预处理性能，RVV 内核增长则延续 RISC-V 在视觉/边缘计算的落地势头；「砍掉经典 DNN 引擎只留新引擎」也是大版本后收敛维护面的值得注意的工程决策。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">9</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Servo-0.7-Changes" target="_blank">Servo 0.7 发布：Web 兼容性继续扩大（Candy Crush 已可玩）、WebGL2 一致性改进、SpiderMonkey 153.3</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Servo 开源浏览器引擎发布状态报告（9 月改进，对应 v0.7）：<br>· Web 兼容性扩展：从 egui.rs 到 Candy Crush（糖果传奇）现在可以游玩；<br>· 新增 progress HTML 元素、CSS typed arithmetic、font-width 属性、alpha() 函数与 CSS modules 支持；<br>· 升级 SpiderMonkey 153.3 与 Mozangle 0.7（含安全修复）；<br>· WebGL 2 实现一致性改进；<br>· HTML video 元素的隐藏字幕（closed captioning）推进；<br>· 嵌入 API 改进；性能侧降低内存占用、Linux 上线程亲和性提升（thread affinity boosting）等优化。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Servo 是欧洲 NLnet/IGalia 支撑下的独立浏览器引擎叙事，其 Web 兼容性边界（游戏能跑、WebGL2 一致性）是衡量「第二引擎生态」可行性的关键指标；thread affinity 等 Linux 平台优化与嵌入 API 方向也值得嵌入式/显示端评估。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-09.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-04.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-09</p>
+    <p>覆盖范围：2026-11-04 ~ 11-08（EDT，跨周补齐周四至周日）· Linux 7.4-rc2 发布（FAT32 最高 162 倍优化、AMDGPU HDMI 2.2 修复、PerfOpt 调整）· AMDGPU HDMI 2.2 FRL 修复（16/20/24 Gbps 每通道速率解码）· Vulkan 1.4.368（Valve 顶点地址绑定扩展 + NVIDIA internal handle）· Asahi Linux 7.3 报告（M3 GA、M3 GPU 渲出首个三角形、Thunderbolt 入评审）· Linux 7.5 预备：AMD AIE4 NPU 支持大幅扩充 · AMD Zen 6 出现基于 RISC-V 的 TEE · FEX 2611（TPIDRRO_EL0 寄存器语义之争）· OpenCV 5.1（AVX-512/FP8/RVV）· Servo 0.7（Web 兼容性与 WebGL2）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
