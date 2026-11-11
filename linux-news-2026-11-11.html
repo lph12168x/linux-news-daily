@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-11.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-10.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Blender-5.3-Released" target="_blank">Blender 5.3 发布：DLSS 4.5 Ray Reconstruction 降噪、Vulkan 后端转默认</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">开源 3D 建模软件 Blender 5.3 正式发布。新版本引入 <b>3D Gaussian Splats</b> 支持，可从照片或视频重建 3D 场景，并支持从 PLY、SPZ、glTF 文件导入 Gaussian Splats；渲染方面新增 <b>NVIDIA DLSS 4.5 Ray Reconstruction</b> 作为全新降噪器，并加入对 NVIDIA RTX Spark 设备的支持。Cycles 渲染器的 Principled BSDF 着色器节点现已支持色散（dispersion）。最值得关注的是：Vulkan 后端在 <b>Linux 与 Windows（Windows on ARM 除外）上转为默认</b>，要求 Vulkan 1.1 及以上，官方表示其性能应优于 OpenGL 后端。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Vulkan 默认化是 Blender 图形栈从 OpenGL 迁移的里程碑，对 Mesa 驱动（RADV/ANV/NVK）的真实负载覆盖会显著增加，Linux 图形栈质量将直接受益。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Eight-More-XOrg-Server-Issues" target="_blank">X.Org Server / XWayland 再公开 8 个安全漏洞，AI/LLM 协助发现</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">在 AI/LLM 工具协助下，安全研究者再公开 <b>8 个 X.Org Server 漏洞</b>（同样影响 XWayland 代码），包括 EDID DS_RANGES 越界写（CVE-2026-109091）、XvShmPutImage 共享内存边界溢出（CVE-2026-109092）、XTestFakeInput Valuator 栈越界写（CVE-2026-109093）、XRes 请求大小溢出（CVE-2026-109904/109094）、glamor Xv 图像大小整数溢出（CVE-2026-109095）、XvPutImage 负数长度绕过（CVE-2026-109096）、XvQueryImageAttributes 负数大小回复（CVE-2026-109903）等。修复版本为 <b>xorg-server-21.1.26 与 xwayland-24.1.15</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>LLM 辅助审计正让 X.Org 这类老旧代码库的漏洞披露速度明显加快，显示栈上跑 XWayland 兼容层的发行版应尽快升级；这也是 Wayland 迁移紧迫性的又一个注脚。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/amd-epyc-9996" target="_blank">AMD EPYC 9006「Venice」SP7 正式上市：旗舰 9996 达 256 核 / 512 线程</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">AMD 宣布 EPYC 9006 系列 Socket SP7 处理器正式供货，OEM/ODM 系统今日开始出货，Phoronix 同步放出独立基准。旗舰 <b>EPYC 9996</b> 为 256 核 Zen 6C / 512 线程，基频 2.55GHz、加速 4.1GHz，1GB L3，默认 600W（可下调 400W），96 条 PCIe 6.0 通道，16 通道 DDR5-8000 RDIMM 或 MRDIMM-12800，1KU 定价 14,904 美元。双路平台合计 512 核 / 1024 线程。AMD 称对比 Intel Xeon 6980P「Granite Rapids」，HPC 负载领先 2.2 倍、NAMD 达 3.2 倍；对比上代 EPYC 9005「Turin」整数算力 2 倍、浮点 2.4 倍、内存带宽 2.7 倍。同日另有 <a href="https://www.phoronix.com/review/amd-epyc-9686f" target="_blank">EPYC 9686F（96 核 Zen 6、最高 5.3GHz）</a>高频型号评测。SP8 版本与 9006X/9006LP 将于 2027 年分批跟进。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Zen 6 服务器平台正式落地，GCC/LLVM 的 znver6 支持与内核补丁早已就绪；对数据中心 Linux 与 AI/HPC 负载而言，这是当前 x86 服务器性能的天花板。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/ACE-v2-AVX10.3-Posted" target="_blank">x86 生态咨询组发布 ACE v2 与 AVX10.3 规范，GCC 补丁同步就绪</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">AMD 与 Intel 主导的 x86 Ecosystem Advisory Group 公布 <b>ACE v2（AI Compute Extensions）与 AVX10.3</b> 架构规范。ACE v2 在 ACE 基础上引入更低精度的 API：新增 4-bit 格式并扩展 8-bit 能力，同时支持 FP16/FP32/FP64 模式；AVX10.3 面向通用向量化补充：FP8↔BF16 互转、BF16→FP8 转换，以及 FP16/BF16→INT4 转换指令。规范全文已在 x86ecosystem.org 公开。Intel 编译器工程师已同步提交 <a href="https://gcc.gnu.org/pipermail/gcc-patches/2026-November/738179.html" target="_blank">ACE v2</a> 与 <a href="https://gcc.gnu.org/pipermail/gcc-patches/2026-November/738174.html" target="_blank">AVX10.3</a> 两组 GCC 补丁供评审。带 ACE v2/AVX10.3 的 CPU 预计 2028~2029 年登场。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>FP8/INT4 低精度指令链是 AI 推理在 CPU 上落地的关键路径；规范与编译器支持先行、硬件两年后到位，开源工具链这种「先发」节奏值得跟踪。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-EPYC-Zen-7-Zen-8" target="_blank">AMD 确认 Zen 7 EPYC「Florence」将带 ACE，Zen 8「Ravenna」已在开发</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">在 EPYC 9006 SP7 上市说明会上，AMD 透露了后续服务器路线图：第七代 EPYC <b>「Florence」（Zen 7）确认搭载 AI Compute Extensions（ACE）</b>——即 AMD 与 Intel 在 x86 生态咨询组框架下的协作成果，还将采用下一代 MRDIMM 与 LPDDR 内存，预计 2028 年投产并使用新制程节点。第八代 EPYC <b>「Ravenna」（Zen 8）</b>已在开发中，预计 <b>2030 年</b>亮相；值得注意的细节是幻灯片只写了「Zen 8」而没有像此前 Zen 5/6/7 那样提及「Zen 8C」小核变体。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>ACE 进入服务器主路线图意味着 x86 AI 指令扩展将跨代延续；Zen 8 未提 8C 变体若属实，可能是 AMD 服务器核心策略转向的信号。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-MEXT" target="_blank">AMD 主推 MEXT 内存分层软件：用 NVMe SSD 顶替 DRAM，支持 Linux 但不开源</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">在当前内存供应紧张、价格飙升的背景下，AMD 在 EPYC Venice 发布会上大力宣传今年收购 MEXT 公司获得的 <b>AI 预测式内存分层技术</b>：让 NVMe SSD 闪存扮演类似 DRAM 的角色，作为 EPYC 服务器的额外内存层，由 AI 引擎负责数据在 DRAM 与闪存层之间的智能放置与 promote/demote。AMD 强调其 Linux 内核模块「可在任何 Linux 系统上运行」，并附带 RAM 可观测性工具。但与 AMD 一贯的开放生态不同，<b>MEXT 目前既不开源也不公开提供</b>，仅通过客户/销售渠道授权获取。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>内存涨价潮下，SSD 分层扩容是务实的降本路线，思路上与 Linux 内核已有的 memory tiering 方案接近；不开源的专有实现能否被社区接受，值得关注后续走向。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-11.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-10.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-11</p>
+    <p>覆盖范围：2026-11-10（EDT）· Blender 5.3 发布（DLSS 4.5 Ray Reconstruction 降噪、Vulkan 后端 Linux/Windows 转默认、Gaussian Splats）· X.Org Server / XWayland 再曝 8 个安全漏洞（AI/LLM 协助发现、21.1.26 / 24.1.15 修复）· AMD EPYC 9006「Venice」SP7 正式上市（旗舰 9996 达 256 核 Zen 6C）· ACE v2 / AVX10.3 规范发布（GCC 补丁同步就绪）· Zen 7 EPYC「Florence」确认带 ACE、Zen 8「Ravenna」开发中 · AMD MEXT 内存分层软件（NVMe 顶 DRAM、支持 Linux 但不开源）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
