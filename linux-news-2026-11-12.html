@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-12.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-11.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/More-Intel-D-Series-Linux-7.5" target="_blank">Intel 持续为 Linux 7.5 使能 GPU D-Series「Crescent Island」：HWMON 温度传感、RAS CPER、ECC</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Xe3P 架构 AI 加速器「Crescent Island」已定名为 Intel GPU D Series，面向 Linux 7.5（2027 年首个稳定内核系列）的驱动使能持续推进。最新 drm-xe-next 拉取请求为 Xe 硬件监控（HWMON）落地温度传感器处理：平台报告的 VRAM 热通道、PCIe 与内存控制器温度等；同时加入 RAS 错误的 CPER（Common Platform Error Record）日志支持、OOBMSM telemetry「OCode」late binding，以及内存 double-bit ECC 错误处理。<br>Intel 自去年 10 月发布 Crescent Island 后数周即开始推送驱动补丁，至今已持续一年多。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>D-Series 是 Intel 在 GPU 计算市场的关键落子，HWMON / RAS / ECC 这类数据中心级运维能力进内核，意味着该产品线已从「预发布使能」转向量产级质量；对关注自研加速器平台软件栈的团队有直接参考价值。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-GFX13-Initial-Mesa" target="_blank">AMD RDNA5/GFX13 初始代码进入 Mesa：RADV 与 RadeonSI 双驱动起步</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">继本周早些时候 AMDGPU 内核驱动的 GFX13 补丁之后，AMD 今日为 Mesa 开出合并请求，为 RADV（Vulkan）与 RadeonSI（OpenGL / Gallium3D）引入最初级的 GFX13 支持——业界普遍认为 GFX13 即下一代 RDNA5 GPU。<br>该 MR（!46171）包含初始 GFX13 支持以及 RadeonSI 和 RADV 的芯片 ID 与描述符变更；未来数周至数月还将有后续 MR 补齐更多硬件使能，包括 ACO 编译器后端改动与寄存器支持。新一代 AMD Radeon 显卡预计 2027 年晚些开始出货。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>从内核侧到 Mesa 用户态的全栈铺开节奏看，RDNA5 的 Linux 支持启动时点比上一代更早；对预判下一代 AMD GPU 开源驱动成熟曲线、研究早期使能基线（芯片 ID / 描述符布局）很有价值。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/amd-venice-nvidia-vera" target="_blank">EPYC 9006「Venice」vs NVIDIA Vera HPC 实测：9686F 2P 领先 1.13 倍、旗舰 9996 达 1.18 倍</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">继昨日 Venice SP7 上市评测之后，Phoronix 补上了与 NVIDIA Vera CPU 的 HPC 对比：Venice 在 Ubuntu 26.10 + Linux 7.3、双方同为 GCC 15 的环境下单独重测（Vera 数据复用上月基准）。<br>结论：以 HPC 为主的负载几何平均下，EPYC 9686F 2P 达 Vera 2P 的 1.13 倍——尽管其 176 核少于 Vera 双路的 192 核，单核性能同样胜出；256 核 Zen 6C 旗舰 EPYC 9996 达 1.18 倍。Coremark 上 Venice 对 Turin 大幅领先且能效最佳；7-Zip 压缩 Venice 领先，解压则是 9996 2P 最好、Vera 2P 次之。libxsmm 特化稠密/稀疏矩阵运算中，Vera 仅在小尺寸矩阵占优，矩阵规模增大后 Venice / Turin 反超。Venice 整机功耗高于 Vera，但典型负载下 perf-per-Watt 更优。换用 GCC 16（首个带 Znver6 目标的版本）或新发的 AOCC 6.0 还有进一步提升空间。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是 x86 服务器 CPU（EPYC Zen 6）与 NVIDIA 首款自研服务器 CPU（Vera / Olympus，Arm）的正面对决，HPC 场景 Zen 6C 明显占优；对服务器选型与竞品对标（性能 / 功耗口径统一、同编译器对照）是难得的同源数据。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-AOCC-6.0-Released" target="_blank">AMD AOCC 6.0 随 EPYC Venice 同步发布：首轮 Zen 6 调优、全新 aof Fortran 编译器、aoc / aoc++ 品牌</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">随 EPYC 9006「Venice」上市，AMD 发布自研 LLVM/Clang 系编译器栈 AOCC 6.0：首轮 Zen 6 调优（面向 EPYC 9006 系列，含 AOCL-LibM 6.0），可作为上游 LLVM/Clang 与 GCC 中 znver6 支持之外的替代。<br>两个看点：一是引入全新 Fortran 编译器 aof——AMD 称其为 AOCC Fortran 的未来方向，对最新 Fortran / OpenMP 标准的一致性更好，目前与上游 LLVM Clang 代码同级（旧 Flang 仍随 6.0 提供）；二是编译器二进制首次品牌化：C 编译器命名 aoc、C++ 为 aoc++（clang / clang++ 以符号链接兼容保留）。AOCC 6.0 基于 LLVM 21.1.8——未能采用最新 LLVM 22/23 系列略显遗憾。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>aof 与 aoc / aoc++ 品牌化说明 AMD 正把 AOCC 从「内部工具」往正式产品线经营；Zen 6 编译调优与处理器发布当日同步落地的节奏，对 HPC / 推理部署侧的编译器选型有参考意义。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-R300g-Better-Shaders-2026" target="_blank">24 年老卡仍在进化：ATI R300~R500 获 2026 年 Mesa 着色器编译器优化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">已 24 岁的 ATI Radeon R300 系 GPU 本周继续收到改进：一批着色器编译器优化合入 Mesa 27.0-devel，惠及 R300、R400 与 R500（Radeon X1000 系列）。<br>长期几乎单人维护 R300g 驱动的 Pavel Ondračka 本次提交「一批小与较大的编译器改进」：指令配对（pairing）、omod 与 presubtract 调整、dp2 优化等，其中不少灵感来自对老 Catalyst 驱动（Radeon GPU Shader Analyzer）dump 的逆向比对，最具代表性的是 CMP movs 合并技巧。实测 RV370 总指令数下降约 3%，cycles / temps / consts 各有百分之几的降低；R420 与 RV530 也有几个百分点的收益。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>一人长期维护 24 年前的硬件仍有实际性能收益，是开源驱动生命周期的经典样本；其「对照官方编译器输出做优化」的方法论，对自研 shader compiler 的调参与验证同样可借鉴。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-12.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-11.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-12</p>
+    <p>覆盖范围：2026-11-11（EDT）· Intel GPU D-Series「Crescent Island」Linux 7.5 持续使能（Xe HWMON 温度传感、RAS CPER、OOBMSM OCode、double-bit ECC）· AMD RDNA5/GFX13 初始代码进 Mesa RADV 与 RadeonSI · EPYC 9006「Venice」vs NVIDIA Vera HPC 实测（9686F 2P 1.13×、9996 2P 1.18×、perf-per-Watt 更优）· AMD AOCC 6.0 发布（首轮 Zen 6 调优、aof Fortran 编译器、aoc / aoc++ 品牌）· ATI R300~R500 获 Mesa 27.0 着色器编译器优化（RV370 指令数 -3%）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
