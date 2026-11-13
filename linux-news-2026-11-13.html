@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-13.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-12.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Codex-R600-UVD-FIx-Linux-7.5" target="_blank">OpenAI Codex 协助修复近 20 年老 Radeon R600 UVD 视频 bug，已随 PR 进 Linux 7.5</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">面向 Linux 7.5 合并窗口的 AMD 内核图形/计算驱动补丁批次中，藏着一个意外惊喜：修复 R6xx 时代（Radeon HD 2000/3000，近 20 年前）GPU 的统一视频解码（UVD）IP 块 bug。新贡献者 Ted Bullock 排查自己 iMac7,1（RV610/M74，设备 ID 1002:94c8）的视频花屏问题：解码器从系统内存读取压缩视频且 GPU 同时绘制时，视频帧会被破坏；把输入移到 VRAM 后解码正常，禁用 GPU 绘制也不再出错。补丁让这批设备的 UVD 缓冲驻留 VRAM（驱动对部分芯片本已如此），覆盖 RV610、RV620、RV630、RV635、RV670——它们共享 RV6xx 解码路径与 legacy R600 固件。他在 Debian 上完成测试，并明确说明用 Codex 协助调查、测试与写补丁。补丁已被接受，随今日 Alexander Deucher 的 AMD 拉取请求进 Linux 7.5。<br>同批还包含：JPEG type4 packet 支持、UALink 与 RAS 更新、HDMI 2.x / DSC / VRR / HDR 修复、amdkfd 支持非连续与 CPU-less NUMA 拓扑、drm 层新增从 SCGD 解析 HDMI 2.2 FRL 速率的 EDID 支持等。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>AI 编码代理下沉到内核图形驱动的 bug 定位与修复，是「老硬件由社区 + AI 维护」的新样本；对团队用 AI 辅助排查驱动级疑难 bug（时序、内存放置类问题）是可参考的实操案例。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.5-Intel-Xe-vGPU-Profile" target="_blank">Intel Xe 驱动为 Linux 7.5 准备 SR-IOV vGPU profiles 供应（provisioning）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">本周 drm-xe-next 拉取请求包含「Prepare SR-IOV provisioning for vGPU profiles」全部 5/5 补丁：把 PF provisioning-mode 变更与批量优先级供应拆成要求持有 master mutex 的静态 helper，并让 provisioning 模式变更、VF 自动供应与 VF 撤销都在该 mutex 下运行——为即将到来的 vGPU profiles 支持铺路（把单颗物理 Intel GPU 切成多个 vGPU 分给不同 VM），同时消除「模式检查与实际（取消）供应之间模式被并发修改」的竞态窗口。<br>从时点看，动机与即将到来的 Intel GPU D Series（Crescent Island）对齐——此前已有 D270 vGPU profiles 多 vGPU 的展示。同批还有 CCS iGPU 平台的 suspend 优化、force-probe 加载时不再请求提交 bug report 等改动。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>SR-IOV / vGPU 是 GPU 虚拟化与算力切分的关键路径，D-Series 数据中心卡上市前先把 provisioning 基础设施做扎实；做 GPU 虚拟化、云原生算力池化的团队值得直接跟进这批补丁的后续演进。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Khronos-Remote-Offloading-API" target="_blank">Khronos 成立远程卸载 API 探索论坛：为眼镜 / VR / 无人机等受限设备制定标准化高层卸载</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Khronos 宣布成立 Remote Offloading APIs Exploratory Forum（11-12），参与方包括 Ericsson AB、Collabora、Holo-Light 与坦佩雷理工大学，由 Ericsson 与 Collabora 两位联合主席牵头。动机：当下的算力卸载方案把应用锁死在各自的连接层上——开发者为专有框架反复重写应用，还要同时应付多种实时网络协议。拟议中的标准化高层 API 将对应用隐藏连接与传输复杂性，且独立于具体协议、硬件与部署模型，目标场景是智能眼镜、VR 头显、无人机等资源受限设备调用云端与边缘算力。<br>第一阶段仅收集需求与用例；若反响足够强且 SOW（工作说明）达成，Khronos 会组建工作组制定免版税标准。参与免费开放（非会员亦可加入），讨论受项目 NDA 保护、无 IP 许可义务。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>「计算卸载走网络」正是远程 GPU/NPU 卸载与高速互联（RDMA 类传输）的标准化延伸；若该方向未来成型为正式标准，将直接影响受限设备远程调用算力的传输层与 API 选型，值得持续跟踪。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/NVIDIA-Jensen-Huang-Resigns" target="_blank">NVIDIA 联合创始人 Jensen Huang 即刻辞任 CEO，CFO Colette Kress 出任临时 CEO</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">NVIDIA 董事会宣布：自 1993 年创立公司以来一直执掌 NVIDIA 的联合创始人兼 CEO Jensen Huang 辞职，即日生效。导火索是两段婚外情报道——其一对象被指涉嫌间谍活动，另一为其直接汇报的副总裁。CFO Colette Kress 将出任临时 CEO，Harvey C. Jones 被任命为公司首任董事会主席。更多细节见 NVIDIA 官方新闻稿（CEO transition）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>全球最大 AI 算力公司掌门人突变，属罕见行业地震；CUDA 生态、开源驱动策略与数据中心产品节奏的连续性有待观察，短期对 GPU/AI 产业链情绪与供应商决策都会有冲击。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/amd-epyc-zen6-smt" target="_blank">Zen 6 SMT 实测：EPYC 9996 2P 开 SMT 约 +29%、9686F 约 +34%，高核数下依然值得开</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Phoronix 对已上市的 EPYC 9006「Venice」做 SMT 开关对照测试：96 核高频 9686F 与 256 核 Zen 6C 旗舰 9996 均为双路（分别 192 / 512 物理核），SMT 默认开 vs 禁用，环境 Ubuntu 26.10 + Linux 7.3，近 36 项基准覆盖可扩展至 ~1024 线程的传统可扩展负载。<br>结论：EPYC 9996 2P 开 SMT 几何平均约 +29% 性能，EPYC 9686F 约 +34%；CPU 功耗仅小幅上升，perf-per-Watt 明显更优。Stockfish、Blender 5.2 等多线程负载收益显著。前提仍是软件自身没有扩展瓶颈——若无，Zen 6（C）上 SMT「依然非常值得」。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>256 核时代 SMT 的有效性第一次拿到大规模同源数据；对服务器采购默认值、吞吐型（HPC / 推理）负载的容量规划与功耗预算都是直接可用的对照口径。</div>
+    </div>
+
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Polo-Wayland-Compositor-MATE" target="_blank">Polo 1.0 发布：MATE 桌面的新 Wayland 合成器，复刻 Marco 体验并带回桌面立方体</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">偏爱 GNOME 2 血统 MATE 桌面又想进入原生 Wayland 世界的用户有了新选择：Polo 1.0（11-12 发布）。Polo 基于 Wayland 的 Weston 库构建，复用 Marco（GNOME 2 Metacity 的 fork）的窗口管理策略、设置与主题，行为尽量与 X11 下的 MATE 保持一致，并提供 XWayland 支持；还把 GNOME 2 经典效果带了回来——桌面立方体、wobbly windows 等。<br>项目由 MATE 用户 Kerem Söke 开发，目标是「现代化 MATE 的同时保留 X11 下的行为与手感」；1.0 已在 GitHub 发布，另有 Ubuntu Discourse 介绍帖。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>继 Hyprland、COSMIC 等之后，传统桌面 Wayland 化再添一例；「Weston 库复用 + 窗口管理策略原样移植」的实现路径，对维护自有显示栈 / 合成器的团队是低成本的参考方案。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-13.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-12.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-13</p>
+    <p>覆盖范围：2026-11-12（EDT）· OpenAI Codex 协助修复近 20 年老 Radeon R600 UVD bug（进 Linux 7.5，同批含 HDMI 2.2 FRL EDID、amdkfd CPU-less NUMA 等）· Intel Xe 驱动为 Linux 7.5 准备 SR-IOV vGPU profiles provisioning · Khronos 成立远程卸载（Remote Offloading）API 探索论坛 · NVIDIA 联合创始人 Jensen Huang 即刻辞任 CEO（Colette Kress 临时接任）· Zen 6 SMT 实测（EPYC 9996 2P +29%、9686F +34%，perf-per-Watt 更优）· Polo 1.0 发布（MATE 桌面新 Wayland 合成器）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
