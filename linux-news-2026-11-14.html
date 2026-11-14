@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-14.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-13.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Wine-11.22-Released" target="_blank">Wine 11.22 发布：ARM64 上 x86 模拟新增 AVX 支持，Wine 12.0 临近</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Wine 11.22 双周开发版发布，距离 Wine 12.0 稳定版准备阶段越来越近。最大亮点是 Wine ARM64 的 x86 模拟路径新增 <b>AVX（Advanced Vector Extensions）支持</b>：现代 Windows 软件普遍假设 AVX 存在，现在可通过 ARM64EC 构建得到良好模拟，此前已有 NTDLL for AVX on ARM64EC 与 XState 处理等铺垫 MR。其他更新：locale 数据升级到 Unicode CLDR 49、新增地址空间随机化、Tahoma 字体 glyph metrics 改进、XML DTD 校验重写；共修复 34 个已知 bug（Guild Wars 2、Star Citizen、Logos Bible Software 等）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>对 ARM Linux 桌面（如 Snapdragon X 笔记本）而言，AVX 模拟是跑现代 Windows 游戏与应用的关键拼图；Wine/Proton 在 ARM64 上的能力边界直接决定 ARM 生态的游戏兼容性走向。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.5-GlandaGPU-Driver" target="_blank">Linux 7.5 将收编开源软 GPU「GlandaGPU」驱动（VHDL 设计 + FPGA/QEMU）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">本周 drm-misc-next pull request 最引人注目的是全新的 <b>GlandaGPU 驱动</b>将进入 DRM-Next、随 Linux 7.5 合并窗口收编主线。GlandaGPU 是几个月前 RFC 的开源软 GPU 核心设计：用 VHDL 编写、当前跑在 Cycle V 等 FPGA SoC 上，也可用 QEMU 模拟，无需 FPGA 硬件即可体验。定位是学习与开源演示——VGA 输出 640x480 + 2D 加速引擎，别指望游戏或生产力。同批还有 HyperV cursor plane 支持、Etnaviv 驱动支持 Allwinner T527 VIP9000 及若干面板更新。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>主线内核再添一个完全开源的 GPU 实现，对 GPU 微架构学习、DRM 子系统研究与开源硬件社区都有示范价值；也再次证明 drm-misc 对小众/实验性 GPU 实现的包容。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/NVIDIA-Upstream-vGPU-Nova" target="_blank">NVIDIA 晒 vGPU 上游化进展：Rust 驱动 Nova 承载数据中心 GPU 虚拟化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">KVM Forum 2026（温哥华）上，NVIDIA 工程师 Simon Song 介绍了把 <b>vGPU（单卡切分共享给多 VM/容器）支持带入上游 Rust 内核驱动 Nova</b> 的进展。过去一年持续推进、正在成形：Nova 的 vGPU 使能部分预计随 Linux 7.5 落地更多，内核侧全部对齐估计要到 Linux 7.6+；用户态配套 vgpu-tools 正在开发；更远期规划包括 vGPU 实时迁移、异构 vGPU 等高级特性。Nova 的定位是最终达到乃至超越现有 out-of-tree 闭源驱动与 largely reverse-engineered 的 Nouveau。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Nova 是 NVIDIA 官方未来的主线内核驱动方向，vGPU 上游化意味着云/数据中心 GPU 虚拟化不再依赖闭源 out-of-tree 驱动，是 NVIDIA 开源战略的实质性节点，对云 GPU 池化与虚拟化架构有直接影响。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-openSIL-Venice-Goal" target="_blank">AMD openSIL 随 EPYC 9006「Venice」达成量产目标，开源代码一季度内放出</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">AMD 向 Phoronix 确认 <b>openSIL（开源 CPU silicon init，替代传统 AGESA）已随第 6 代 EPYC「Venice」达成既定量产目标</b>。AMD 明确表示「没有任何 Venice 平台在无 openSIL 的情况下启动过」——即 Venice 全面走 openSIL 路径而非可选项；开源代码将在正式发布一个季度内（约 3 个月）放出。Zen 5 时代 openSIL 已有 Coreboot/Dasharo PoC（MSI Ryzen 主板、Gigabyte EPYC 服务器主板）；EPYC 9006 参考主板继续采用 OpenBMC；Coreboot 版 EPYC 9006 服务器将视客户兴趣推进。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>固件开源的里程碑——从 Zen 5 PoC 到 Zen 6 量产，意味着 Coreboot/Dasharo 社区可以真正覆盖服务器平台；固件供应链安全与可审计性直接受益，值得服务器固件/平台工程团队关注。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-GCC-Coral-Rapids-Razor" target="_blank">Intel 提前两年提交 Razor Lake / Coral Rapids GCC 支持（AVX10.2 + ML-DSA 蝶形指令）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Intel 提交了 <b>Coral Rapids（下一代 Xeon）与 Razor Lake（Nova Lake 继任者）的初始 GCC 使能补丁</b>，预计随 GCC 17.1（2027 年初）合并，两款 CPU 至少 2028 年才出货——延续 Intel「编译器先行」的一贯传统。Coral Rapids ISA 清单确认支持 AVX10.2（而非刚发布的 AVX10.3/ACEv2，设计定型过早）、APX_F、AMX-FP8/TF32/MOVRS 等，并新增 <b>AVX10_VPMLDSABFLYDQ</b>（Packed ML-DSA Butterfly，面向后量子签名 ML-DSA 的蝶形运算指令）；Razor Lake 与 Nova Lake 的 ISA 特性一致。同批还有含 AVX10_BMM 的 AVX10.3 更新补丁。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>编译器生态先行是 Intel 的长期优点，保证产品上市即有平滑的 GCC/发行版支持；VPMLDSABFLYDQ 把 FIPS 204 后量子签名做进硬件指令，对密码学负载是明确信号。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-HRX-Loom-Experiment" target="_blank">AMD HRX Loom + AI agent：3~4 天把 50 个热门 LLM 移植到客户端 GPU</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">AMD 团队（Jeremy Fowers、Ben Vanik）用刚发布的 <b>HRX Loom v0.1 配合 agentic AI 工作流</b>，把 50 个热门 Hugging Face 模型（横跨 18 种架构）移植到 AMD 客户端 GPU，仅花 3~4 天，硬件为 Ryzen AI Max「Strix Halo」。性能上，32K token prompt 处理较 llama.cpp 的 ROCm 后端提速 1.5~2.1 倍、较 Vulkan 后端约 1.9 倍。配套 <b>loom-skills</b> 可为 Claude Code、Codex、Pi 等 agent 装备为 AMD 客户端 GPU 编写与部署优化模型程序的能力；HRX Loom 同时支持 CPU/NPU 执行，目前仍是实验项目（结果见 Loom-Fun GitHub 页）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>「AI agent 负责模型移植」是新范式的直接样本——把新模型/小众模型快速带上自有硬件的能力差异将被大幅拉平；HRX 统一 GPU/CPU/NPU 的抽象层对 NPU 与异构计算方向都有参考价值。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-14.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-13.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-14</p>
+    <p>覆盖范围：2026-11-13（EDT）· Wine 11.22（ARM64 x86 模拟新增 AVX 支持，Wine 12.0 临近）· GlandaGPU 开源软 GPU 驱动进 Linux 7.5 · NVIDIA 晒 Rust 驱动 Nova 的 vGPU 上游化进展（KVM Forum 2026）· AMD openSIL 随 EPYC 9006「Venice」达成量产目标 · Intel 提前两年提交 Razor Lake / Coral Rapids GCC 支持（AVX10.2 + ML-DSA 蝶形指令）· AMD HRX Loom + AI agent 3~4 天移植 50 个 LLM 到客户端 GPU</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
