@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-15.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-14.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Apple-M5-For-Linux-7.5" target="_blank">Apple M5 基础支持预计随 Linux 7.5 落地（Device Tree 已入 apple-soc/dt-7.5）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">继 M3 支持（Linux 7.2）与 M4 支持（Linux 7.4）之后，<b>Apple M5 基础型号的极简支持已排队进入 apple-soc/dt-7.5 分支，预计随 Linux 7.5 合并</b>。本次是初始 Device Tree 支持，由 Yureka Lilian 撰写，作者自述只覆盖「最小量的硬件」，作为后续逐代扩展的基础——新增硬件与此前 Apple Silicon 各代基本一致；补丁已由 Sven Peter 排队收编。与 M3/M4 相同，目前仍非常有限，<b>新一代 M 系列的 GPU 支持依然是最大障碍</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Apple Silicon 主线化节奏稳定在一年一代；对关注 Asahi 生态与 ARM SoC 上游化的人来说，M5 使能进度是观察其 GPU（DRM）反向工程进展的风向标。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Plasma-6.9-XWayland-On-Demand" target="_blank">KDE Plasma 6.9 实现 XWayland 按需启动：不再常驻空跑</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">本周 This Week in Plasma 披露：<b>Plasma 6.9 已完成全部工作，XWayland 将只在真正需要时才加载启动</b>——此前即使没有任何应用使用 XWayland，它也会常驻运行，现在终于可以按需拉起，向「默认无 X11 组件」再进一步。其他更新：System Settings 更多页面迁移到 QML；KWin 的「wobbly windows」果动效果用一组趣味预设（water / pudding / molasses / Nitroglycerin + 自定义）取代了原先的摆动滑杆；Spectacle 截图工具启动速度显著优化。同批还有 Plasma 6.8.3 维护版：修复屏保锁崩溃与特定 Intel CPU + NVIDIA GPU 系统的画面损坏。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>XWayland 按需化是 Wayland 过渡的标志性收尾工作——纯 Wayland 路径已能覆盖 Plasma 全场景；显示子系统/桌面运维团队值得留意 Plasma 6.8.3 的 Intel+NVIDIA 画面损坏修复。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-Coral-Rapids-Razor-Lake" target="_blank">Intel 开始 Coral Rapids 与 Razor Lake 的 Linux 内核使能（首批补丁仅 CPU ID）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">继本周四（11-13）的 GCC 初始补丁之后，<b>Intel 工程师 Tony Luck 又提交了 Coral Rapids 与 Razor Lake 的第一批 Linux 内核使能补丁</b>：目前只是最基础的 CPU family / model ID 识别——Coral Rapids（下一代 Xeon 服务器平台）为 Family 19 Model 8；Razor Lake（Nova Lake 继任者）为 Family 18，S/L/U 三个变体各有独立 model ID（10/7/9）。外部分析普遍预计 Razor Lake 面向 2028 年上市、桌面款可能沿用 Nova Lake-S 的 LGA 1954 插槽。两平台目前均无规格与发布时间表，后续补丁会逐步补充 PMU、电源管理、RAS 等。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>编译器 + 内核同步提前 1~2 年使能，是 Intel 平台「上市即有平滑支持」的保障；对服务器/数据中心采购规划而言，Coral Rapids 进入上游是路线图信号。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/QEMU-VM-Memory-Tiering" target="_blank">Red Hat 为 QEMU 虚拟机改进内存分层：用 NVMe SSD 替代高价 DRAM</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">KVM Forum 2026（温哥华）上，Red Hat 虚拟化工程师 Peter Xu 介绍了 <b>QEMU 虚拟机内存分层（memory tiering）的改进方案</b>：在当前内存价格居高不下的背景下，让更便宜的 NVMe SSD 在更多场景替代 DRAM，同时保持良好性能。正在评估三条路线：① 新的 maccess(0) 系统调用；② QEMU 全用户态分层（由 QEMU 自己持有慢速层）；③ 利用现有内核 API 做热度迁移——<b>这是当前领跑方案</b>：无需内核改动、QEMU 侧改动小，且可通过一个针对 MADV_PAGEOUT 行为限制的新内核补丁进一步优化。演讲页面与 KVM Forum 视频已公开。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>内存分层是今年多篇文章的共同主题（此前 AMD MEXT、Dynamic PAMT 均入主线）；虚拟化平台把热数据迁移决策做进 QEMU，对内存成本敏感的大规模 VM 部署是直接利好。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Redox-OS-Golang-GIMP" target="_blank">Redox OS 十月进展：Golang 跑通、GIMP 移植成功、AI 政策简化为「拒收 LLM 贡献」</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Rust 编写的 Redox OS 发布十月开发月报：<b>Go 语言工具链首次在该平台跑通</b>——交叉编译与自举编译均可工作，Golang 已适配 Relibc；历经数月移植，<b>GIMP 图像编辑器也成功运行</b>，Servo 浏览器引擎移植同步更新到 Servo 0.7。系统层面：初始 NUMA 支持确认工作正常、修复 RISC-V 动态链接、实现了用户等价路径下的初始无 root 软件包安装。另外社区把 AI 政策简化为一句话：<b>「Redox OS 不接受 LLM（大模型）生成贡献」</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Golang 自举 + GIMP 可用说明 Redox 的用户态生态成熟度又上台阶，NUMA 初始支持对服务器方向是积极信号；其明确拒收 AI 生成代码的政策在开源社区争论中颇具代表性。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-15.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-14.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-15</p>
+    <p>覆盖范围：2026-11-14（EDT）· Apple M5 基础支持预计随 Linux 7.5 落地（Device Tree 已入 apple-soc/dt-7.5）· KDE Plasma 6.9 实现 XWayland 按需启动 · Intel 开始 Coral Rapids 与 Razor Lake 的 Linux 内核使能 · Red Hat 为 QEMU 虚拟机改进内存分层（KVM Forum 2026）· Redox OS：Golang 跑通、GIMP 移植成功、拒收 LLM 贡献</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
