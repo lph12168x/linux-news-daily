@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-16.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-15.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-rc3-Released" target="_blank">Linux 7.4-rc3 发布：Linus 称「各处照例都是噪音」</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body"><b>Linux 7.4 的第三个每周候选版本（rc3）发布</b>。Linus Torvalds 在公告中写道：「又是常规的一周、又一个体量不小的 -rc」——驱动（网络与 GPU）继续领跑修复量，但绝大多数补丁本身都很小；文件系统因为几个较大的补丁在 diffstat 里显眼，其中一个是 <b>iomap 的调用约定变更</b>（改动虽大但相当简单），另有一批 SMB 客户端修复；此外还有自测（selftests）与文档更新。按计划，<b>Linux 7.4 正式版预计 12 月底前后发布</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>7.4 是当前合并窗口之后的主线节奏点，年底正式版将承载近期大量 GPU/驱动工作（如 NVIDIA Nova、Intel/NVIDIA 新使能）；跟踪 rc 期回归情况对内核升级规划有直接参考价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-Hybrid-Capacity-Aware-Sched" target="_blank">AMD 发布混合架构 CPU 的 Capacity Aware Scheduling 补丁：大小核终于不再被「一视同仁」</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">AMD 工程师 posted 一组 Linux 内核补丁，为 AMD 异构/混合处理器启用<b>容量感知调度（Capacity Aware Scheduling）</b>。现状是：amd-pstate 频率驱动目前不导出每核 capacity 指标，调度器把所有核心视为同等算力，性能核与能效核被随意混用，<b>在混合系统上同时损害吞吐与能效</b>；随着传闻中面向部分 Zen 6 Ryzen 的低功耗核心类型加入，问题会更突出。新补丁让 amd-pstate 发布非对称的 per-CPU capacity 并在支持的硬件上默认启用，可用新启动参数 <b>amd_case=disable</b> 关闭。若评审顺利，有望赶上 Linux 7.5 周期。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Intel 侧的 ITMT/capacity 感知早已就位，AMD 大小核调度补齐是 Ryzen AI/混合平台 Linux 体验的关键一环；对终端调度性能与能效调优都是值得基准测试的变化。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-Root-Guest-ARG-Linux" target="_blank">AMD ARG「AMD Root Guest」：EPYC 9006 机密计算新特性，Linux 补丁预计 2027 Q1</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">KVM Forum 2026（温哥华）上，AMD 的 David Kaplan 与 Tom Lendacky 介绍了 <b>AMD Root Guest（ARG）</b>——EPYC 9006「Venice」服务器 CPU 的新特性，此前几乎没有公开讨论，AMD 同期也发布了技术白皮书。ARG 目标是<b>改善 SEV-SNP 受保护虚拟机的实时迁移（live migration）体验，且不需要改动 guest 镜像或 guest 操作系统</b>；其形态是一个<b>带提升特权、有信任根基（root of trust）的签名 SEV-SNP VM，每系统仅允许一个活跃 ARG</b>。Linux 使能仍在原型阶段，AMD 预计<b>首批补丁 2027 年 Q1 前后发布</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>机密计算（SEV-SNP）是云上敏感负载的主流方案，而 live migration 一直是其运维痛点；ARG 从硬件层解决该问题，对部署 AMD 机密计算的大规模云环境是重要路线图信息。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/ASUS-Ascent-QN10-Linux" target="_blank">华硕 Ascent QN10 迷你主机（骁龙 X2 Elite）开始获得 Linux 支持：0.7L 带动 4×4K</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">继多款骁龙 X2 笔记本之后，<b>高通工程师提交了华硕 Ascent QN10 迷你主机的 Linux bring-up 补丁</b>：基于骁龙 X2 Elite（Glymur）平台，18 核 Oryon CPU + Adreno X2-90 GPU + Hexagon NPU，最高 32GB LPDDR5x-9600 内存、双 M.2 NVMe、Wi-Fi 7、2.5GbE，<b>体积不到 0.7 升，可驱动最多 4 台 4K 显示器</b>（HDMI 经 eDP + PS195 转换器输出），起售价 1699 美元。补丁让该机可正常启动 Linux 并点亮全部关键功能，目标赶上 Linux 7.5 合并周期。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>ARM 桌面/迷你主机生态继续扩张；对显示与 GPU 方向而言，Adreno X2 的 DRM/显示通路 bring-up 细节（含 eDP 转 HDMI 方案）值得参考，也是 X2 平台上游化进度的又一标志。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/IBM-VMs-ARM64-On-s390" target="_blank">IBM s390 硬件加速跑 ARM64 虚拟机：「双架构」方案在 KVM Forum 详解</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">继 IBM 与 Arm 合作「双架构」硬件的消息之后，IBM 工程师 Steffen Eiden 在 KVM Forum 2026 上详解了 <b>在 s390 大型机上以硬件加速方式运行 ARM64 guest 虚拟机</b>的方案：除 s390 硬件侧外，还需要 KVM 虚拟化支持，相关补丁已推进数月，<b>初始代码已随 Linux 7.4 合并</b>。技术实现远非平凡；团队还展望未来扩展到更多架构、进一步增强 guest ARM64 能力。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>大型机 + ARM64 跨架构虚拟化是今年最出人意料的基础设施动向之一；对做虚拟化/异构算力调度的人来说，这是「硬件加速跨 ISA guest」的全新参考实现。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-16.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-15.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-16</p>
+    <p>覆盖范围：2026-11-15（EDT）· Linux 7.4-rc3 发布，正式版预计 12 月底 · AMD 混合架构 Capacity Aware Scheduling 内核补丁发布 · AMD ARG 机密计算新特性（SEV-SNP 实时迁移，补丁预计 2027 Q1）· 华硕 Ascent QN10 迷你主机（骁龙 X2 Elite，4×4K）Linux 支持补丁 · IBM s390 硬件加速跑 ARM64 虚拟机（KVM Forum 2026）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
