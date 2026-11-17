@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-17.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-16.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-GPU-270-Open-Performance" target="_blank">Intel GPU D270（Xe3P「Crescent Island」）晒性能：金融基准达 RTX PRO 6000 Blackwell 的 1.92~5.9 倍</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">超算 2026（SC26）周期间，Intel 发文介绍 <b>Intel GPU D Series「Crescent Island」</b>的硬件规格、相对性能与开源软件策略。旗舰型号 <b>GPU D270 基于 Xe3P 架构</b>：32 个 Xe 核心、256 个 XMX 引擎、原生 FP4~FP64 支持且 DP 为全速率，板载 <b>160GB LPDDR5X、可扩展至 480GB</b>，350W PCIe 5.0、风冷。性能方面，Intel 给出了对比 <b>NVIDIA RTX PRO 6000 Blackwell</b> 的金融服务基准：吞吐为其 <b>1.92~5.9 倍</b>（限定范围的有限基准集）。开源侧延续一贯路线：Xe 内核驱动的 Crescent Island bring-up 与面向 OpenCL/Level Zero 的 Compute Runtime 栈均已持续数月推进。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>D270 主打 HPC/AI 推理的高内存容量路线（160GB→480GB），与 NVIDIA 形成差异化竞争；对 Linux 图形/计算方向而言，Xe3P 驱动上游化进度与跨厂商性能对标数据都值得跟踪。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/mrdimm-8800-12800-amd-epyc" target="_blank">MRDIMM 8800 vs 12800 MT/s 实测：EPYC「Venice」整体只差约 2%，但 HPCG 差 26%</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Phoronix 补测 <b>EPYC 9686F 2P 在 MRDIMM-8800 速率</b>下的表现（上周 EPYC 9006 SP7 发布评测用的是 MRDIMM-12800，目前 12800 条在零售渠道还买不到，8800 一代 64GB 单条就要 3~4 千美元）。结论：几十项基准里<b>整体平均只差约 2%</b>；差距最大的负载是 <b>HPCG 26%</b>、libxsmm 11~25%（随矩阵大小）、BRL-CAD 20%、OpenFOAM CFD 5~17%、WRF 11%。即便降到 8800 MT/s，EPYC 9686F 仍领先 EPYC 9005 Turin（DDR5-6400）与 Intel Xeon 6980P（MRDIMM-8800）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>内存涨价周期里「12800 买不到、值不值」是服务器选型的现实问题：整数/多数负载几乎无感，但访存敏感型 HPC/科学计算负载差异显著——按负载类型选内存档位比看均值更有意义。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/LLVM-R600-Backend-To-Retire" target="_blank">LLVM 启动退役 AMD R600/TeraScale 后端：Radeon HD 2000~6000 的编译时代落幕</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">AMD 上海编译团队的 Harrison Hao 向 LLVM 社区发出 <b>RFC：弃用并移除 R600（TeraScale）后端</b>——即曾经服务 <b>Radeon HD 2000 到 HD 6000 系列</b> GPU 的代码生成后端。移除理由：Mesa 的 R600g 驱动早已转用 NIR 路线、不再走 LLVM 后端；Clover OpenCL 也已从主线 Mesa 移除（由 Rust 编写的 Rusticl 取代），<b>该后端已无已知用户</b>，却让现代 AMDGPU 后端每次改动都要顾及遗留分支、lit 测试也需持续维护。RFC 只涉及 TeraScale 时代硬件，<b>GCN 及之后走 AMDGPU 后端的显卡不受影响</b>；目前社区尚未出现反对声音。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>TeraScale 后端退役是 Linux 图形栈「去包袱」的标志性一步：R600g 驱动本身仍留在 Mesa（NIR 路线），只是编译链简化；对维护 GPU 编译后端的人来说是 AMDGPU 后端减负的好消息。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Rust-Nightly-Parallel-Frontend" target="_blank">Rust Nightly 默认启用并行前端：编译提速测试数月后推进 stable</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Rust 编译器的<b>后端早已多线程</b>，但前端一直默认单线程执行。现在 Rust 项目开始在 <b>Nightly 频道默认启用并行前端</b>，先在 nightly 上收集数月测试结果，再逐步把该默认值推进到 stable。并行化能力其实早已存在（原计划 2024 年稳定化），只是默认关闭；官方给出的基准显示启用后按 2/4/8 线程都能取得可观的构建提速。前端线程数可通过 <b>--jobs-frontend=</b> 选项控制，团队还会继续优化前端并行化性能。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Rust 已是 Linux 内核与大量基础软件的构建依赖，前端并行化对 CI/本地构建时长是普适性收益；对做构建性能优化（含内核 Rust 子系统）的团队值得尽早评估。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Librem-5-v2-Announced" target="_blank">Purism 公布 Librem 5 v2：转投 RISC-V（SpacemiT K1 八核），2028 年中才交付</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">历经多轮跳票的 Librem 5 项目重启：<b>Librem 5 v2 弃用 NXP i.MX ARM SoC，改用八核 RISC-V 的 SpacemiT K1</b>。配置较一代升级：内存 3GB→<b>8GB</b>，存储 128GB + SD 卡槽，双 SIM，5.7 吋 720×1440 屏幕，保留硬件 kill switch、可更换 4500mAh 电池、13MP 后置/8MP 前置摄像头。不过 K1 基于 <b>RVA22 profile</b>（而非已成 Linux 世界新基线的 RVA23）。目标<b>2028 年中规模化交付</b>；众筹需在 2 月 15 日前达到 2500 台预订，预订价 1599 美元。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>主流 Linux 手机厂商直接转 RISC-V 是终端生态的又一个信号；对关注 RISC-V 软件栈（mainline 内核支持、RVA22 vs RVA23 分歧）的人来说值得观察，但 2028 年时间线与 K1 性能都注定小众。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-17.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-16.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-17</p>
+    <p>覆盖范围：2026-11-16（EDT）· Intel GPU D270（Xe3P「Crescent Island」）SC26 晒性能与开源软件进展 · MRDIMM 8800 vs 12800 MT/s：EPYC Venice 实测整体仅差约 2%（HPCG 差 26%）· LLVM 启动退役 AMD R600/TeraScale 后端 RFC · Rust Nightly 默认启用并行前端 · Purism Librem 5 v2 转投 RISC-V（SpacemiT K1，2028 年中交付）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
