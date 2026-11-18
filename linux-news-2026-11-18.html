@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-18.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-17.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMDGPU-Sparse-Gaming-Valve" target="_blank">Valve 新 AMDGPU 补丁直指 Steam Play 游戏卡顿：引入 VM update context 与 AMDGPU_GEM_VA2 ioctl</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Valve Linux 图形驱动团队的 <b>Natalie Vock</b> 发出新版 AMDGPU 内核补丁系列，目标是显著减少一部分 Windows 游戏经 <b>Steam Play（Proton）</b>在 Linux 上运行时出现的卡顿。问题根源：现代游戏大量使用<b>稀疏绑定（PRT / sparse binding）</b>，并依赖 gfx/compute 队列的帧工作与 SDMA 上的稀疏绑定工作重叠；现有实现把 PRT 映射与每次提交同步，密集稀疏绑定会让 gfx/compute 提交长时间停顿，产生肉眼可见的 stutter/hitch；同时每次稀疏绑定更新都要单独一次 ioctl，CPU 在用户态/内核态之间频繁切换。补丁引入 <b>VM update context</b> 结构在不同 VM 更新函数间携带状态（已释放的映射、待处理映射集合），先逐项校验、再<b>原子化一次性应用</b>；配合新的 <b>AMDGPU_GEM_VA2 ioctl</b> 批量更新映射，实现显式同步。补丁未给出具体帧时间数字，目标进入 <b>Linux 7.5</b> 尚待评审。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>性能瓶颈落在驱动 VM 更新路径而非 GPU 算力本身：稀疏纹理+显式同步是现代游戏引擎常态，这批补丁关系到 AMD 显卡在 Proton 下的实际体验，也可能成为其他驱动处理批量映射的参考设计。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-RDNA-4m-Firmware" target="_blank">AMD RDNA 4m（GFX117x）量产固件就绪：Zen 6 Medusa Point 核显图形栈拼图补齐</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">AMD 向 <b>linux-firmware</b> 合入新提交，更新 <b>GFX1170 / GFX1171 固件</b>，标志 RDNA 4m「<b>GFX117x</b>」核显的生产固件准备就绪。RDNA 4m 是介于 RDNA 3.5（GFX11.5）与 RDNA 4（GFX12）之间的新一代 iGPU 架构，ISA 上有别于 RDNA 3.5，并非简单更名；此前 HIPRT 3.2 已暗示 GFX117x 对应 <b>Zen 6 架构的 Ryzen AI 500 系列（Medusa Point）</b>，本次固件合并再次印证 <b>2027 年初</b>的上市节奏。此前 AMDGPU 内核驱动与 Mesa 的 RadeonSI / RADV 已加入 GFX117x 支持，8 月发布过初版固件；本次除兼容性链接外，还新增 <b>VPE 2.0、VCN 5.3、PSP 15.0 TA、GCC 1.7.1 RLC/PFP、SDMA 6.1.4</b> 等 IP 块固件（预训练部件固件名改用「_p」后缀）。配合 <b>Linux 7.4+ 与 Mesa 26.3+</b>，RDNA 4m 的图形栈已基本就位。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>内核驱动 → Mesa → 固件三层齐备意味着 Zen 6 APU 核显在 Linux 首日可用度大概率不重演「硬件先发、驱动后补」的老问题；VPE 2.0/VCN 5.3 的到位也关系到视频编解码与 AI 多媒体管线。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/NVIDIA-Linux-Prefer-CPU-Cores" target="_blank">NVIDIA 工程师提议用户态可控「首选 CPU 核」sysfs 接口：AI 推理 VM 可获更优核分配</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">NVIDIA 的 <b>Yury Norov</b> 发出 RFC 补丁系列，提出让 Linux 通过 <b>sysfs 暴露可写的首选 CPU 核（preferred cpumask）</b>接口，使用户态可以表达对特定核心的偏好。背景是 Linux 7.4 合入的 <b>steal governor</b> 已引入 preferred CPU mask，用于 VM 中 vCPU 争抢时减少需求；新接口将其扩展到用户态：<b>/sys/devices/system/cpu/cpu[0-9]*/preferred</b> 供逐核设置，<b>/sys/devices/system/cpu/preferred</b> 查看当前活跃的首选核列表。典型场景一是与 <b>Thermald</b> 联动，在核心过热时引导任务迁移或闲置；场景二是同一服务器上同时跑 AI <b>训练与推理 VM</b>，延迟敏感的推理 VM 可占用更多首选 vCPU，把最终决策交给更了解业务角色的用户态（内核 steal governor 适合同构协作型 VM，非对称负载需要更多信息）。补丁正在 LKML 评审。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>AI 训练/推理混部与 vCPU 超卖是计算集群的常见痛点：把「哪些核更优先」的控制权从内核启发式交给编排层/守护进程，是调度接口设计上的重要转向，值得关注评审结果及与 cpuset 的交互。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Xfce-4.22-Roadmap" target="_blank">Xfce 4.22 路线图更新：12 月 15 日 pre1 特性冻结，2027 年一季度正式发布</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Xfce 项目本周更新 Wiki 上的 <b>4.22 路线图</b>：<b>12 月 15 日发布 4.22pre1</b>，同时进入<b>特性冻结与字符串冻结</b>；一个月后的 <b>1 月 15 日发布 pre2 并代码冻结</b>；pre3 与最终冻结日期待定，按惯例正式版通常在数周内跟进，因此 <b>Xfce 4.22 稳定版大概率在 2027 年第一季度</b>落地（距 4.20 发布已近两年）。本期重点是持续推进的 <b>Wayland 支持</b>，以及面板/核心组件改进、更好的 <b>HiDPI 处理</b>等；Wayland 部分仍按单独的 roadmap 页面推进，尚未到完整替代 X11 的阶段。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Xfce 是 X11 时代的重要轻量桌面，其 Wayland 迁移进度与 HiDPI 改善直接影响老设备/低配机器的 Linux 显示体验；2027 Q1 的时间点也方便发行版规划下一个开发周期。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/REAPER-DAW-Wayland" target="_blank">REAPER 数字音频工作站获原生 Wayland 移植：WireGuard 作者 Jason Donenfeld 操刀</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">过去十年仅支持 X11 的 Linux 版 <b>REAPER</b> 数字音频工作站，现已提交<b>原生 Wayland 支持</b>的合并请求。移植由 <b>Jason Donenfeld</b>（WireGuard 作者）完成，主要工作围绕 REAPER 底层使用的 <b>WDL C++ 库</b>展开；新实现<b>保留加载 REAPER 既有 X11 插件的能力</b>，用户不必一次性替换插件生态。代码目前在 <b>github.com/justinfrankel/WDL 的 PR #40</b> 上等待合并，更多细节见 Cockos 官方论坛讨论帖。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>专业音频工具是 Wayland 迁移中公认的硬骨头（低延迟、插件 ABI、窗口管理特殊需求）：REAPER 采用「原生 Wayland + 兼容 X11 插件」的渐进路线，对同类应用有示范意义。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-18.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-17.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-18</p>
+    <p>覆盖范围：2026-11-17（EDT）· Valve AMDGPU 新补丁：VM update context + AMDGPU_GEM_VA2 降低 Proton 游戏卡顿 · AMD RDNA 4m（GFX117x）量产固件就绪，Zen 6 Medusa Point 图形栈补齐 · NVIDIA 工程师提议用户态首选 CPU 核 sysfs 接口（AI 推理 VM 受益） · Xfce 4.22 路线图：12/15 pre1 特性冻结、2027 Q1 发布 · REAPER DAW 获原生 Wayland 移植（保留 X11 插件）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
