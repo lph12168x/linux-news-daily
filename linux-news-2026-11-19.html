@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-19.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-18.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-ROCm-10.2" target="_blank">AMD ROCm 10.2 发布：新增 18 款 Ryzen 笔记本官方支持，RCCL/推理栈同步优化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">AMD 发布开源 GPU 计算栈 <b>ROCm 10.2</b>，这是延续六周节奏的特性版本。推理侧升级 <b>SGLang 与 vLLM</b> 支持，继续推进 Hyperloom、ROCm CLI 与 AMD Skills；性能方面带来 <b>RCCL 针对 PCIe 显卡的改进</b>等优化。最受关注的是本地 AI 覆盖面扩大：新增 <b>18 款采用 gfx1103（RDNA 3）架构的 Ryzen 处理器</b>进入官方支持列表（Ryzen 7 PRO 253/249/217、Ryzen 5 PRO 225/224/216、Ryzen 9 180、Ryzen 7 165/155、Ryzen 5 125 等），Windows 与 Linux 均<b>无需定制构建或特殊配置</b>，并由 <b>HIP、PyTorch、vLLM 的 gfx1103 验证支持</b>背书；同时新增 Radeon PRO W7900D。平台层面扩展 AMD Infinity Storage（AIS）与 hipFile 兼容性，官方支持 <b>RHEL 10.3 / 9.9 与 SLES 16.1</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>ROCm 正从「服务器 GPU 为主」向笔记本核显的本地 AI 推理延伸：老款 RDNA3 Ryzen 无需折腾即可跑 PyTorch/vLLM，加上 RCCL 的 PCIe 路径优化，对异构计算与端侧推理部署都有实际价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Wine-OpenGL-Cross-Proc-Render" target="_blank">Wine 合入远程 OpenGL swapchain 呈现：CEF 应用终于能在原生 Wayland 驱动下正常渲染</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">即将发布的 <b>Wine 11.23</b> 已合入一项对 Wayland 支持意义重大的改动：在 <b>WIN32U</b> 中实现<b>远程 OpenGL swapchain 图像呈现</b>，为使用显示模拟（display emulation）的场景提供 <b>OpenGL 跨进程渲染</b>。该能力在 X11 与 Wayland 下均可工作，但对 Wayland 的提升更明显——此前依赖 <b>Chromium Embedded Framework（CEF）</b>的应用在 Wine 原生 Wayland 驱动 + <b>WineD3D</b> 组合下无法正确渲染，现在可以正常出图。工作由 Wine 开发者 <b>Rémi Bernon</b>主导，经过两周评审后于周二进入 Wine Git（MR !12506），Phoronix 附有 CEF on Wayland 的实际截图。考虑到 <b>Wine 12.0 稳定版将在 2027 年初发布</b>（12 月起进入 RC）、Valve 的 Proton 12.0 也将随之而来，这一步让 Wine 的 Wayland 支持进一步逼近 X11 对等。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>CEF 被大量桌面应用与游戏启动器/内嵌界面使用，是 Wayland 迁移中长期存在的兼容性硬伤；跨进程 swapchain 呈现打通后，原生 Wayland 下运行 Windows 应用的可用范围明显扩大。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Multi-Kernel-mklinux-7.0-mk5" target="_blank">Multikernel Linux 登陆 ARM64：mklinux 7.0-mk5 发布，同机多内核实例进入新架构</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">允许在一台物理机上同时运行<b>多个独立内核实例</b>的树外补丁项目 Multikernel Linux 发布新版本 <b>mklinux 7.0-mk5</b>，基于上游 Linux 7.0。最关键的进展是补丁首次扩展到 <b>64 位 ARM（AArch64）</b>——此前仅支持 x86_64。多内核架构的用途包括<b>故障隔离/容错内核</b>、在特定 CPU 核上运行 <b>RT 实时内核</b>，以及其他非传统计算场景；近期还配合 <b>Kmorph</b> 演示过<b>无需重启的 Linux 内核崩溃恢复</b>。本次更新同时改进了设备丢失处理与 <b>DMA 隔离（DMA confinement）</b>、VT-d 集成、链式接管（chained takeovers）等机制。项目以树外补丁形式维护，公告已发往 LKML。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>同机多内核为实时性与可靠性提供了不同于容器/虚拟机的思路，ARM64 支持意味着这条路线可以覆盖边缘与嵌入式加速器平台；DMA 隔离与接管机制的完善是走向生产可用的关键一环。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/dell-xps-14-panther-lake" target="_blank">Dell XPS 14（Panther Lake）Linux 评测：原生 Ubuntu 26.04 LTS + 2.8K 120Hz OLED，主线内核即开即用</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Dell 近期为 <b>XPS 14（DA14260）</b>完成 <b>Ubuntu 26.04 LTS 预装认证</b>，Phoronix 对其 Linux 体验给出正面评价。送测机型为 <b>Core Ultra X7 358H（Panther Lake）</b>、32GB LPDDR5x-9600、512GB NVMe，配备 <b>2880×1800 InfinityEdge OLED 触控屏，120Hz、支持 VESA DisplayHDR</b>（基础款为 1920×1200）；整机约 1.4kg、14.6mm，CNC 铝合金 + Gorilla Glass 3，三个 TB4/USB-C 口支持供电与 <b>DisplayPort 2.1</b>。软件栈是重点：预装使用 <b>主线 Linux 7.0 内核 + Mesa 26.0</b>，无需 OEM 内核，摄像头、音频、触觉触控板均开箱可用。200 余项基准测试中，该机性能为同 SoC 的 MSI Prestige 14 Flip 的 <b>1.22 倍</b>，达到旗舰 Core Ultra X9 388H 机型（Framework 13 Pro）的 <b>93%</b>；CPU 平均功耗 <b>23W</b>、峰值 <b>65W</b>。主要短板是价格：该配置约 <b>3000 美元</b>（受内存/SSD 涨价影响）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Panther Lake 的 Arc B390（Xe3）核显与能效在主线内核/ Mesa 下已相当成熟，配合 2.8K 120Hz OLED 与 DP 2.1，是观察「图形/显示栈开箱体验」的代表性样本；升级到更新的内核还能进一步提升图形性能。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Sashiko-0.9.4-Released" target="_blank">AI 内核评审工具 Sashiko 0.9.4：新增实验性「补丁系列设计评估」流水线</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">由 <b>Google 工程师</b>开发维护、面向 Linux 内核邮件列表做 <b>agentic AI 代码评审</b>的 <b>Sashiko</b> 发布 <b>v0.9.4</b>。该工具此前主要逐补丁检查正确性与缺陷，默认使用 <b>Gemini</b> 但保持 LLM 无关。本次最值得注意的新功能是实验性的<b>补丁系列设计评估</b>：通过 <code>sashiko review --design</code> 调用一条<b>四阶段评估流水线</b>，从整体上审视整个补丁系列的架构设计，作为既有逐补丁评审的补充，可在本地运行。新版本还加入对 <b>e2fsprogs</b>（EXT4 及前身文件系统的用户态工具）的「一等公民」评审支持，另有若干功能与修复，详见 GitHub 发布页。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>内核开发中的 AI 应用正从「找 bug」走向「评架构」：当多个项目开始限制 LLM 贡献时，这类面向评审端的设计级辅助工具提供了另一条务实的落地路径，值得关注其准确率与社区接受度。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-19.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-18.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-19</p>
+    <p>覆盖范围：2026-11-18（EDT）· AMD ROCm 10.2 新增 18 款 RDNA3 Ryzen 笔记本官方支持，升级 SGLang/vLLM 与 RCCL 优化 · Wine 合入远程 OpenGL swapchain 呈现，CEF 应用可在原生 Wayland 下渲染 · Multikernel Linux 7.0-mk5 首次支持 ARM64 · Dell XPS 14 Panther Lake 原生 Ubuntu 26.04 LTS + 2.8K 120Hz OLED 评测 · Sashiko 0.9.4 新增实验性补丁系列设计评估流水线</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
