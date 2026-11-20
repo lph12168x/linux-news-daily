@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 10 月 30 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-20.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-19.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-AI-Engine-Linux-Driver" target="_blank">AMD AI Engine「AIE」加速器驱动提交主线内核评审：Versal Gen 2 的 VLIW SIMD 阵列</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">AMD 于周三（11-18）向 <b>dri-devel 邮件列表</b>提交全新的 <b>AMD AI Engine（AIE）加速器驱动</b>，寻求进入主线 Linux 内核。它与内核中已有的 <b>AMDXDNA</b>（面向 Ryzen AI NPU）驱动相互独立，服务对象是用于 Versal 自适应 SoC 的 AI Engine——一片由 <b>二维 VLIW SIMD 向量处理器阵列</b>构成的硬件，面向 DSP、机器学习等场景，单颗 SoC 可集成<b>数十到数百个</b> AI Engine。去年 AMD 曾提交过较基础的版本，此次<b>重写后只针对更新的 Versal Gen 2 SoC</b>；驱动遵循内核标准的 <b>accel 加速器框架</b>，而非继续维护下游 out-of-tree 版本。补丁由 AMD 的 Gregory Williams 发出，目前处于 upstream review 阶段。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是 AMD 把 FPGA 自适应计算平台上的 AI Engine 纳入标准内核加速器框架的关键一步：对做异构计算、加速器驱动与用户态调度的人来说，统一的 accel 接口意味着更少私有补丁、更容易与主线内核的功耗/内存管理协同。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-26.3.1-Released" target="_blank">Mesa 26.3.1 发布：Intel「Jay」着色器编译器与 RADV 集中修复</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">季度特性版 Mesa 26.3 的首个维护版本 <b>26.3.1</b> 已发布，适合希望等 x.1 再升级的发行版与用户。本次更新包含对全新 <b>Intel「Jay」着色器编译器</b>的一批零散 bug 修复，以及 Windows 平台 <b>D3D12 Dozen（Dzn）</b>驱动的改动；<b>RADV</b> 仍然改动最多——包括暂停条件渲染（conditional rendering）的处理、Valve 的 <b>Samuel Pitoiset</b> 继续做 <b>memcpy 优化</b>、修复 <b>RDNA2 上的 VRS</b> 等。<b>Zink</b> 现在把条件渲染的使用收拢到 <code>VK_EXT_conditional_rendering</code> 扩展之后，以规避某个未点名的专有驱动不支持该扩展导致的错误。完整补丁列表见 mesa-dev 邮件列表公告。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Intel Jay 是新编译器的首个维护窗口，RADV 的性能与 RDNA2 修复又直接惠及 AMD 游戏与计算用户；Zink 对扩展能力的显式门控也体现了 Mesa 面对专有驱动兼容问题时的一贯工程取向。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/windows-ubuntu2610-strix-halo" target="_blank">Ryzen AI Max+ 395 双系统实测：Ubuntu 26.10 综合领先 Windows 11 Pro 约 1.16 倍</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Phoronix 在搭载 <b>AMD Ryzen AI Max+ 395（Strix Halo）</b>的 <b>GMKtec EVO-X2</b> 迷你主机上，对出厂 Windows 11 Pro 与 <b>Ubuntu 26.10</b> 做了超过 <b>100 项基准测试</b>。按几何平均计算，Ubuntu 26.10 的整体性能是 Windows 11 Pro 的 <b>1.16 倍</b>。细分来看：<b>Blender 5.3</b> 的 CPU 渲染 Linux 明显更快，<b>V-RAY</b> 也偏向 Ubuntu，但 <b>ROCm HIP</b> 路径下 Windows 11 Pro 通常略胜一筹；<b>llama.cpp</b> 的纯 CPU 推理 Ubuntu 占压倒性优势，改用 <b>Radeon 8060S 核显 + Vulkan</b> 后端后差距显著缩小，但 Ubuntu 通常仍为最优。测试还覆盖 GPU/图形与功耗表现。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Strix Halo 是「大核显 + 统一内存」本地 AI 的代表平台：同一硬件上 Linux 在 CPU 侧与 Vulkan 推理领先、ROCm HIP 反而 Windows 略优的分化，对选择部署系统与优化后端很有参考价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Unsloth-Desktop-Ryzen-AI-NPU" target="_blank">Unsloth Desktop 接入 Ryzen AI NPU：XDNA 2 及更新型号，Linux 同样可用</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">AMD 与 Unsloth 宣布，<b>Unsloth Desktop</b> 现已支持调用 <b>AMD Ryzen AI NPU</b> 做本地推理，首批覆盖 <b>XDNA 2 及更新架构</b>的笔记本与台式机处理器。官方称已有<b>超过 100 个 agentic AI 应用与工作流</b>可在该组合下运行；模型服务与推理基于 AMD 开源的 <b>Lemonade</b> 与 <b>FastFlowLM</b> 项目实现。AMD 特别向 Phoronix 确认：这项 NPU 支持<b>并不限于 Windows，Linux 版本同样可用</b>。相关细节见 AMD 官方博客。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>与 ROCm 扩展 GPU 侧覆盖面相呼应，Unsloth 把 mainstream Ryzen AI NPU 纳入常用本地推理桌面工具，且明确支持 Linux——对端侧 agent 工作流的 NPU 卸载落地是实质性利好。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/LLVM-Re-Licensing-Complete" target="_blank">LLVM 历时近十年的重新授权基本完成：99.5% 以上代码转为 Apache-2.0 with LLVM exception</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">Kristof Beyls 宣布 LLVM 自 2017 年启动的<b>代码重新授权</b>工作基本收尾：历史上贡献过的代码中，<b>超过 99.5%</b> 已纳入 <b>Apache-2.0 WITH LLVM-exception</b> 许可，余下部分或已移出代码库、或体量过小不构成版权问题。<b>1,300 多名个人贡献者与约 100 家组织</b>同意为历史贡献重新授权；自 <b>2019 年 1 月 19 日</b>起的新贡献已统一采用该许可，而此前的代码使用 UIUC/NCSA（部分运行时库为 MIT）许可，因此追溯联系作者耗时近十年。<b>LLVM 25（2027 年）</b>将随附更新后的 LICENSE 文件与文档，统一指向新许可。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>LLVM 是 Mesa RadeonSI/RADV/AMDGPU 后端与大量内核/编译器工具链的共同底座；许可统一降低了下游发行版与商业产品集成的法律摩擦，也让后续代码贡献与合规审查简单得多。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-20.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-19.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-20</p>
+    <p>覆盖范围：2026-11-19（EDT）· AMD AI Engine「AIE」驱动提交主线评审，Versal Gen 2 的 VLIW SIMD 阵列纳入标准 accel 框架 · Mesa 26.3.1 集中修复 Intel Jay 编译器与 RADV（RDNA2 VRS、memcpy 优化） · Ryzen AI Max+ 395 双系统实测：Ubuntu 26.10 综合领先 Windows 11 Pro 1.16 倍 · Unsloth Desktop 接入 Ryzen AI NPU（XDNA 2+，Linux 同样可用） · LLVM 重新授权基本完成，99.5% 以上代码转为 Apache-2.0 with LLVM exception</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
