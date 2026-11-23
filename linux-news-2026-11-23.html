@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-10-30</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 11 月 23 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-23.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-20.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-rc4-Released" target="_blank">Linux 7.4-rc4 发布：Linus 称「大得惊人」，驱动改动占一半</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">11 月 22 日（美东周日），Linus Torvalds 发布 Linux 7.4 的第四个候选版本，并罕见地用一句反讽开场：<b>「Sunday afternoon, and -rc4 is out. Big. Surprise.」</b>。他解释说，小修小补散布各处，<b>驱动恰好占了一半</b>——GPU、网络照例在列，还包括 USB、IIO、NVMe、声卡等；另一半是核心内核、内存管理、文件系统、网络、自测与架构更新。继约 <b>2 万次提交</b>的「史上最大合并窗口」之后，rc3 还被形容为「普通一周」，rc4 又明显变大，Linus 直言「好日子回不来了」，请大家继续测试。本轮中值得注意的具体变化包括：<b>NVMe 命名空间改为并行删除</b>（每次删除约 20ms 的 RCU 宽限期可重叠，64 个命名空间的控制器拆除不再超过 1 秒）、登记 Intel <b>Coral Rapids</b>（服务器）与 <b>Razor Lake</b>（客户端）的 CPU model ID（面向 2028 年及以后产品，为 7.5 起的多轮驱动补丁铺路），以及把 Granite Rapids D 加入 SNC 支持表。正式版预计 12 月底发布，是否列为 LTS 仍未定。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>7.4 是 2026 年最后一个大版本，rc4 的体量反映 AI/LLM 辅助挖 bug 与补丁带来的开发强度；其中的 GPU 修复、下一代 CPU ID 与存储控制面优化，都会直接影响后续图形/计算驱动的上游节奏。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMDGPU-More-DCN6-Linux-7.5" target="_blank">AMD 为 Linux 7.5 再送一轮 AMDGPU/AMDKFD 更新：DCN6 解锁 HDCP，HDMI 2.1 / VRR 持续修</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">AMD 本周发出 <b>amd-drm-next-7.5-2026-11-19</b> 系列补丁，为 7.5 合并窗口继续准备 AMDGPU 内核图形驱动与 AMDKFD 计算驱动更新；本轮以修复为主。最受关注的是下一代 RDNA 5 显卡所用显示 IP <b>Display Core Next 6（DCN6）</b>的进一步使能，包括<b>开启 HDCP 内容保护支持</b>；同时 DCN 4.2 / 4.6 拿到一批修复。清单还覆盖新近 HDMI 2.1 引入与 VRR 支持的持续修错、GPUVM、UserQ、PSR、Freesync、背光、DPMS、SR-IOV、PSP 15 更新、DC 水印重构、多 XCC 部件的着色器修复、模块加载失败回滚等；AMDKFD 侧修正 SVM 与初始化顺序，老 Radeon 驱动补上 VBIOS 解析边界检查。DRM 新补丁截止时间约在两周后，Linux 7.5 合并窗口预计 12 月底开启。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>DCN6 是 RDNA 5 显示栈在主线内核成形的关键节点，HDCP、HDMI 2.1 与 VRR 的成熟度直接决定新卡上市时的桌面体验；本周修复密度也说明 AMD 正赶在合并窗口前集中收敛。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-PSR2-Panel-Replay-Joiner" target="_blank">Intel 让 PSR2 / Panel Replay 兼容 Pipe Joiner：Linux 7.5 支持 8K 与 4K@240Hz 下省电</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">Intel 工程师 <b>Mika Kahola</b> 解决了驱动限制：启用 <b>pipe joiner</b> 时也能使用 <b>PSR2</b> 与 <b>Panel Replay</b> 省电特性，代码已随本周的 <b>drm-intel-next</b> pull request 提交进 DRM-Next，面向 Linux 7.5。Pipe joiner 允许多条内部显示管共同驱动一块超高分辨率或高刷新率面板，突破单条显示管的限制；四管 ultra joiner 配置可支持 <b>8K</b> 与 <b>4K@240Hz</b>。但此前一旦启用 joiner，PSR2（eDP 只刷新画面变化区域）与 Panel Replay（eDP/DP 在画面不变时由面板自刷新、或只做选择性更新以降低带宽与功耗）都无法工作。本周 PR 同时还包含代码清理、IRQ 处理优化与多项驱动修复。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>高分辨率、高刷新率笔记本是最需要省电也最容易撞上显示管限制的品类；把 PSR2/Panel Replay 与 joiner 打通，意味着 8K / 4K@240Hz 配置不再需要在画质与续航之间二选一。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.5-DRM-8TB-mmap" target="_blank">Linux 7.5 把 GEM/TTM 的 mmap 偏移范围从 1TB 提到 8TB：为多 GPU 大显存铺路</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">Intel GPU 驱动工程师 <b>Matthew Auld</b> 的补丁已随 <b>drm-misc-next</b> 进入 DRM-Next，将在 Linux 7.5 把内核图形驱动中 GEM/TTM buffer object 的假 mmap 偏移范围从 <b>1TB 扩大到 8TB</b>。动机来自多 GPU 大显存场景：跨设备、跨进程的 P2P dma-buf 导入会耗尽现有 1TiB 的 64 位偏移区间，导致 BO 创建或 PRIME import 以 <b>-ENOSPC</b> 失败；又不能直接跳过导入 sg buffer 的偏移分配，因为 Intel compute-runtime 等用户态仍会查询所导入 host dma-buf 的 mmap_offset。做法是把 <code>DRM_FILE_PAGE_OFFSET_SIZE</code> 提到 <b>SZ_8T</b>，仍严格低于 panthor 保留的 <code>DRM_PANTHOR_USER_MMIO_OFFSET_32BIT</code>（1ULL &lt;&lt; 43），也处于 32 位兼容 mmap2 的 16TiB pgoff 上限之内。外界普遍认为此举与 Intel <b>Crescent Island / GPU D 系列</b>（单卡最高 160GB LPDDR5X）有关。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>显存容量与多卡 P2P 正在把 DRM 的旧假设推到极限；把偏移空间一次性放大 8 倍，是让 160GB 级加速卡与 compute-runtime 在主流内核上正常共存的底层基础设施改动。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMDXDNA-1.0-Linux-Driver" target="_blank">AMDXDNA 驱动在 Linux 7.5 升到 1.0：新增 NPU10 / NPU11（NPU3 rev 0x14 / 0x15）</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">面向 Ryzen AI NPU 的 <b>AMDXDNA</b> 加速器驱动将随 Linux 7.5 宣告 <b>1.0 版本</b>，从此前的 v0.10 直接跃升。Linux 7.5 预计 2027 年第一季度发布，1.0 与「首个正式支持 <b>AIE4</b> 设备的版本」对齐——AIE4 被认为是未来 Zen 6 Ryzen AI 客户端 SoC 所用 IP。同一批补丁还加入 <b>NPU10 / NPU11</b> 设备支持，两者都是基于 NPU3 的修订版 <b>0x14 与 0x15</b>；官方未说明对应产品，外界推测是某些 Zen 5 SoC 衍生型号。补丁本周经 <b>drm-misc-next</b> 送入 DRM-Next。文章也回顾了 Ryzen AI NPU 的 Linux 生态：直到今年早些时候 FastFlowLM 与 Lemonade 本地 AI 服务器介入后才真正可用于大模型推理，而 Unsloth Desktop 也刚在前一天宣布支持（含 Linux 版本）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>从 0.x 到 1.0 加上新设备 ID，是 AMD NPU 上游支持走向稳定的信号；对关注端侧推理与加速器驱动的人来说，内核版本与用户态（Lemonade / FastFlowLM / Unsloth）的同步成熟比单次性能提升更关键。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-LInux-NPU-Driver-1.39.1" target="_blank">Intel Linux NPU 驱动 1.39.1 发布：正式支持 Nova Lake 第六代 NPU</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">Intel 于 11 月 21 日（周四）发布 <b>Linux NPU Driver v1.39.1</b>。本次点版本更新的主要内容是<b>新增 Nova Lake 平台支持</b>，对应其第六代 NPU IP；这依赖此前已上游进 IVPU 加速器驱动的内核侧使能补丁。发布说明同时建议，Nova Lake NPU 用户搭配尚未发布的 <b>OpenVINO 2026.5</b> AI 工具套件使用。除此之外本次没有别的功能变化，可从 Intel 的 GitHub release 页面下载。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>继内核侧 IVPU 支持合入之后，用户态驱动跟进意味着 Nova Lake NPU 的软件栈开始具备可用性；对评估 Intel 下一代端侧 AI 加速能力的人来说，OpenVINO 版本搭配是部署时需要留意的细节。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">7</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Vulkan-AMDX-Ray-Tracing-Struct" target="_blank">Vulkan 1.4.369 加入 AMD 实验性扩展：多级加速结构降低光追构建开销与显存占用</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 20 日发布的 <b>Vulkan 1.4.369</b> 除两周积累的 API 澄清与修正外，最重要的是引入 AMD 的实验性厂商扩展 <b>VK_AMDX_multi_level_acceleration_structure</b>：允许在光追加速结构（AS）层级中<b>额外增加最多两级 instance</b>，以更细的粒度控制大型世界哪些部分需要重建或更新，并借助几何复用降低显存占用。规范文档指出，开发者此前被迫限制光追世界的复杂度，两大瓶颈是 AS 构建/更新耗时与内存占用；多级实例化可以把顶层结构建在若干中间层结构的实例上，而不是把全部底层实例「摊平」后逐一挂接；同时，可用刚体变换驱动的动画几何也不必为了塞进两级 BVH 而反复复制。扩展目前仍属实验性质，因此带有 AMDX 前缀。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>光追场景规模化的主要障碍正是 AS 重建成本与内存足迹；如果多级加速结构最终进入核心规范，将直接影响游戏与渲染引擎组织动态场景的方式，值得图形开发者提前关注。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">8</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/GNOME-AMD-Content-Adaptive" target="_blank">AMD 把自适应背光调制集成进 GNOME Mutter：按画面内容动态调背光省电</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">11 月 20 日，支持 <b>Adaptive Backlight Modulation（ABM）</b> DRM/KMS connector 属性与 <b>content-adaptive</b> API 的补丁合入 GNOME 合成器 <b>Mutter</b>，由 AMD 为现代 Ryzen AI 笔记本贡献。ABM 的原理是在深色或低亮度画面下降低面板背光并在图像侧补偿，用部分色彩精度换功耗，对电池续航尤其有意义；AMDGPU 内核驱动此前已为支持的 eDP 面板暴露该 connector 属性，这次补的是合成器一侧。按合并说明，content-adaptive 作为 MetaBacklight 上的一个等级（索引 0..max，默认 0 为关闭）在下一帧写入 KMS；Mutter 不自行选择等级，而由 shell 在进程内调用 C API（无 D-Bus 接口）；首帧写入时会从驱动的 sysfs 接口接管该属性，关机时不交还，留给通用 DRM reset 处理。详见 Mutter 的 MR !5192。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是把内核已有的显示省电能力接入主流桌面合成器的典型案例：Linux 笔记本的屏幕功耗优化长期落后于 Windows，此类上游集成会让 Ryzen AI 平台的续航改进真正落到用户手里。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-23.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-20.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-23</p>
+    <p>覆盖范围：2026-11-20 ~ 11-22（EDT，周末合并）· Linux 7.4-rc4 发布：驱动改动占一半，NVMe 命名空间并行删除、Intel Coral Rapids / Razor Lake CPU ID 登记 · AMDGPU/AMDKFD 为 Linux 7.5 再修一轮，DCN6 解锁 HDCP、HDMI 2.1 / VRR 持续收敛 · Intel 让 PSR2 与 Panel Replay 兼容 pipe joiner（8K、4K@240Hz） · GEM/TTM mmap 偏移范围 1TB 提到 8TB，为多 GPU 大显存铺路 · AMDXDNA 驱动升至 1.0 并加入 NPU10 / NPU11 · Intel Linux NPU 驱动 1.39.1 支持 Nova Lake · Vulkan 1.4.369 新增 AMD 多级加速结构实验扩展 · AMD 把自适应背光调制接入 GNOME Mutter</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
