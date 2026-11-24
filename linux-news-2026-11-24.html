@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-11-24</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 11 月 24 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-24.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-23.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-NVK-TTU-Instructions" target="_blank">Mesa NVK 开源 NVIDIA 驱动迈出光追关键一步：合入 TTU 指令支持</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 23 日（美东周日），<b>Mesa 27.0-devel</b> 合入 NVK 开源 NVIDIA Vulkan 驱动的初始 <b>TTU（Tree Traversal Unit，树遍历单元）指令</b>支持，同时补齐 <b>NAK 着色器编译器</b>中的相关处理与 <b>NIR 中间表示</b>的 intrinsic。TTU 指令是 NVIDIA GPU 上控制 <b>RT Core</b> 的指令，本次合并（MR !45929）的直接目标是让 NVK 最终支持 <b>VK_KHR_ray_query</b> 与 <b>VK_KHR_ray_tracing_pipeline</b> 两个 Vulkan 光追扩展。Phoronix 评论称，这是开源 NVIDIA Vulkan 驱动光追能力的又一步，但整个工作「能否在 2027 年全部完成」仍有待观察。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>NVK 是 Linux 上唯一可完全开源的 NVIDIA Vulkan 实现，光追扩展从「无」到「有」的第一步落在编译器与指令层；对关注开源驱动栈成熟度和 Vulkan 光追生态的人来说，这是需要长期跟踪的里程碑。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/RadeonSI-Radeon-Disable-Default" target="_blank">Mesa 27.0 的 RadeonSI 默认关闭旧 Radeon 内核驱动支持，GCN 1.0/1.1 用户需升级</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">AMD 驱动工程师 <b>Pierre-Eric Pelloux-Prayer</b> 的补丁于 11 月 23 日合入 <b>Mesa 27.0-devel</b>（MR !46489）：<b>RadeonSI Gallium3D 默认关闭对旧 Radeon 内核驱动的兼容支持</b>，目的是推动用户转向 <b>AMDGPU 内核驱动</b>或升级内核。受影响的是早期 <b>GCN 1.0 / 1.1</b>（Radeon HD 7000 系列初期）显卡——约一年前 AMDGPU 在这些 GPU 上达到功能对齐后，内核已默认改用 AMDGPU。若用户仍坚持「新 Mesa + 很旧的内核」，可用环境变量 <b>AMD_DEBUG=use_radeon</b> 临时恢复；但 <b>Mesa 27.1 或更晚版本可能直接移除</b>这部分支持。GCN 1.2 及更新显卡（已用 AMDGPU）与 pre-GCN 老卡（走 Radeon 内核 + R600 驱动）均不受影响；官方建议 GCN 1.0/1.1 用户升级到 <b>Linux 7.1+</b> 以使用默认的 AMDGPU 驱动。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是 AMD 清理用户态遗留驱动路径的明确信号：老 GCN 卡仍能跑，但支持窗口已进入倒计时。对维护老设备或发行版后端的人来说，需要尽早规划内核与 Mesa 的配套升级。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/amd-epyc-9006-7601" target="_blank">EPYC Zen 6 对比十年前的 Zen 1：100+ 项测试几何均值 12.1 倍，AI 最高 133 倍</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">11 月 23 日，Phoronix 发布跨度近十年的服务器性能对比：2017 年的 <b>EPYC 7601</b>（Naples，32 核 Zen 1 / 64 线程、2.2GHz、64MB L3、DDR4-2666 八通道、180W）对阵新上市的 <b>EPYC 9996</b>（Venice，<b>256 核 Zen 6C / 512 线程</b>、1GB L3、16 通道 MRDIMM-12800、96 条 PCIe 6.0、600W）与高频款 <b>EPYC 9686F</b>（96 核 Zen 5 / 5.3GHz、384MB L3）。在相同软件栈（Ubuntu 26.10、Linux 7.3、GCC 15.3）上运行 <b>100 多项测试</b>：双路 9996 相比双路 7601 的几何平均性能为 <b>12.1 倍</b>，双路 9686F 为 <b>8.7 倍</b>。分项来看，OpenVINO 的 AI 负载最高达 <b>133 倍</b>，AVX-512 负载几何均值 <b>16.4 倍</b>，Blender 等创作负载 <b>13.6 倍</b>，HPC 负载 <b>15.6 倍</b>，OpenSSL / 数据库等传统服务器负载最高约 <b>22 倍</b>；即便新平台 TDP 更高，每瓦性能仍约为 <b>5 倍</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这组数据把「十年架构演进」量化成了可直接引用的数字：AI 与 AVX-512 的增益远超核心数增长，说明指令集与加速单元才是计算性能跃迁的主因；对选型与容量规划都有参考价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/VKD3D-2.2-Released" target="_blank">VKD3D 2.2 发布：D3D12-on-Vulkan 支持到 Shader Model 6.2，为 Wine 12.0 铺路</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 23 日，<b>VKD3D 2.2</b> 发布，这是在 Vulkan 上实现微软 <b>Direct3D 12</b> 接口、让 Windows 游戏在 Wine 下运行的关键组件。新版本把着色器模型支持提升到 <b>Shader Model 6.2</b>，加入对 <b>Vulkan shader float controls</b> 扩展的利用，并带来多项 HLSL 着色器处理改进、VKD3D 编译器增强与各类修复。按计划，<b>Wine 12.0 的候选版本将在 12 月开始</b>，稳定版定于 2027 年初；VKD3D 2.2 届时会并入 Wine 代码库。可从 WineHQ 的 GitLab release 页面下载。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>D3D12 是当前 Windows 游戏的主流 API，VKD3D 的着色器模型覆盖度直接决定 Linux 上可玩的游戏范围；跟随 Wine 12.0 节奏升级，是游戏兼容性与性能改善的必要条件。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Mesa-27.0-AVX-512-LLVMpipe" target="_blank">Mesa 27.0 合入 LLVMpipe 的 AVX-512 支持：纯 CPU OpenGL 渲染吃上 512 位向量</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">上月报道过的 <b>LLVMpipe AVX-512</b> 工作已于 11 月 23 日合入 <b>Mesa 27.0-devel</b>（MR !45279）。这项由 <b>David Airlie</b> 多年前发起、一度搁置的工作，近期借助 <b>GPT Terra 与 Astra</b> 两个 AI 模型协助才得以完成，不过作者手头没有现代 AVX-512 处理器可做实测。本次合入的核心是 <b>512 位宽的 LP_NATIVE_VECTOR_WIDTH</b>，这是软件 OpenGL 驱动正确利用 AVX-512 加速的最后一块拼图。合并请求中未提供性能数据，实际收益有待在 Zen 4/5 或 Xeon 等支持 AVX-512 的平台上验证。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>LLVMpipe 是无 GPU 环境（服务器、CI、远程桌面）下的重要 OpenGL 后备；补齐 AVX-512 可让这类场景的图形计算受益于现代 CPU 的向量宽度，同时也提供了一个 AI 辅助完成遗留内核/驱动移植的有趣案例。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">6</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Zstandard-Zstd-1.6" target="_blank">Zstandard 1.6 发布：AArch64 解压提速、SVE2/RVV 向量优化，修复多线程压缩问题</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">距上一版 1.5.7 约一年半后，Meta 于 11 月 23 日发布 <b>Zstandard 1.6.0</b>。这是自 2025 年 2 月以来的首个大版本：<b>64 位 ARM（AArch64）解压更快</b>，支持 <b>SVE2</b> 的 CPU 压缩更快，并包含其他 Neon / SVE2 优化；<b>RISC-V</b> 侧则带来基于 <b>RVV</b> 向量扩展的性能优化。修复方面涉及多线程（解）压缩问题、32 位平台问题，以及 <code>STD_compressSequences()</code> 与 <code>ZSTD_compressSequencesAndLiterals()</code> 中可能出现的内存损坏；此外还有命令行参数调整与少量 API 变化。Meta 表示新算法优化的重心正转向内容感知压缩项目 <b>OpenZL</b>，不同 CPU 上的 Zstd 基准结果将陆续公布。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Zstd 是内核、文件系统、包管理与日志链路的基础压缩库；AArch64/RISC-V 向量优化会直接影响服务器与边缘设备的压缩吞吐，内存损坏修复也值得发行版尽快纳入。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-24.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-23.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-24</p>
+    <p>覆盖范围：2026-11-23（美东 EST）· Mesa NVK 合入 TTU 指令，开源 NVIDIA Vulkan 驱动迈向光追 · Mesa 27.0 RadeonSI 默认关闭旧 Radeon 内核驱动支持（GCN 1.0/1.1 需升级） · EPYC Zen 6 对 Zen 1：100+ 项测试几何均值 12.1 倍、AI 最高 133 倍 · VKD3D 2.2 支持 Shader Model 6.2，为 Wine 12.0 铺路 · Mesa 27.0 合入 LLVMpipe AVX-512 支持 · Zstd 1.6 带来 AArch64 / SVE2 / RVV 向量优化与多线程修复</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
