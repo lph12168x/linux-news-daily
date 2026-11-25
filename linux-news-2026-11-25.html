@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-11-25</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 11 月 25 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-25.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-24.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-Zen-6-FRED-Benefits" target="_blank">AMD Zen 6 上的 FRED 实测：网络与存储 I/O 最高带来数个百分点增益</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">11 月 24 日（美东周二），Phoronix 用刚上市的 <b>EPYC 9006「Venice」</b>平台量化 <b>FRED（Flexible Return and Event Delivery，灵活返回与事件投递）</b>的性能影响。FRED 是相比传统 <b>IDT</b> 更高效、更现代的中断、异常与系统调用处理机制，<b>全部 Zen 6 处理器均支持</b>，而 Linux 自 <b>7.1</b> 起已默认启用（此前 Intel Panther Lake 上的首测就显示不错收益）。由于现有 EPYC 9006 跑分都开着 FRED，这次在双路 <b>EPYC 9686F</b>、Ubuntu 26.10 + Linux 7.4 Git 内核上强制关闭 FRED 做对比，覆盖 xfr / Ethr（TCP、UDP 延迟与带宽）、ClickHouse（1 亿行数据集）、CockroachDB（KV 读占比 60% / 95%、512 并发）等负载。结论是 I/O 侧（网络与本地存储）<b>最高约数个百分点</b>的增益来自 FRED；它是 EPYC 9006 出色表现的贡献因素之一，与 MRDIMM-12800 支持、SMT 表现及其他架构改进共同作用。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>FRED 已从「Intel 新特性」变成 Zen 6 的通用能力，且内核默认开启——这意味着服务器 I/O 与数据库负载的基线已经悄悄改变；对做性能优化与跨代对比的人来说，需要把 FRED 开关纳入变量控制。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/TornadoVM-8.2" target="_blank">TornadoVM 8.2 发布：新增 AMD ROCm HIP 后端，Java 代码可直接 JIT 到 Radeon/Instinct</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">11 月 24 日，面向 GPU 内核编程的 Java 框架 <b>TornadoVM 8.2</b> 发布。基于 OpenJDK 21+ 的 Java 代码可被 JIT 编译到 NVIDIA CUDA、OpenCL C、Apple Metal，如今再增加 <b>专用 ROCm HIP 后端</b>（PR #1327），<b>直接与 HIP 运行时对接</b>，Windows 与 Linux 均可用。此前 TornadoVM 已能通过 OpenCL 路径跑在 AMD Radeon / Instinct 上，新后端意味着更好的性能与可靠性；此外还改进了 Apple Metal 支持、Eclipse OpenJ9 与 IBM Semeru 兼容性等。发布与下载见 GitHub v8.2.0。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Java 生态终于有了直连 ROCm 的 GPU 编程路径，不必绕 OpenCL；对 AMD GPU 上做异构计算与可移植内核的团队，这是一条值得评估的新工具链。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/ubuntu-2610-dell-xps-14" target="_blank">Ubuntu 26.10 让 Panther Lake 的 Arc B390 再提速：Linux 7.3 + Mesa 26.2 是关键</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 24 日，Phoronix 在 <b>Dell XPS 14 DA14260</b>（Core Ultra X7 358H、32GB LPDDR5-9600、Arc B390 核显、2880×1800 屏）上对比预装的 Ubuntu 26.04 LTS 与 <b>Ubuntu 26.10</b>。前者为 Linux 7.0 + GNOME Shell 50 + Mesa 26.0.8 + GCC 15.2，后者升级到 <b>Linux 7.3 + GNOME Shell 51 + Mesa 26.2 + GCC 15.3</b>。结果显示 <b>Arc B390（Xe3）图形性能提升最明显</b>，尤其是基于 Vulkan API 的测试；代码编译等任务也有小幅提升，部分 Python 测试有增益（另有 SonicJSON 回退，非 Panther Lake 独有，AMD 平台同样复现），且性能提升并未带来明显 CPU 功耗差异。坚持 LTS 的用户可在 <b>2026 年 2 月的 Ubuntu 26.04.2</b> 中拿到回移植的 HWE 新栈。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>同一块 Xe3 核显在新内核 + 新 Mesa 下即可获得可观图形增益，说明 Linux 图形栈迭代本身就是「免费性能升级」；对采用 Panther Lake 的设备选型与系统版本策略有直接参考。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Proton-11.0-3-Released" target="_blank">Proton 11.0-3 发布：新增一批可玩游戏，更新 DXVK 与 VKD3D-Proton</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 24 日，Valve 发布 <b>Proton 11.0-3</b>（Wine 下游分支，用于 Steam Play 在 Linux 运行 Windows 游戏）。新版本让 <b>Hero Plus、City Car Driving、Bloody Zombies、Blair Witch VR、IL-2 Series、One Shot: Fading Memory</b> 等一批游戏达到「可玩」状态；同时包含大量错误修复、多款游戏的手柄支持改进，并修复若干 Proton 11 回归问题。图形栈方面更新了 <b>DXVK</b> 与 <b>VKD3D-Proton</b>（D3D12-on-Vulkan），另含 Wine Mono 更新、面向 ARM64 的 <b>FEX 2610</b> 等。更新已开始向 Steam 推送，完整变更见 GitHub release。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Proton 的每次小版本都直接决定 Linux / Steam Deck 上可玩游戏的数量与稳定性；DXVK、VKD3D-Proton 与 FEX 同步更新，也让 ARM64 掌机与 x86 平台受益于同一图形栈演进。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Ubuntu-AI-Desktop-Interact" target="_blank">Canonical 披露 Ubuntu「AI 桌面交互」计划：warty-prototype 统一入口，强调本地推理与可选启用</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">11 月 24 日，Ubuntu 桌面团队成员 <b>Didier Roche</b> 披露 Canonical 的「与桌面交互的新方式」计划，原型 Snap 名为 <b>warty-prototype</b>，目前仍是设计样机。它表面上是类似快速启动器的入口（即时查找文件与启动应用），但目标是「不再把互不相连的 AI 小组件散落在桌面上」，而是提供<b>统一的、键盘与语音友好的入口</b>，把应用、本地上下文与智能辅助连接起来，并且<b>仅在用户明确请求时</b>介入。Canonical 强调该方案<b>严格可选（opt-in）、本地优先（端侧推理）、隐私与安全优先</b>；这是在 Ubuntu 26.10 的 <b>Myna</b> 语音转文字技术预览之后的进一步动作。官方计划 <b>2026 年 1 月</b>分享架构细节与首个版本，并征求社区反馈。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是主流发行版对「AI 如何进入桌面」的一次明确表态：不做常驻悬浮助手，而是走本地推理 + 显式触发的单一入口；对桌面交互设计与隐私边界的走向有风向标意义。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-25.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-24.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-25</p>
+    <p>覆盖范围：2026-11-24（美东 EST）· AMD Zen 6 的 FRED 实测：网络与存储 I/O 最高数个百分点增益 · TornadoVM 8.2 新增 AMD ROCm HIP 后端 · Ubuntu 26.10 + Linux 7.3/Mesa 26.2 让 Panther Lake 的 Arc B390 再提速 · Proton 11.0-3 新增可玩游戏并更新 DXVK / VKD3D-Proton · Canonical 披露 Ubuntu AI 桌面交互计划（warty-prototype，本地推理、可选启用）</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
