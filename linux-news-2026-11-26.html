@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-11-26</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 11 月 26 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-26.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-25.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Vulkan-Macs-Go-KosmicKrisp" target="_blank">Khronos 正式转向 KosmicKrisp：Mesa 的 Apple 平台 Vulkan 1.4 实现取代 MoltenVK</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 25 日，Khronos Group 宣布 <b>Vulkan Portability Initiative 及其 MoltenVK 层已「完成使命」并进入弃用状态</b>；由 LunarG 主导、已内建在 Mesa 中的 <b>KosmicKrisp</b> 成为 Apple 平台上 Vulkan 的首选方案。 KosmicKrisp 基于 Apple <b>Metal</b> 之上的分层实现，已在 <b>Apple Silicon 上通过 Vulkan 1.4 一致性认证</b>，因此为可移植性而设的临时 Vulkan 扩展也不再必要——它是目前唯一提供完整一致性实现的分层方案。MoltenVK 仍可继续运行既有应用，也仍是旧款 Intel Mac 与旧版 macOS 的选择；KosmicKrisp 当前<b>仅支持 macOS，不支持 iOS</b>，也无意向支持 Intel Mac。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是 Apple 平台图形栈的一次正式换代：从「可移植性扩展」转向真正的一致性 Vulkan 1.4，意味着 macOS 上的 Vulkan 应用行为更接近其他平台；跨平台图形/推理框架的后端选型需要重新评估。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.5-Intel-Xeon-P2PDMA" target="_blank">Linux 7.5 为 Intel Xeon 服务器加入 P2PDMA 白名单：Skylake-SP 到 Diamond Rapids 全覆盖</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">11 月 25 日，一个已进入 PCI 子系统 <b>next</b> 分支、将在 <b>Linux 7.5</b> 合入的补丁，把 <b>Skylake-SP 一直到下一代 Diamond Rapids</b> 的 Intel Xeon 服务器 CPU 显式加入 <b>cpu_supports_p2pdma()</b> 白名单。此前 AMD Zen 及更新平台已被覆盖。Intel 工程师 <b>Pavel Popov</b> 指出：P2PDMA 要求设备共享上游桥或主机桥命中 <b>pci_p2pdma_whitelist[]</b>，但 VMware 客户机中直通设备直接挂在虚拟根总线上，Hyper-V 客户机中每台设备独占 PCI 域，导致哪怕宿主支持也无法通过检查——受影响的是 <b>GPU、NIC 与 NVMe 等独立 PCIe 设备</b>。补丁已在 VMware ESXi 9.0 上的 Linux 客户机中，用 <b>Intel Level Zero P2P 基准（ze_peer）+ Arc Pro B60</b> 完成验证。Linux 7.5 合并窗口约在 12 月底开启，2027 年 Q1 正式发布。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>P2PDMA 让 PCIe 设备之间直接搬数据、绕开主机内存，是 GPU 直连存储/网卡与零拷贝管线的基础。虚拟化场景下长期失效的检查被修正，对 RDMA、GPU Direct 类方案和云上加速器部署有直接价值。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/postgresql-19-benchmarks" target="_blank">PostgreSQL 19 在 6 代 EPYC「Venice」上全面超越 18，只读负载提升尤为显著</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">11 月 25 日，Phoronix 发布 PostgreSQL 19 与 18 的首轮对比测试：平台为 <b>单路 AMD EPYC 9996「Venice」（256 核 Zen 6C）</b>、<b>16 通道 MRDIMM-12800</b>、PCIe Gen6 NVMe（Micron 9650 PRO 7.6TB），两次运行<b>除数据库版本外配置完全一致</b>。PostgreSQL 19 带来异步 I/O worker 自动扩展、面向现代 CPU 的更多 SIMD 加速、更快的外键检查、并行 autovacuum 等优化，同时因性能不稳定而<b>默认关闭 JIT</b>。结论是<b>全面领先（clean sweep）</b>：<b>只读负载提升最明显，吞吐更高、延迟更低</b>；读写混合负载在不同数据规模与客户端数下也有可测量增益。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>数据库是典型的企业级计算负载。在顶级 Zen 6 平台上零调参即可获得全面性能提升，说明 PG 19 的 I/O 与 SIMD 优化已经落地；值得作为数据库选型与内核/内存平台升级的基线数据。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-Kernel-Disable-Profi" target="_blank">Linux 7.4 停用 LLVM Profi：AutoFDO 下出现性能退化与病态编译时间</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">11 月 25 日，本周合入 Linux 7.4 的 Kbuild 修复补丁<b>禁用 LLVM 的 Profi（flow-based profile inference）算法在内核 AutoFDO 构建中的使用</b>，并将回移植到稳定分支。Profi 是 Clang 21 起在传入 <b>-fprofile-sample-use</b> 时默认启用的 PGO 采样推断算法，但它与 Linux 内核 AutoFDO 使用的 <b>flow-sensitive discriminator</b> 存在已知冲突：可能导致最终二进制<b>变慢</b>，并在某些内核控制流图上出现<b>病态编译时间（30 分钟以上甚至挂起）</b>。补丁说明直言其目标是避免「运行时性能下降和病态编译时间」，但并未给出量化数字。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>对用 Clang 21+ 加 AutoFDO 调优内核的团队，这是一条必须知道的构建变更：PGO 不再是「开了就一定更快」，编译器新特性与内核采样机制的不匹配会直接反噬性能与构建效率。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Servo-0.8-October-2026" target="_blank">Rust 浏览器引擎 Servo 0.8：HTML5 视频字幕、Flutter Web 与 WebGPU 读写提速</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">11 月 25 日，Servo 项目披露 <b>Servo 0.8</b> 的 10 月进展。这个 Rust 编写的浏览器引擎与 Servoshell 演示浏览器新增了 <b>HTML5 video 元素的字幕与封闭字幕（captions）支持</b>；修复 typed array 实现的性能问题后，<b>Flutter Web 内容已能正常工作</b>。此外还支持 <b>text-decoration-line</b> 的拼写/语法错误值、CSS <b>progress()</b> 数学函数与 image 输入类型，并让复杂页面缩放更平滑、降低内存分配与占用、修复内存泄漏。渲染方面继续完善 <b>WebGL2</b> 支持、<b>加快 WebGPU 缓冲区读写</b>、加入 Geolocation API，同时增强 embedding API，目标是成为 Chromium CEF 的可行替代。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Servo 正从实验性引擎向可嵌入的渲染后端演进；字幕、Flutter Web 与 WebGPU/WebGL2 的补齐，加上对标 CEF 的定位，让它成为桌面应用内嵌渲染的一个值得跟踪的新选项。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-26.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-25.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-26</p>
+    <p>覆盖范围：2026-11-25（美东 EST）· Khronos 弃用 MoltenVK，Mesa 的 KosmicKrisp 成为 Apple 平台 Vulkan 1.4 首选 · Linux 7.5 为 Intel Xeon 加入 P2PDMA 白名单 · PostgreSQL 19 在 EPYC Venice 上全面超越 18 · Linux 7.4 停用 LLVM Profi 以避免 AutoFDO 性能退化 · Servo 0.8 补齐视频字幕、Flutter Web 与 WebGPU 改进</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
