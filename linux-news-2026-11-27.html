@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-11-27</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 11 月 27 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-27.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-26.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/AMD-RDNA5-Linux-7.5-Initial" target="_blank">AMD RDNA5 / GFX13 初步驱动支持进入 Linux 7.5：GC 13 + GMC 13 + DCN6</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 26 日，最新一轮 AMDGPU / AMDKFD 内核图形与计算驱动改动被送入 DRM-Next，目标是 <b>Linux 7.5</b> 合并窗口。最受关注的是 <b>GFX13 的初始落地</b>——本月初首次公开的 AMD <b>GFC13 / GC 13</b> 图形 IP 补丁，被普遍认为对应下一代 <b>RDNA5</b> GPU；此轮拉取请求已把这块新一代图形控制器的初步使能工作铺好，不过仍被明确界定为<b>非常早期、实验性的支持</b>。除新图形控制器外，补丁还包含更新版的图形内存控制器 <b>GMC 13</b> 与 <b>SoC v2.0</b> 支持，以及面向 RDNA5 显示输出的 <b>Display Core Next 6（DCN6）</b> 进一步更新。其余改动以错误修复为主，初期的 GFX13 补丁并未披露太多新硬件特性细节。Linux 7.5 合并窗口约在 12 月底开启、2027 年 Q1 稳定发布；RDNA5 显卡据传要到 <b>2027 年稍晚</b>才正式上市。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是下一代 AMD GPU 开源栈的起跑信号：GC 13 / GMC 13 / DCN6 同时进入 DRM-Next，意味着图形、显存管理和显示三条线将一起演进。关注 AMD 图形栈或计划适配 RDNA5 的团队，应留意后续内核版本里的能力补全节奏。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Linux-7.4-Arc-B390-Performance" target="_blank">Linux 7.4 为 Panther Lake 核显 Arc B390 带来实测增益：部分场景帧率大幅提升</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 26 日，Phoronix 在 <b>Dell XPS 14 DA14260</b>（Core Ultra X7 358H「Panther Lake」）上，对比了 Ubuntu 26.10 自带内核与开发中的 <b>Linux 7.4 Git</b> 对 <b>Xe3 核显 Arc B390</b> 的影响。在 1920x1080 下，ElectroBench 的两个场景、GravityMark 的 OpenGL / Vulkan / Vulkan 光追三种渲染器<b>均以 Linux 7.4 最快</b>；2880x1800 的 <b>DDraceNetwork（Vulkan）帧率提升非常显著</b>，但帧时间波动也比 7.3 更大。Tesseract、Unvanquished（Ultra）同样由 7.4 领先；而 Unvanquished（Medium）、Xonotic（Low）、yquake2 与 VKMark（Mailbox）仍是 Ubuntu 26.10 原内核更快。整体属于幅度不一的正向收益——考虑到此前多个内核版本已持续优化 Panther Lake，这些增量是在已有基础上叠加的。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>对新硬件而言，主线内核迭代本身就能带来「免费」性能：多数 3D / 光追测试由 7.4 领跑，但个别负载反而回退，说明升级前仍需按自身工作负载实测，尤其是帧时间稳定性敏感的场景。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/DXVK-3.2-Released" target="_blank">DXVK 3.2 发布：接入 VK_EXT_present_timing，改善全屏游戏帧节奏</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-display">显示 display</span>
+      </div>
+      <div class="news-body">11 月 26 日，<b>DXVK 3.2</b> 正式发布。这是基于 Vulkan 实现 Direct3D 8 至 Direct3D 11 的兼容层，被 Valve 的 Steam Play（Proton）广泛使用。本版最突出的新特性是支持 Vulkan 扩展 <b>VK_EXT_present_timing</b>：在显示合成器与底层显卡驱动都支持、且游戏启用了 <b>vsync</b> 的前提下，DXVK 可借助呈现时序在<b>全屏游戏或启用内置帧率限制器</b>时获得更一致的帧节奏（frame pacing）。其余更新包括 <b>VRAM 驱逐逻辑改进、D3D11 资源上传优化</b>以及一批游戏专项修复，完整变更见项目 v3.2 发布页。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>呈现时序是连接图形驱动与显示链路的关键一环：把帧节奏交给标准的 Vulkan 时序机制，比在应用层靠延时 heuristics 更可靠。对关注低延迟、稳定刷新体验的显示/游戏栈，这是值得跟进的落地进展。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-Xe-PCIe-FLR-Linux-7.5" target="_blank">Intel Xe 驱动将在 Linux 7.5 支持 PCIe FLR：面向 SR-IOV 与定向错误恢复</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">11 月 26 日消息，上周的 <b>drm-xe-next</b> 拉取请求中，Intel 为 <b>Linux 7.5</b> 准备的 Xe 内核驱动改动终于引入了 <b>PCIe Function Level Reset（FLR）</b> 支持。FLR 是一种标准化机制，可<b>只重置单个 PCIe 功能</b>而不影响同一设备上的其他功能或系统中其他 PCIe 设备，对虚拟化、<b>SR-IOV</b> 和定向错误恢复尤其有用。Linux 内核本身支持 FLR 已有多年，此次是 Xe 驱动首次接上。Intel 工程师 <b>Raag Jadav</b> 历时数月、经历<b>十余轮代码评审</b>才将该系列合入，并坦承首版实现仍是「half baked」——目前<b>仅限于 GT 重新初始化</b>，其他组件需后续补齐。同批次改动还包含经 IRQ 路由的非致命错误处理、显示代码从 stolen memory 到系统内存的透明回退，以及面向 <b>Nova Lake P 与 Crescent Island</b> 的 GuC 固件更新。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>FLR 是 GPU 虚拟化直通、SR-IOV 切分与故障隔离的基础能力：没有它，单个 function 出错往往只能整卡复位。Xe 补齐这块能力，对云上图形/推理资源池化与可靠性设计有直接影响。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/F2FS-Large-Folios-Coming" target="_blank">F2FS 大 folio 支持进入 dev 分支，有望随 Linux 7.5 落地</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-kernel">内核 kernel</span>
+      </div>
+      <div class="news-body">11 月 26 日，开发者 <b>Nanzhe Zhao</b> 近月推进的 <b>F2FS 大 folio（large folios）</b>工作已合入 F2FS 文件系统的 <b>dev Git 分支</b>，很可能在即将到来的 <b>Linux 7.5</b> 周期落地。该系列在 F2FS 的 <b>buffered I/O 路径</b>上，为大部分可读/写文件启用大 folio（<b>压缩文件暂时除外</b>），同时支持<b>大于 0 的最小 folio order</b>；通过以多页 folio 取代单页处理，可减少页级管理开销并带来性能收益，补丁系列中附有基准数据。同一 dev 分支还排入了另一组补丁：允许<b>块大小小于内核页大小</b>，使 ARM64 上 16K / 64K 内核页仍可使用 4K 块，且<b>无需更改磁盘格式</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>大 folio 已从思想实验走进入主线候选：对 I/O 密集的计算负载和闪存存储栈，减少页级开销是实打实的收益；与前面几条 GPU / 显示改动合看，可以看出 Linux 7.5 在图形与底层 I/O 两条线上同步演进。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-27.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-26.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-27</p>
+    <p>覆盖范围：2026-11-26（美东 EST）· AMD RDNA5 / GFX13 初步驱动支持进入 Linux 7.5 · Linux 7.4 为 Panther Lake Arc B390 带来实测增益 · DXVK 3.2 接入 VK_EXT_present_timing · Intel Xe 驱动引入 PCIe FLR · F2FS 大 folio 有望随 Linux 7.5 落地</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
