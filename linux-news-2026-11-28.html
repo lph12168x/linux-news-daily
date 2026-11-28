@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux 每日新闻 - 2026-11-28</title>
+<style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --card-bg: #f8f9fa;
+      --border: #e0e0e0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #f1f2f6;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --border: #2c3e6d;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --tag-gpu: #0984e3;
+      --tag-display: #00b894;
+      --tag-compute: #e17055;
+      --tag-npu: #fd79a8;
+      --tag-kernel: #d63031;
+      --hover: #1e2a4a;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1rem; }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .news-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .news-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .news-num {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .news-title { font-size: 1.3rem; font-weight: 600; flex: 1; }
+    .news-title a { color: var(--text); text-decoration: none; }
+    .news-title a:hover { color: var(--accent); }
+    .news-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+    .tag-gpu { background: var(--tag-gpu); }
+    .tag-display { background: var(--tag-display); }
+    .tag-compute { background: var(--tag-compute); }
+    .tag-npu { background: var(--tag-npu); }
+    .tag-kernel { background: var(--tag-kernel); }
+    .news-body { color: var(--text); opacity: 0.9; margin-bottom: 0.8rem; }
+    .news-reason {
+      background: var(--hover);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    .news-reason strong { color: var(--accent); }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text);
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .news-header { flex-direction: column; align-items: flex-start; }
+    }
+  /* PAGE-NAV-CSS-START */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg, var(--card, rgba(255,255,255,0.06)));
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      border-radius: 12px;
+    }
+    .page-nav.bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      box-sizing: border-box;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border, rgba(255,255,255,0.12));
+      background: var(--bg, #0a0e14);
+      color: var(--text, #cdd6e0);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: var(--hover, var(--surface, rgba(255,255,255,0.08)));
+      border-color: var(--accent, #6c5ce7);
+      color: var(--accent, #6c5ce7);
+    }
+    .nav-btn.disabled { opacity: 0.4; pointer-events: none; cursor: default; }
+    .nav-btn.current { background: var(--accent, #6c5ce7); color: #fff; border-color: var(--accent, #6c5ce7); }
+  /* PAGE-NAV-CSS-END */
+  </style>
+</head>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">☀️/🌙 切换主题</button>
+  <div class="header">
+    <h1>🐧 Linux 每日新闻</h1>
+    <p>2026 年 11 月 28 日 · 图形 · 显示 · 计算</p>
+  </div>
+  <div class="container">
+
+<!--PAGE-NAV-TOP-START-->
+  <nav class="page-nav" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-28.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-27.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-TOP-END-->
+
+
+<div class="news-item">
+      <div class="news-header">
+        <div class="news-num">1</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Wine-11.23-Released" target="_blank">Wine 11.23 发布：首次支持 ARM64 macOS，32 位模拟加入 AVX</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 27 日，<b>Wine 11.23</b> 作为双周开发版发布，距离 12.0 候选阶段又近一步。最引人注目的是<b>首次加入 ARM64 macOS 支持</b>：为 Apple Silicon Mac 构建 Wine 需要调整构建流程并对 NTDLL 做相应修改，且该支持<b>依赖 macOS 27</b>。ARM64 侧的另一项进展是，在 64 位 ARM 上的 <b>32 位模拟中启用 AVX（高级向量扩展）</b>——上一版 11.22 只支持 x86_64 的 AVX 模拟，如今延伸至 32 位程序。图形栈方面，本版集成 <b>VKD3D 2.2</b>（D3D12 over Vulkan 的多项改进），并合入了<b>远程 OpenGL swapchain 图像呈现</b>支持，使 <b>CEF（Chromium Embedded Framework）在 Wayland 下的 Wine 中正常工作</b>；WIDL 的 C++ 头文件生成也得到改进，另有约 <b>40 项已知错误修复</b>。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Wine 正同时推进两条重要路线：ARM64 上的向量指令模拟扩大可运行软件范围，跨进程 OpenGL 呈现则打通了 CEF 在原生 Wayland 桌面的图形链路。对兼容层、游戏与桌面应用迁移而言，这两项都是基础设施级进展。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">2</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Earthqaic-Gallium3D-Mesa-27.0" target="_blank">高通 Earthqaic Gallium3D 驱动合入 Mesa 27.0：面向 Cloud AI 加速器</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">11 月 27 日，一个全新的 Gallium3D 驱动 <b>Earthqaic</b> 被合入 Mesa Git，将随 <b>Mesa 27.0</b>（预计 2027 年 Q1）发布。它由<b>高通</b>开发，目标硬件是 <b>Cloud AI 加速器「QAIC」</b>，并不面向常规图形场景，而是专门服务 Gallium3D 的 <b>Teflon AI 加速框架</b>与 <b>Rusticl</b>（Rust 实现的 OpenCL 驱动）。开发者特别强调当前代码<b>非常实验性、功能原始</b>：只实现了<b>张量加法与卷积</b>，能编译并执行一个简单的 OpenCL「hello world」内核，且可能存在稳定性问题。该项目与数年前已进入 Linux 主线的 <b>QAIC 内核驱动</b>形成配套。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>这是 Mesa 开放栈向 AI 加速器延伸的又一步：GPU 驱动框架被复用于 NPU 类设备，让 Teflon / Rusticl 有机会以统一接口访问 QAIC。虽然仍是概念验证，但值得关注后续算子覆盖与稳定性演进。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">3</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-Efficient-64-bit-e64-ANV" target="_blank">Intel ANV Vulkan 驱动默认启用高效 64 位寻址模式 e64</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-gpu">图形 GPU</span>
+      </div>
+      <div class="news-body">11 月 27 日消息，Mesa 27.0-devel 中 Intel 的 <b>ANV Vulkan 驱动已默认启用高效 64 位寻址模式「e64」</b>。e64 随即将推出的 <b>Nova Lake P 处理器 Xe3P 核显</b>登场，为着色器提供<b>原生 64 位显存寻址</b>，取代此前 Intel GPU 着色器一直使用的 <b>32 位偏移模式</b>。Nova Lake P <b>同时支持 e64 与旧 32 位模式</b>，而此后的 Intel 显卡预计将完全去掉 32 位偏移模式。本次由 <b>Mesa MR !46751</b> 带入 ANV 的 e64 路径错误修复，并称开启 e64 后的<b>测试通过率高于关闭时</b>，因此具备默认开启条件；内核与 Mesa 支持有望在硬件正式上市前就绪。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>寻址模式看似底层，却直接影响显存寻址能力与着色器编译路径：e64 是 Intel 未来 GPU 的事实标准，默认开启意味着驱动栈已开始为新硬件的真实工作负载做准备。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">4</div>
+        <div class="news-title"><a href="https://www.phoronix.com/news/Intel-Compute-26.44.40734.8" target="_blank">Intel Compute Runtime 26.44.40734.8：OpenCL 3.1 短暂上线后回滚，性能继续优化</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">11 月 26 日，Intel 发布开源 GPU 计算栈 <b>Compute Runtime 26.44.40734.8</b>（Linux / Windows 共用）。本版原本包含一项在<b>所有受支持 Intel 显卡代际上启用 OpenCL 3.1</b> 的补丁，但在最终版本中被<b>回滚</b>，对外暴露的仍为 <b>OpenCL 3.0</b>，回滚补丁并未说明具体原因。性能方面，针对 <b>Intel GPU D 系列「Crescent Island」</b>做了拆分 upstream writes 等优化，并对 <b>Level Zero</b> 做了通用代码重构以优化编译；当缓冲区由主机内存支撑时，Level Zero 图像会采用<b>在 CPU 上复制主机指针的 staging copy</b>。构建于 Level Zero API 之上的 <b>OpenCL LEO</b> 代码也在持续完善，为其在 <b>Nova Lake</b> 上默认启用做准备；另新增 Panther Lake 设备 ID <b>0xB0A1</b>，并附带大量错误修复（本版合计 400+ 补丁）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Compute Runtime 是 Intel GPU 上 GPGPU / AI 推理的关键软件层：Crescent Island 的吞吐优化与 Level Zero 重构指向未来硬件，而 OpenCL 3.1 的回滚提醒开发者在依赖新版 API 特性时要以实际暴露版本为准。</div>
+    </div>
+    <div class="news-item">
+      <div class="news-header">
+        <div class="news-num">5</div>
+        <div class="news-title"><a href="https://www.phoronix.com/review/gmktec-evo-x2" target="_blank">GMKtec EVO-X2 评测：Strix Halo 迷你主机的 Linux 能效表现</a></div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-compute">计算 compute</span>
+      </div>
+      <div class="news-body">11 月 27 日，Phoronix 发布 <b>GMKtec EVO-X2</b> 评测。该机采用 <b>Ryzen AI Max+ 395「Strix Halo」</b>，可选 64GB / 128GB LPDDR5X 与 1TB / 2TB NVMe（双 M.2 2280 槽），接口含 <b>USB4、HDMI 2.1、DisplayPort 1.4</b> 与 2.5G 网口，Wi-Fi 为 MT7925。测试对比了 Ryzen AI Halo、Framework Desktop、BOSGAME VTA-439（Ryzen AI 9 HX 470）与 Dell Pro Max GB10（NVIDIA GB10），多数机型运行干净的 Ubuntu 26.10。结果上，EVO-X2 的原始性能<b>略低于两款高端 Strix Halo 机型</b>，但能效往往持平或更优：平均功耗约 <b>80W</b>、峰值 <b>132W</b>，而 Framework Desktop 与 Ryzen AI Halo 约 <b>105W</b> 平均 / <b>180W</b> 峰值；核心与 GPU 温度也最低，无散热问题。按下机身侧面的物理风扇模式键后，与其他 Strix Halo 机型的性能差距会进一步缩小。Linux 侧在 Ubuntu 26.04 / 26.10、Fedora 45、CachyOS 上均无兼容性问题。起售价约 <b>2199 美元</b>（64GB + 1TB）。</div>
+      <div class="news-reason">
+        <strong>关注理由：</strong>Strix Halo 正在从整机走向多样化形态：这款迷你主机用更低功耗换接近的算力，且 Linux 开箱可用，适合关注本地大模型推理与紧凑型计算节点的团队。风扇模式未接入系统平台配置文件的取舍也值得硬件厂商借鉴。</div>
+    </div>
+
+  </div>
+<!--PAGE-NAV-BOTTOM-START-->
+  <nav class="page-nav bottom" aria-label="日报导航">
+      <a class="nav-btn" href="index.html">🏠 主页</a>
+      <a class="nav-btn current" href="linux-news-2026-11-28.html">📰 最新</a>
+      <a class="nav-btn" href="linux-news-2026-11-27.html">← 上一个</a>
+      <span class="nav-btn disabled">下一个 →</span>
+  </nav>
+  <!--PAGE-NAV-BOTTOM-END-->
+<div class="footer">
+    <p>数据来源：Phoronix | 生成时间：2026-11-28</p>
+    <p>覆盖范围：2026-11-27（美东 EST）· Wine 11.23 支持 ARM64 macOS 与 32 位 AVX 模拟 · 高通 Earthqaic Gallium3D 驱动合入 Mesa 27.0 · Intel ANV 默认启用 e64 高效 64 位寻址 · Intel Compute Runtime 回滚 OpenCL 3.1 并优化性能 · GMKtec EVO-X2 Strix Halo 迷你主机 Linux 实测</p>
+    <p>关注领域：Linux 图形 · 显示 · 计算</p>
+  </div>
+<script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.body.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
+    })();
+</script>
+</body>
+</html>
